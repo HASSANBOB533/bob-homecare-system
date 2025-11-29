@@ -45,10 +45,19 @@ export default function Home() {
               {t('whyUs')}
             </a>
             <LanguageSwitcher />
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <Button variant="default" size="sm" onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
                 {user?.role === "admin" ? t('adminDashboard') : t('userDashboard')}
               </Button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm" onClick={() => window.location.href = getLoginUrl()}>
+                  {t('signIn')}
+                </Button>
+                <Button variant="default" size="sm" onClick={() => window.location.href = getLoginUrl()}>
+                  {t('signUp')}
+                </Button>
+              </div>
             )}
           </nav>
         </div>

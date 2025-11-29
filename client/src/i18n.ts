@@ -11,6 +11,8 @@ const resources = {
       "adminDashboard": "Admin Dashboard",
       "userDashboard": "User Dashboard",
       "logout": "Logout",
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
       
       // Hero Section
       "heroTitle": "BOB Home Care",
@@ -100,6 +102,8 @@ const resources = {
       "adminDashboard": "لوحة الإدارة",
       "userDashboard": "لوحة المستخدم",
       "logout": "تسجيل الخروج",
+      "signIn": "تسجيل الدخول",
+      "signUp": "إنشاء حساب",
       
       // Hero Section
       "heroTitle": "BOB Home Care",

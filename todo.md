@@ -79,3 +79,15 @@
 - [x] Diagnose why service management is not working in admin dashboard
 - [x] Fix service creation/editing functionality - added Arabic/English fields
 - [x] Test service CRUD operations - all tests passing
+
+## New Issues Reported
+- [ ] Service management button not working in admin dashboard
+- [ ] Client dashboard not visible/accessible - only admin dashboard showing
+- [ ] Verify client dashboard route (/dashboard) is working
+- [ ] Ensure regular users can access their dashboard
+
+## Add Authentication Buttons
+- [x] Add Sign In button to homepage header
+- [x] Add Sign Up button to homepage header
+- [x] Add Arabic translations for Sign In/Sign Up
+- [x] Query and provide existing user credentials from database
