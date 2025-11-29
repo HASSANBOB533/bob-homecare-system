@@ -26,7 +26,9 @@ export const appRouter = router({
     create: protectedProcedure
       .input(z.object({
         name: z.string().min(1),
+        nameEn: z.string().optional(),
         description: z.string().optional(),
+        descriptionEn: z.string().optional(),
         price: z.number().optional(),
         duration: z.number().optional(),
       }))

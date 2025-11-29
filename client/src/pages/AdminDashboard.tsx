@@ -38,7 +38,9 @@ export default function AdminDashboard() {
   const [showServiceDialog, setShowServiceDialog] = useState(false);
   const [newService, setNewService] = useState({
     name: "",
+    nameEn: "",
     description: "",
+    descriptionEn: "",
     duration: "",
   });
 
@@ -50,7 +52,7 @@ export default function AdminDashboard() {
       toast.success("Service created successfully");
       utils.services.list.invalidate();
       setShowServiceDialog(false);
-      setNewService({ name: "", description: "", duration: "" });
+      setNewService({ name: "", nameEn: "", description: "", descriptionEn: "", duration: "" });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create service");
@@ -85,7 +87,9 @@ export default function AdminDashboard() {
 
     createServiceMutation.mutate({
       name: newService.name,
+      nameEn: newService.nameEn,
       description: newService.description || undefined,
+      descriptionEn: newService.descriptionEn || undefined,
       duration: newService.duration ? parseInt(newService.duration) : undefined,
     });
   };
@@ -271,22 +275,43 @@ export default function AdminDashboard() {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="serviceName">Service Name *</Label>
+              <Label htmlFor="serviceName">Service Name (Arabic) *</Label>
               <Input
                 id="serviceName"
                 value={newService.name}
                 onChange={(e) => setNewService({ ...newService, name: e.target.value })}
+                placeholder="مثال: التنظيف العميق"
+                dir="rtl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="serviceNameEn">Service Name (English) *</Label>
+              <Input
+                id="serviceNameEn"
+                value={newService.nameEn}
+                onChange={(e) => setNewService({ ...newService, nameEn: e.target.value })}
                 placeholder="e.g., Deep Cleaning"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="serviceDescription">Description</Label>
+              <Label htmlFor="serviceDescription">Description (Arabic)</Label>
               <Textarea
                 id="serviceDescription"
                 value={newService.description}
                 onChange={(e) => setNewService({ ...newService, description: e.target.value })}
+                placeholder="وصف الخدمة..."
+                rows={2}
+                dir="rtl"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="serviceDescriptionEn">Description (English)</Label>
+              <Textarea
+                id="serviceDescriptionEn"
+                value={newService.descriptionEn}
+                onChange={(e) => setNewService({ ...newService, descriptionEn: e.target.value })}
                 placeholder="Describe the service..."
-                rows={3}
+                rows={2}
               />
             </div>
             <div className="space-y-2">

@@ -74,3 +74,8 @@
 - [x] Admin dashboard should show all bookings and service management
 - [x] Client dashboard should only show customer's own bookings
 - [x] Make routes clear: /admin for admin, /dashboard for clients
+
+## Service Management Issue
+- [x] Diagnose why service management is not working in admin dashboard
+- [x] Fix service creation/editing functionality - added Arabic/English fields
+- [x] Test service CRUD operations - all tests passing
