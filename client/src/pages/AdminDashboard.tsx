@@ -29,17 +29,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, CheckCircle, Plus, Trash2, XCircle, CalendarDays, List, Edit, Save, MessageCircle } from "lucide-react";
+import { Calendar, CheckCircle, Plus, Trash2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarView } from "@/components/CalendarView";
 
 export default function AdminDashboard() {
   const utils = trpc.useUtils();
   const [showServiceDialog, setShowServiceDialog] = useState(false);
-  const [editingNotes, setEditingNotes] = useState<number | null>(null);
-  const [notesText, setNotesText] = useState("");
   const [newService, setNewService] = useState({
     name: "",
     description: "",
@@ -81,20 +77,6 @@ export default function AdminDashboard() {
     },
   });
 
-  const sendWhatsAppMutation = trpc.bookings.sendWhatsAppConfirmation.useMutation({
-    onSuccess: (data) => {
-      if (data.success && data.whatsappURL) {
-        window.open(data.whatsappURL, '_blank');
-        toast.success("WhatsApp confirmation opened");
-      } else {
-        toast.error(data.message || "Failed to generate WhatsApp confirmation");
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message || "Failed to send WhatsApp confirmation");
-    },
-  });
-
   const handleCreateService = () => {
     if (!newService.name) {
       toast.error("Service name is required");
@@ -118,24 +100,6 @@ export default function AdminDashboard() {
     updateBookingMutation.mutate({ id, status });
   };
 
-  const handleEditNotes = (booking: typeof bookings[0]) => {
-    setEditingNotes(booking.id);
-    setNotesText(booking.notes || "");
-  };
-
-  const handleSaveNotes = (id: number) => {
-    updateBookingMutation.mutate({ id, notes: notesText }, {
-      onSuccess: () => {
-        setEditingNotes(null);
-        setNotesText("");
-      }
-    });
-  };
-
-  const handleSendWhatsApp = (bookingId: number) => {
-    sendWhatsAppMutation.mutate({ bookingId });
-  };
-
   const pendingCount = bookings.filter((b) => b.status === "pending").length;
   const confirmedCount = bookings.filter((b) => b.status === "confirmed").length;
   const completedCount = bookings.filter((b) => b.status === "completed").length;
@@ -148,20 +112,6 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground mt-1">Manage bookings and services</p>
         </div>
 
-        {/* View Tabs */}
-        <Tabs defaultValue="list" className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="list">
-              <List className="mr-2 h-4 w-4" />
-              List View
-            </TabsTrigger>
-            <TabsTrigger value="calendar">
-              <CalendarDays className="mr-2 h-4 w-4" />
-              Calendar View
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="list" className="space-y-6 mt-6">
         {/* Stats Cards */}
         <div className="grid gap-4 md:grid-cols-3">
           <Card>
@@ -255,7 +205,6 @@ export default function AdminDashboard() {
                       <TableHead>Date & Time</TableHead>
                       <TableHead>Address</TableHead>
                       <TableHead>Status</TableHead>
-                      <TableHead>Notes</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -270,40 +219,14 @@ export default function AdminDashboard() {
                             )}
                           </div>
                         </TableCell>
-                            <TableCell>{booking.address}</TableCell>
+                        <TableCell>{booking.serviceName || "N/A"}</TableCell>
                         <TableCell>
-                          {editingNotes === booking.id ? (
-                            <div className="flex items-center gap-2">
-                              <Textarea
-                                value={notesText}
-                                onChange={(e) => setNotesText(e.target.value)}
-                                placeholder="Add notes..."
-                                rows={2}
-                                className="min-w-[200px]"
-                              />
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                onClick={() => handleSaveNotes(booking.id)}
-                              >
-                                <Save className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm text-muted-foreground">
-                                {booking.notes || "No notes"}
-                              </span>
-                              <Button
-                                size="icon"
-                                variant="ghost"
-                                onClick={() => handleEditNotes(booking)}
-                              >
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          )}
+                          <div className="text-sm">
+                            <div>{format(new Date(booking.dateTime), "PPP")}</div>
+                            <div className="text-muted-foreground">{format(new Date(booking.dateTime), "p")}</div>
+                          </div>
                         </TableCell>
+                        <TableCell className="max-w-xs truncate">{booking.address}</TableCell>
                         <TableCell>
                           <Select
                             value={booking.status}
@@ -323,19 +246,11 @@ export default function AdminDashboard() {
                           </Select>
                         </TableCell>
                         <TableCell>
-                          <div className="flex gap-2">
-                            {booking.status === "confirmed" && booking.phone && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleSendWhatsApp(booking.id)}
-                                title="Send WhatsApp confirmation"
-                              >
-                                <MessageCircle className="h-4 w-4 mr-1" />
-                                Send Confirmation
-                              </Button>
-                            )}
-                          </div>
+                          {booking.notes && (
+                            <Button variant="ghost" size="sm" title={booking.notes}>
+                              View Notes
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -345,15 +260,6 @@ export default function AdminDashboard() {
             )}
           </CardContent>
         </Card>
-          </TabsContent>
-
-          <TabsContent value="calendar" className="mt-6">
-            <CalendarView
-              bookings={bookings}
-              onStatusChange={handleStatusChange}
-            />
-          </TabsContent>
-        </Tabs>
       </div>
 
       {/* Add Service Dialog */}

@@ -74,9 +74,3 @@
 - [x] Admin dashboard should show all bookings and service management
 - [x] Client dashboard should only show customer's own bookings
 - [x] Make routes clear: /admin for admin, /dashboard for clients
-
-## New Features Requested
-- [x] Add calendar view to admin dashboard for visual booking management
-- [x] Implement customer notes feature (admin can add private notes to bookings)
-- [ ] Add booking history view for customers
-- [x] Integrate automated WhatsApp booking confirmations
