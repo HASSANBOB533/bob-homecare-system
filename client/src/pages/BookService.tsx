@@ -75,7 +75,7 @@ export default function BookService() {
       time: formData.time,
       customerName: formData.name,
       customerEmail: formData.email || undefined,
-      customerPhone: formData.phone,
+      phone: formData.phone,
       address: formData.address,
       notes: formData.notes || undefined,
     });

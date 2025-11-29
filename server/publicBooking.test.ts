@@ -29,7 +29,7 @@ describe("public booking procedures", () => {
       date: "2025-12-01",
       time: "10:00",
       customerName: "Test Customer",
-      customerPhone: "+201234567890",
+      phone: "+201234567890",
       customerEmail: "test@example.com",
       address: "123 Test Street, Cairo",
       notes: "Test booking",
@@ -53,7 +53,7 @@ describe("public booking procedures", () => {
         date: "2025-12-01",
         time: "10:00",
         customerName: "",
-        customerPhone: "+201234567890",
+        phone: "+201234567890",
         address: "123 Test Street",
       })
     ).rejects.toThrow();
@@ -71,19 +71,19 @@ describe("public booking procedures", () => {
       serviceId,
       date: "2025-12-01",
       time: "14:00",
-      customerName: "Status Check Test",
-      customerPhone: "+201111111111",
-      address: "456 Test Avenue",
+      customerName: "Test Customer",
+      phone: "+201234567890",
+      address: "123 Test Street",
     });
 
     // Then check its status
     const status = await caller.bookings.checkStatus({
       id: booking.id,
-      phone: "+201111111111",
+      phone: "+201234567890",
     });
 
     expect(status).toBeDefined();
-    expect(status?.customerName).toBe("Status Check Test");
+    expect(status?.customerName).toBe("Test Customer");
     expect(status?.status).toBe("pending");
   });
 
@@ -110,10 +110,10 @@ describe("public booking procedures", () => {
     const booking = await caller.bookings.createPublic({
       serviceId,
       date: "2025-12-01",
-      time: "16:00",
-      customerName: "Phone Mismatch Test",
-      customerPhone: "+201222222222",
-      address: "789 Test Road",
+      time: "15:00",
+      customerName: "Status Check Test",
+      phone: "+201111111111",
+      address: "456 Test Avenue",
     });
 
     // Try to check with wrong phone

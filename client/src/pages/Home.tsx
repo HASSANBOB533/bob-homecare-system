@@ -13,17 +13,40 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
 import { useState } from "react";
+
+// Service Rating Component
+function ServiceRating({ serviceId }: { serviceId: number }) {
+  const { t } = useTranslation();
+  const { data: rating } = trpc.reviews.getServiceRating.useQuery(
+    { serviceId },
+    { enabled: !!serviceId }
+  );
+
+  if (!rating || !rating.count || rating.count === 0) {
+    return null;
+  }
+
+  return (
+    <div className="flex items-center gap-1 mb-3">
+      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+      <span className="text-sm font-medium">{rating.average?.toFixed(1) || '0.0'}</span>
+      <span className="text-xs text-muted-foreground">({rating.count} {t('reviews')})</span>
+    </div>
+  );
+}
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+  
+
   const { data: upcomingBookings = [] } = trpc.bookings.upcomingBookings.useQuery(undefined, {
     enabled: isAuthenticated,
   });
@@ -215,6 +238,7 @@ export default function Home() {
                   )}
                 </CardHeader>
                 <div className="px-6 pb-6">
+                  <ServiceRating serviceId={service.id} />
                   {service.duration && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Clock className="h-4 w-4" />

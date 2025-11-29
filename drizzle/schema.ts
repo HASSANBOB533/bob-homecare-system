@@ -48,6 +48,17 @@ export type InsertService = typeof services.$inferInsert;
 /**
  * Bookings table for managing customer appointments
  */
+export const reviews = mysqlTable("reviews", {
+  id: int("id").autoincrement().primaryKey(),
+  bookingId: int("bookingId").notNull(),
+  userId: int("userId").notNull(),
+  serviceId: int("serviceId").notNull(),
+  rating: int("rating").notNull(), // 1-5 stars
+  reviewText: text("reviewText"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export const bookings = mysqlTable("bookings", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").references(() => users.id, { onDelete: "cascade" }), // Nullable for public bookings

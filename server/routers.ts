@@ -27,8 +27,9 @@ export const appRouter = router({
         return updateUserProfile(ctx.user.id, input);
       }),
     sendVerificationEmail: protectedProcedure
-      .mutation(async ({ ctx }) => {
+      .mutation(async ({ ctx, input }) => {
         const { generateVerificationToken, getUserById } = await import("./db");
+        const { sendVerificationEmail } = await import("./_core/email");
         const user = await getUserById(ctx.user.id);
         
         if (!user?.email) {
@@ -37,11 +38,24 @@ export const appRouter = router({
         
         const token = await generateVerificationToken(ctx.user.id);
         
-        // In a real app, send email here using a service like SendGrid, AWS SES, etc.
-        // For now, we'll just return the token (in production, this would be sent via email)
-        console.log(`[Email Verification] Token for ${user.email}: ${token}`);
+        // Get base URL from request or use default
+        const baseUrl = process.env.VITE_APP_URL || 'http://localhost:3000';
         
-        return { success: true, token }; // Remove token from response in production
+        // Send verification email
+        const emailResult = await sendVerificationEmail(user.email, token, baseUrl);
+        
+        if (!emailResult.success) {
+          // If email fails, still return success but log the error
+          console.error(`[Email] Failed to send verification email: ${emailResult.error}`);
+          // Return token in development for testing
+          return { success: true, token, emailSent: false };
+        }
+        
+        console.log(`[Email Verification] Sent verification email to ${user.email}`);
+        
+        // In development, return token for testing; in production, don't return it
+        const isDev = process.env.NODE_ENV !== 'production';
+        return { success: true, emailSent: true, ...(isDev && { token }) };
       }),
     verifyEmail: publicProcedure
       .input(z.object({ token: z.string() }))
@@ -99,30 +113,44 @@ export const appRouter = router({
       const { getUpcomingBookings } = await import("./db");
       return getUpcomingBookings(ctx.user.id, 3);
     }),
-    createPublic: publicProcedure
+       createPublic: publicProcedure
       .input(z.object({
         serviceId: z.number(),
         date: z.string(),
         time: z.string(),
         customerName: z.string().min(1),
         customerEmail: z.string().optional(),
-        customerPhone: z.string().min(1),
+        phone: z.string().min(1),
         address: z.string().min(1),
         notes: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { createPublicBooking } = await import("./db");
-        // Combine date and time into dateTime
+        const { createPublicBooking, getServiceById } = await import("./db");
+        const { sendBookingConfirmation } = await import("./_core/whatsapp");
+        
         const dateTime = new Date(`${input.date}T${input.time}`);
-        return createPublicBooking({
+        const booking = await createPublicBooking({
           serviceId: input.serviceId,
           customerName: input.customerName,
           customerEmail: input.customerEmail,
-          customerPhone: input.customerPhone,
+          customerPhone: input.phone,
           address: input.address,
           dateTime,
           notes: input.notes,
         });
+        
+        // Send WhatsApp confirmation if phone is provided
+        if (input.phone) {
+          const service = await getServiceById(input.serviceId);
+          await sendBookingConfirmation(input.phone, {
+            customerName: input.customerName,
+            serviceName: service?.nameEn || service?.name || 'Cleaning Service',
+            dateTime,
+            address: input.address,
+          });
+        }
+        
+        return booking;
       }),
     checkStatus: publicProcedure
       .input(z.object({
@@ -192,6 +220,42 @@ export const appRouter = router({
         
         await deleteBooking(input.id);
         return { success: true };
+      }),
+  }),
+
+  reviews: router({
+    create: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        serviceId: z.number(),
+        rating: z.number().min(1).max(5),
+        reviewText: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { createReview, getUserReviewForBooking } = await import("./db");
+        
+        // Check if user already reviewed this booking
+        const existingReview = await getUserReviewForBooking(ctx.user.id, input.bookingId);
+        if (existingReview) {
+          throw new Error("You have already reviewed this booking");
+        }
+        
+        return createReview({
+          ...input,
+          userId: ctx.user.id,
+        });
+      }),
+    getServiceReviews: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getServiceReviews } = await import("./db");
+        return getServiceReviews(input.serviceId);
+      }),
+    getServiceRating: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getServiceAverageRating } = await import("./db");
+        return getServiceAverageRating(input.serviceId);
       }),
   }),
 });

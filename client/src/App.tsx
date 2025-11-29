@@ -10,6 +10,7 @@ import BookingForm from "./pages/BookingForm";
 import AdminDashboard from "./pages/AdminDashboard";
 import BookService from "./pages/BookService";
 import CheckBooking from "./pages/CheckBooking";
+import VerifyEmail from "./pages/VerifyEmail";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -34,9 +35,8 @@ function ProtectedRoute({ component: Component, requireAdmin = false }: { compon
 
 function Router() {
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/book"} component={BookService} />
+    <Switch>          <Route path="/" component={Home} />
+          <Route path="/verify-email" component={VerifyEmail} />      <Route path={"/book"} component={BookService} />
       <Route path={"/check-booking"} component={CheckBooking} />
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}

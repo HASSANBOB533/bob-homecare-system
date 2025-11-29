@@ -361,3 +361,67 @@ export async function getUserById(userId: number) {
   const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
   return result[0];
 }
+
+// Review functions
+export async function createReview(data: {
+  bookingId: number;
+  userId: number;
+  serviceId: number;
+  rating: number;
+  reviewText?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { reviews } = await import("../drizzle/schema");
+  
+  const result = await db.insert(reviews).values(data);
+  return result;
+}
+
+export async function getServiceReviews(serviceId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { reviews } = await import("../drizzle/schema");
+  const { desc } = await import("drizzle-orm");
+  
+  return db.select({
+    id: reviews.id,
+    rating: reviews.rating,
+    reviewText: reviews.reviewText,
+    createdAt: reviews.createdAt,
+    userId: reviews.userId,
+  }).from(reviews).where(eq(reviews.serviceId, serviceId)).orderBy(desc(reviews.createdAt));
+}
+
+export async function getServiceAverageRating(serviceId: number): Promise<{ average: number; count: number }> {
+  const db = await getDb();
+  if (!db) return { average: 0, count: 0 };
+  const { reviews } = await import("../drizzle/schema");
+  const { avg, count } = await import("drizzle-orm");
+  
+  const result = await db.select({
+    average: avg(reviews.rating),
+    count: count(reviews.id),
+  }).from(reviews).where(eq(reviews.serviceId, serviceId));
+  
+  return {
+    average: Number(result[0]?.average || 0),
+    count: Number(result[0]?.count || 0),
+  };
+}
+
+export async function getUserReviewForBooking(userId: number, bookingId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const { reviews } = await import("../drizzle/schema");
+  const { and } = await import("drizzle-orm");
+  
+  const result = await db.select().from(reviews).where(
+    and(
+      eq(reviews.userId, userId),
+      eq(reviews.bookingId, bookingId)
+    )
+  ).limit(1);
+  
+  return result[0] || null;
+}

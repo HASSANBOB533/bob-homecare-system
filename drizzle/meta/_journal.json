@@ -43,6 +43,13 @@
       "when": 1764432544499,
       "tag": "0005_special_eternals",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1764433053379,
+      "tag": "0006_soft_groot",
+      "breakpoints": true
     }
   ]
 }

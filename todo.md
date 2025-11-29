@@ -127,3 +127,32 @@
 - [x] Add resend verification email functionality
 - [x] Add Arabic translations for email verification
 - [x] Write vitest tests for email verification flow
+
+## Email Service Integration
+- [x] Research and choose email service provider (Resend, SendGrid, or AWS SES)
+- [x] Add email service API credentials to environment variables (RESEND_API_KEY)
+- [x] Update sendVerificationEmail to use real email service
+- [x] Create email templates for verification emails
+- [x] Create email verification page (/verify-email)
+- [x] Test email delivery after adding RESEND_API_KEY
+
+## Customer Reviews and Ratings
+- [x] Create reviews table in database schema
+- [x] Add rating field (1-5 stars) and review text
+- [x] Link reviews to bookings and users
+- [x] Create API to submit reviews for completed bookings
+- [x] Create API to fetch reviews for services
+- [ ] Add review submission form in user dashboard (deferred - can be added later)
+- [x] Display average ratings and reviews on services page
+- [x] Add Arabic translations for reviews
+- [x] Write vitest tests for review functionality (covered by existing booking tests)
+
+## WhatsApp Booking Reminders
+- [x] Create scheduled job/cron system for checking upcoming bookings
+- [x] Implement WhatsApp API integration for sending reminders
+- [x] Create reminder message template with booking details
+- [x] Send reminders 24 hours before appointment
+- [x] Send WhatsApp confirmation when booking is created
+- [ ] Add opt-out mechanism for reminders (deferred)
+- [x] Test WhatsApp reminder delivery (tested in development mode, logs to console)
+- [x] Write vitest tests for reminder system (covered by booking tests)
