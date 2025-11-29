@@ -280,7 +280,9 @@ export const appRouter = router({
       .input(z.object({ serviceId: z.number() }))
       .query(async ({ input }) => {
         const { getServiceReviews } = await import("./db");
-        return getServiceReviews(input.serviceId);
+        const allReviews = await getServiceReviews(input.serviceId);
+        // Only return approved reviews to public
+        return allReviews.filter((review: any) => review.status === "approved");
       }),
     getServiceRating: publicProcedure
       .input(z.object({ serviceId: z.number() }))
@@ -297,6 +299,50 @@ export const appRouter = router({
       .query(async ({ ctx }) => {
         const { getUserReviewStats } = await import("./db");
         return getUserReviewStats(ctx.user.id);
+      }),
+    // Admin endpoints
+    allReviews: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view all reviews");
+        }
+        const { getAllReviews } = await import("./db");
+        return getAllReviews();
+      }),
+    updateStatus: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["pending", "approved", "rejected"]),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update review status");
+        }
+        const { updateReviewStatus } = await import("./db");
+        return updateReviewStatus(input.id, input.status);
+      }),
+    updateContent: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        rating: z.number().min(1).max(5).optional(),
+        reviewText: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can edit reviews");
+        }
+        const { updateReviewContent } = await import("./db");
+        const { id, ...data } = input;
+        return updateReviewContent(id, data);
+      }),
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete reviews");
+        }
+        const { deleteReview } = await import("./db");
+        return deleteReview(input.id);
       }),
   }),
 });

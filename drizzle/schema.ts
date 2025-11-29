@@ -57,6 +57,7 @@ export const reviews = mysqlTable("reviews", {
   serviceId: int("serviceId").notNull(),
   rating: int("rating").notNull(), // 1-5 stars
   reviewText: text("reviewText"),
+  status: varchar("status", { length: 20 }).notNull().default("approved"), // pending, approved, rejected
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

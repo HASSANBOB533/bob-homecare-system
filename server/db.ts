@@ -505,3 +505,77 @@ export async function getUserByEmail(email: string) {
   
   return result[0] || null;
 }
+
+
+/**
+ * Get all reviews for admin (with user and service details)
+ */
+export async function getAllReviews() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  const allReviews = await db
+    .select({
+      id: reviews.id,
+      rating: reviews.rating,
+      reviewText: reviews.reviewText,
+      status: reviews.status,
+      createdAt: reviews.createdAt,
+      updatedAt: reviews.updatedAt,
+      userName: users.name,
+      userEmail: users.email,
+      serviceName: services.name,
+      serviceNameEn: services.nameEn,
+      bookingId: reviews.bookingId,
+    })
+    .from(reviews)
+    .leftJoin(users, eq(reviews.userId, users.id))
+    .leftJoin(services, eq(reviews.serviceId, services.id))
+    .orderBy(desc(reviews.createdAt));
+
+  return allReviews;
+}
+
+/**
+ * Update review status (approve/reject)
+ */
+export async function updateReviewStatus(reviewId: number, status: "pending" | "approved" | "rejected") {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  await db
+    .update(reviews)
+    .set({ status, updatedAt: new Date() })
+    .where(eq(reviews.id, reviewId));
+
+  return { success: true };
+}
+
+/**
+ * Update review content
+ */
+export async function updateReviewContent(reviewId: number, data: { rating?: number; reviewText?: string }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  await db
+    .update(reviews)
+    .set({ ...data, updatedAt: new Date() })
+    .where(eq(reviews.id, reviewId));
+
+  return { success: true };
+}
+
+/**
+ * Delete review
+ */
+export async function deleteReview(reviewId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  await db
+    .delete(reviews)
+    .where(eq(reviews.id, reviewId));
+
+  return { success: true };
+}

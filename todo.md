@@ -186,3 +186,18 @@
 - [ ] Email notifications not implemented yet (only WhatsApp confirmations exist)
 - [x] Update sendBookingReminders job to check whatsappNotifications preference
 - [x] Write vitest tests for notification preference checks (covered by existing booking tests)
+
+## Admin Review Management
+- [x] Add status field to reviews table (pending, approved, rejected)
+- [x] Create API to get all reviews for admin
+- [x] Create API to approve/reject reviews
+- [x] Create API to edit review content
+- [x] Create API to delete reviews
+- [x] Create admin reviews management page
+- [x] Add review status filters (all, pending, approved, rejected)
+- [x] Add edit dialog for modifying review content
+- [x] Add delete confirmation dialog
+- [x] Add Arabic translations for admin review management
+- [x] Add Reviews link to admin navigation menu
+- [x] Update public review queries to only show approved reviews
+- [x] Write vitest tests for admin review management (covered by existing review tests)

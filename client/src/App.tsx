@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import UserDashboard from "./pages/UserDashboard";
 import BookingForm from "./pages/BookingForm";
 import AdminDashboard from "./pages/AdminDashboard";
+import { AdminReviews } from "./pages/AdminReviews";
 import BookService from "./pages/BookService";
 import CheckBooking from "./pages/CheckBooking";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -43,6 +44,9 @@ function Router() {
       </Route>
       <Route path={"/admin"}>
         {() => <ProtectedRoute component={AdminDashboard} requireAdmin />}
+      </Route>
+      <Route path={"/admin/reviews"}>
+        {() => <ProtectedRoute component={AdminReviews} requireAdmin />}
       </Route>
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />

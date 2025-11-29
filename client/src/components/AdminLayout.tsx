@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Calendar, Home, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { Calendar, Home, LayoutDashboard, LogOut, Settings, Star } from "lucide-react";
 import { CSSProperties, useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -30,6 +30,7 @@ import { trpc } from "@/lib/trpc";
 const adminMenuItems = [
   { icon: Calendar, label: "All Bookings", path: "/admin" },
   { icon: Settings, label: "Services Management", path: "/admin#services" },
+  { icon: Star, label: "Review Management", path: "/admin/reviews" },
   { icon: Home, label: "Back to Home", path: "/" },
 ];
 
