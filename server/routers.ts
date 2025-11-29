@@ -111,7 +111,60 @@ export const appRouter = router({
         }
         
         await updateBooking(input.id, { status: "cancelled" });
+        
+        // Send admin notification
+        const { notifyOwner } = await import("./_core/notification");
+        await notifyOwner({
+          title: "Booking Cancelled",
+          content: `Customer ${booking.customerName} (${booking.phone}) has cancelled booking #${booking.id} for ${booking.serviceName || 'service'}.`,
+        });
+        
         return { success: true, message: "Booking cancelled successfully" };
+      }),
+    reschedulePublic: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        phone: z.string(),
+        newDate: z.string(),
+        newTime: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getBookingByIdAndPhone, updateBooking } = await import("./db");
+        const booking = await getBookingByIdAndPhone(input.id, input.phone);
+        
+        if (!booking) {
+          throw new Error("Booking not found or phone number doesn't match");
+        }
+        
+        if (booking.status === "cancelled" || booking.status === "completed") {
+          throw new Error("Cannot reschedule cancelled or completed booking");
+        }
+        
+        // Check 24-hour policy
+        const bookingDateTime = new Date(booking.dateTime);
+        const now = new Date();
+        const hoursDiff = (bookingDateTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+        
+        if (hoursDiff < 24) {
+          throw new Error("Cannot reschedule: Booking must be at least 24 hours away");
+        }
+        
+        // Combine new date and time into dateTime
+        const newDateTime = new Date(`${input.newDate}T${input.newTime}`);
+        await updateBooking(input.id, { 
+          dateTime: newDateTime
+        });
+        
+        // Send admin notification
+        const { notifyOwner } = await import("./_core/notification");
+        const oldDateTime = new Date(booking.dateTime).toLocaleString();
+        const newDateTimeStr = newDateTime.toLocaleString();
+        await notifyOwner({
+          title: "Booking Rescheduled",
+          content: `Customer ${booking.customerName} (${booking.phone}) has rescheduled booking #${booking.id} for ${booking.serviceName || 'service'}. Old time: ${oldDateTime}. New time: ${newDateTimeStr}.`,
+        });
+        
+        return { success: true, message: "Booking rescheduled successfully" };
       }),
     allBookings: protectedProcedure.query(async ({ ctx }) => {
       if (ctx.user.role !== "admin") {

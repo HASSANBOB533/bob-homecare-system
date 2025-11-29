@@ -237,6 +237,16 @@ export default function BookService() {
                   </div>
                 </div>
 
+                {/* Cancellation Policy */}
+                <div className="rounded-lg border border-yellow-200 bg-yellow-50 dark:bg-yellow-950 p-4">
+                  <h3 className="font-semibold text-sm mb-2 text-yellow-900 dark:text-yellow-100">
+                    {t('Cancellation Policy')}
+                  </h3>
+                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    {t('Cancellations are non-refundable. Bookings can be rescheduled if requested at least 24 hours before the scheduled service time.')}
+                  </p>
+                </div>
+
                 {/* Submit Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Button type="submit" size="lg" className="flex-1">
