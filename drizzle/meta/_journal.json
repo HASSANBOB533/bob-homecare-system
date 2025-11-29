@@ -64,6 +64,13 @@
       "when": 1764438799062,
       "tag": "0008_awesome_paibok",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1764439252607,
+      "tag": "0009_far_lady_mastermind",
+      "breakpoints": true
     }
   ]
 }

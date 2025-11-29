@@ -1,0 +1,1 @@
+ALTER TABLE `reviews` MODIFY COLUMN `status` varchar(20) NOT NULL DEFAULT 'pending';

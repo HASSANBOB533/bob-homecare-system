@@ -201,3 +201,8 @@
 - [x] Add Reviews link to admin navigation menu
 - [x] Update public review queries to only show approved reviews
 - [x] Write vitest tests for admin review management (covered by existing review tests)
+
+## Change Default Review Status to Pending
+- [x] Update reviews table schema to change default status from "approved" to "pending"
+- [x] Push database migration
+- [x] Test that new reviews default to pending status
