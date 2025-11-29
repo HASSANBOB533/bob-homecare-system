@@ -1,15 +1,27 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Check, Clock, MapPin, Shield, Sparkles, Star } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 
 export default function Home() {
+  const { t, i18n } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+
+  // Get service name and description based on current language
+  const getServiceText = (service: any, field: 'name' | 'description') => {
+    if (i18n.language === 'ar') {
+      return service[field] || service[`${field}En`] || '';
+    }
+    return service[`${field}En`] || service[field] || '';
+  };
 
   const handleGetStarted = () => {
     if (isAuthenticated) {
@@ -30,21 +42,20 @@ export default function Home() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold">CleanPro Services</span>
+            <span className="text-xl font-bold">BOB Home Care</span>
           </div>
-          <nav className="flex items-center gap-6">
+          <nav className="flex items-center gap-4">
             <a href="#services" className="text-sm font-medium hover:text-primary transition-colors">
-              Services
+              {t('services')}
             </a>
             <a href="#why-us" className="text-sm font-medium hover:text-primary transition-colors">
-              Why Us
+              {t('whyUs')}
             </a>
-            {isAuthenticated ? (
-              <Button onClick={handleGetStarted}>
-                {user?.role === "admin" ? "Admin Dashboard" : "My Bookings"}
+            <LanguageSwitcher />
+            {isAuthenticated && (
+              <Button variant="default" size="sm" onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
+                {user?.role === "admin" ? t('adminDashboard') : t('userDashboard')}
               </Button>
-            ) : (
-              <Button onClick={handleGetStarted}>Sign In</Button>
             )}
           </nav>
         </div>
@@ -55,31 +66,32 @@ export default function Home() {
         <div className="container">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Professional Housekeeping Services
+              {t('heroTitle')}
             </h1>
             <p className="text-xl text-muted-foreground">
-              Experience spotless cleanliness with our expert team. Book your service in minutes and enjoy a pristine home.
+              {t('heroSubtitle')}
             </p>
             <div className="flex flex-wrap gap-4 justify-center pt-4">
               <Button size="lg" onClick={handleGetStarted} className="text-lg px-8">
-                Book Now
+                {t('bookNow')}
               </Button>
+              <WhatsAppButton size="lg" variant="secondary" className="text-lg px-8" />
               <Button size="lg" variant="outline" onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })} className="text-lg px-8">
-                View Services
+                {t('viewServices')}
               </Button>
             </div>
-            <div className="flex flex-wrap gap-6 justify-center pt-8 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary" />
-                <span>Licensed & Insured</span>
+            <div className="flex flex-wrap gap-6 justify-center pt-8">
+              <div className="flex items-center gap-2 text-sm">
+                <CheckCircle className="h-5 w-5 text-primary" />
+                <span>{t('licensedInsured')}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary" />
-                <span>Eco-Friendly Products</span>
+              <div className="flex items-center gap-2 text-sm">
+                <CheckCircle className="h-5 w-5 text-primary" />
+                <span>{t('ecoFriendly')}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-primary" />
-                <span>Satisfaction Guaranteed</span>
+              <div className="flex items-center gap-2 text-sm">
+                <CheckCircle className="h-5 w-5 text-primary" />
+                <span>{t('satisfaction')}</span>
               </div>
             </div>
           </div>
@@ -90,54 +102,32 @@ export default function Home() {
       <section id="services" className="py-20 bg-background">
         <div className="container">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">Our Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{t('ourServices')}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose from our range of professional cleaning services tailored to your needs
+              {t('servicesDescription')}
             </p>
           </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
             {services.map((service) => (
               <Card key={service.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="flex items-start justify-between">
-                    <span>{service.name}</span>
-                    {service.price && (
-                      <span className="text-primary font-bold">
-                        ${(service.price / 100).toFixed(0)}
-                      </span>
-                    )}
+                  <CardTitle>
+                    {getServiceText(service, 'name')}
                   </CardTitle>
-                  {service.description && (
-                    <CardDescription>{service.description}</CardDescription>
+                  {getServiceText(service, 'description') && (
+                    <CardDescription>{getServiceText(service, 'description')}</CardDescription>
                   )}
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    {service.duration && (
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{service.duration} minutes</span>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-primary" />
-                      <span>Professional team</span>
+                <div className="px-6 pb-6">
+                  {service.duration && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>{service.duration} min</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-primary" />
-                      <span>All supplies included</span>
-                    </div>
-                  </div>
-                </CardContent>
+                  )}
+                </div>
               </Card>
             ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Button size="lg" onClick={handleGetStarted}>
-              Book a Service
-            </Button>
           </div>
         </div>
       </section>
@@ -146,41 +136,44 @@ export default function Home() {
       <section id="why-us" className="py-20 bg-muted/50">
         <div className="container">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">Why Choose CleanPro?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{t('whyChooseUs')}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              We're committed to providing exceptional service and peace of mind
+              {t('whyDescription')}
             </p>
           </div>
-
           <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
-            <div className="text-center space-y-3">
+            <div className="text-center space-y-4">
+              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Sparkles className="h-6 w-6 text-primary" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold">{t('experiencedTeam')}</h3>
+                <p className="text-muted-foreground">
+                  {t('experiencedDesc')}
+                </p>
+              </div>
+            </div>
+            <div className="text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Trusted & Reliable</h3>
-              <p className="text-muted-foreground">
-                All our staff are background-checked, trained, and insured for your peace of mind
-              </p>
-            </div>
-
-            <div className="text-center space-y-3">
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Star className="h-6 w-6 text-primary" />
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold">{t('qualityGuarantee')}</h3>
+                <p className="text-muted-foreground">
+                  {t('qualityDesc')}
+                </p>
               </div>
-              <h3 className="text-xl font-semibold">Quality Guaranteed</h3>
-              <p className="text-muted-foreground">
-                We stand behind our work with a 100% satisfaction guarantee on all services
-              </p>
             </div>
-
-            <div className="text-center space-y-3">
+            <div className="text-center space-y-4">
               <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <MapPin className="h-6 w-6 text-primary" />
+                <Clock className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Flexible Scheduling</h3>
-              <p className="text-muted-foreground">
-                Book online 24/7 and choose a time that works best for your schedule
-              </p>
+              <div className="space-y-2">
+                <h3 className="text-xl font-semibold">{t('flexibleScheduling')}</h3>
+                <p className="text-muted-foreground">
+                  {t('flexibleDesc')}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -189,20 +182,23 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 bg-primary text-primary-foreground">
         <div className="container text-center space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">Ready for a Spotless Home?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold">{t('readyForClean')}</h2>
           <p className="text-lg max-w-2xl mx-auto opacity-90">
-            Join thousands of satisfied customers who trust CleanPro for their housekeeping needs
+            {t('joinCustomers')}
           </p>
-          <Button size="lg" variant="secondary" onClick={handleGetStarted} className="text-lg px-8">
-            Get Started Today
-          </Button>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Button size="lg" variant="secondary" onClick={handleGetStarted} className="text-lg px-8">
+              {t('getStarted')}
+            </Button>
+            <WhatsAppButton size="lg" variant="outline" className="text-lg px-8 bg-white hover:bg-white/90 text-primary border-white" />
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t py-8 bg-background">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>© 2024 CleanPro Services. All rights reserved.</p>
+          <p>{t('copyright')}</p>
         </div>
       </footer>
     </div>

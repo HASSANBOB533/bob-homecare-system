@@ -15,6 +15,13 @@
       "when": 1764419345930,
       "tag": "0001_broken_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764420396690,
+      "tag": "0002_mean_gorilla_man",
+      "breakpoints": true
     }
   ]
 }

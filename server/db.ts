@@ -105,11 +105,17 @@ export async function getServiceById(id: number) {
   return result[0];
 }
 
-export async function createService(data: { name: string; description?: string; price?: number; duration?: number }) {
+export async function createService(service: {
+  name: string;
+  nameEn?: string;
+  description?: string;
+  descriptionEn?: string;
+  duration?: number;
+}) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   const { services } = await import("../drizzle/schema");
-  const result = await db.insert(services).values(data);
+  const result = await db.insert(services).values(service);
   return result;
 }
 

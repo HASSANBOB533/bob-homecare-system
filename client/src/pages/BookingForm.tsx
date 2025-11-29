@@ -87,7 +87,6 @@ export default function BookingForm() {
                     {services.map((service) => (
                       <SelectItem key={service.id} value={service.id.toString()}>
                         {service.name}
-                        {service.price && ` - $${(service.price / 100).toFixed(2)}`}
                       </SelectItem>
                     ))}
                   </SelectContent>

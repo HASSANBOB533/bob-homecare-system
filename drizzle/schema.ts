@@ -30,9 +30,10 @@ export type InsertUser = typeof users.$inferInsert;
  */
 export const services = mysqlTable("services", {
   id: int("id").autoincrement().primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  description: text("description"),
-  price: int("price"), // Price in cents
+  name: varchar("name", { length: 255 }).notNull(), // Arabic name
+  nameEn: varchar("nameEn", { length: 255 }), // English name
+  description: text("description"), // Arabic description
+  descriptionEn: text("descriptionEn"), // English description
   duration: int("duration"), // Duration in minutes
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

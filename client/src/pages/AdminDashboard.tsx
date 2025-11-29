@@ -39,7 +39,6 @@ export default function AdminDashboard() {
   const [newService, setNewService] = useState({
     name: "",
     description: "",
-    price: "",
     duration: "",
   });
 
@@ -51,7 +50,7 @@ export default function AdminDashboard() {
       toast.success("Service created successfully");
       utils.services.list.invalidate();
       setShowServiceDialog(false);
-      setNewService({ name: "", description: "", price: "", duration: "" });
+      setNewService({ name: "", description: "", duration: "" });
     },
     onError: (error) => {
       toast.error(error.message || "Failed to create service");
@@ -87,7 +86,6 @@ export default function AdminDashboard() {
     createServiceMutation.mutate({
       name: newService.name,
       description: newService.description || undefined,
-      price: newService.price ? parseInt(newService.price) * 100 : undefined,
       duration: newService.duration ? parseInt(newService.duration) : undefined,
     });
   };
@@ -168,9 +166,8 @@ export default function AdminDashboard() {
                     {service.description && (
                       <p className="text-sm text-muted-foreground">{service.description}</p>
                     )}
-                    <div className="text-sm mt-1">
-                      {service.price && <span className="font-medium">${(service.price / 100).toFixed(2)}</span>}
-                      {service.duration && <span className="text-muted-foreground"> • {service.duration} min</span>}
+                    <div className="text-sm mt-1 text-muted-foreground">
+                      {service.duration && <span>{service.duration} min</span>}
                     </div>
                   </div>
                   <Button
@@ -292,27 +289,15 @@ export default function AdminDashboard() {
                 rows={3}
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="servicePrice">Price ($)</Label>
-                <Input
-                  id="servicePrice"
-                  type="number"
-                  value={newService.price}
-                  onChange={(e) => setNewService({ ...newService, price: e.target.value })}
-                  placeholder="80.00"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="serviceDuration">Duration (min)</Label>
-                <Input
-                  id="serviceDuration"
-                  type="number"
-                  value={newService.duration}
-                  onChange={(e) => setNewService({ ...newService, duration: e.target.value })}
-                  placeholder="120"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="serviceDuration">Duration (min)</Label>
+              <Input
+                id="serviceDuration"
+                type="number"
+                value={newService.duration}
+                onChange={(e) => setNewService({ ...newService, duration: e.target.value })}
+                placeholder="120"
+              />
             </div>
           </div>
           <DialogFooter>
