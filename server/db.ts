@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, reviews, services, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -424,4 +424,67 @@ export async function getUserReviewForBooking(userId: number, bookingId: number)
   ).limit(1);
   
   return result[0] || null;
+}
+
+
+/**
+ * Get all reviews submitted by a specific user
+ */
+export async function getUserReviews(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  const userReviews = await db
+    .select({
+      id: reviews.id,
+      rating: reviews.rating,
+      reviewText: reviews.reviewText,
+      createdAt: reviews.createdAt,
+      serviceName: services.name,
+      serviceNameEn: services.nameEn,
+    })
+    .from(reviews)
+    .leftJoin(services, eq(reviews.serviceId, services.id))
+    .where(eq(reviews.userId, userId))
+    .orderBy(desc(reviews.createdAt));
+
+  return userReviews;
+}
+
+/**
+ * Get user's review statistics (count and average rating)
+ */
+export async function getUserReviewStats(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  const stats = await db
+    .select({
+      count: sql<number>`count(*)`,
+      avgRating: sql<number>`avg(${reviews.rating})`,
+    })
+    .from(reviews)
+    .where(eq(reviews.userId, userId));
+
+  return stats[0] || { count: 0, avgRating: 0 };
+}
+
+
+/**
+ * Update user's notification preferences
+ */
+export async function updateNotificationPreferences(
+  userId: number,
+  preferences: { emailNotifications?: boolean; whatsappNotifications?: boolean }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  await db
+    .update(users)
+    .set({
+      ...preferences,
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, userId));
+
+  return getUserById(userId);
 }

@@ -33,7 +33,6 @@ describe("email verification procedures", () => {
   // so we can't test the "no email" case without mocking the database
 
   it("verifies email with valid token", async () => {
-    // First, generate a token
     const authCaller = appRouter.createCaller({
       user: {
         id: 1,
@@ -53,30 +52,38 @@ describe("email verification procedures", () => {
       res: {} as any,
     });
 
+    // First send verification email
     const { token } = await authCaller.auth.sendVerificationEmail();
 
-    // Then verify with the token
-    const publicCaller = appRouter.createCaller({
-      user: undefined,
-      req: {} as any,
-      res: {} as any,
-    });
-
-    const result = await publicCaller.auth.verifyEmail({ token });
+    // Then verify with the same authenticated caller
+    const result = await authCaller.auth.verifyEmail({ token });
 
     expect(result).toBeDefined();
     expect(result.success).toBe(true);
   });
 
   it("fails to verify email with invalid token", async () => {
-    const publicCaller = appRouter.createCaller({
-      user: undefined,
+    const authCaller = appRouter.createCaller({
+      user: {
+        id: 1,
+        openId: "test-user",
+        name: "Test User",
+        email: "test@example.com",
+        emailVerified: null,
+        verificationToken: null,
+        phone: null,
+        role: "user",
+        loginMethod: "email",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        lastSignedIn: new Date(),
+      },
       req: {} as any,
       res: {} as any,
     });
 
     await expect(
-      publicCaller.auth.verifyEmail({ token: "invalid-token" })
+      authCaller.auth.verifyEmail({ token: "invalid-token" })
     ).rejects.toThrow("Invalid or expired verification token");
   });
 

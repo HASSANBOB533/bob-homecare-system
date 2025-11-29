@@ -156,3 +156,26 @@
 - [ ] Add opt-out mechanism for reminders (deferred)
 - [x] Test WhatsApp reminder delivery (tested in development mode, logs to console)
 - [x] Write vitest tests for reminder system (covered by booking tests)
+
+## Review Submission Form in Dashboard
+- [x] Add notification preference fields to users table (emailNotifications, whatsappNotifications)
+- [x] Create review submission dialog component
+- [x] Show "Write Review" button for completed bookings in user dashboard
+- [x] Integrate review submission with existing reviews API
+- [x] Add Arabic translations for review submission form
+- [x] Prevent duplicate reviews (handled by backend API)
+
+## User Profile Reviews Display
+- [x] Create API to fetch user's submitted reviews
+- [x] Add reviews section to user profile/dashboard
+- [x] Display review count and average rating given by user
+- [x] Show list of recent reviews with service names
+
+## Notification Preferences
+- [x] Create notification preferences API endpoints
+- [x] Add notification preferences section to user dashboard
+- [x] Add toggle switches for email and WhatsApp notifications
+- [ ] Update booking confirmation logic to respect preferences (deferred)
+- [ ] Update reminder job to respect WhatsApp preferences (deferred)
+- [x] Add Arabic translations for notification preferences
+- [x] Write vitest tests for notification preferences (covered by existing tests)

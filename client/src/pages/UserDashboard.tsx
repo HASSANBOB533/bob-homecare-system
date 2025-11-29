@@ -3,18 +3,42 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/lib/trpc";
-import { Calendar, Clock, MapPin, Plus, Trash2 } from "lucide-react";
+import { Bell, Calendar, Clock, MapPin, Plus, Star, Trash2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { useTranslation } from "react-i18next";
+import { ReviewDialog } from "@/components/ReviewDialog";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
 export default function UserDashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const utils = trpc.useUtils();
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState<{
+    id: number;
+    serviceId: number;
+    serviceName: string;
+  } | null>(null);
 
   const { data: bookings = [], isLoading } = trpc.bookings.myBookings.useQuery();
+  const { data: myReviews = [] } = trpc.reviews.myReviews.useQuery();
+  const { data: reviewStats } = trpc.reviews.myStats.useQuery();
   
+  const updatePreferencesMutation = trpc.auth.updateNotificationPreferences.useMutation({
+    onSuccess: () => {
+      toast.success(t("preferencesUpdated"));
+      utils.auth.me.invalidate();
+    },
+    onError: (error) => {
+      toast.error(error.message || "Failed to update preferences");
+    },
+  });
+
   const deleteMutation = trpc.bookings.delete.useMutation({
     onSuccess: () => {
       toast.success("Booking cancelled successfully");
@@ -38,12 +62,62 @@ export default function UserDashboard() {
           <div>
             <h1 className="text-3xl font-bold">Welcome, {user?.name || "User"}!</h1>
             <p className="text-muted-foreground mt-1">Manage your cleaning service bookings</p>
+            {reviewStats && reviewStats.count > 0 && (
+              <p className="text-sm text-muted-foreground mt-1">
+                {reviewStats.count} reviews • {reviewStats.avgRating.toFixed(1)} ⭐ average rating
+              </p>
+            )}
           </div>
           <Button onClick={() => setLocation("/book")} size="lg">
             <Plus className="mr-2 h-4 w-4" />
             New Booking
           </Button>
         </div>
+
+        {/* Notification Preferences Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="h-5 w-5" />
+              {t("notificationPreferences")}
+            </CardTitle>
+            <CardDescription>
+              Choose how you want to receive booking updates
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="email-notifications">{t("emailNotifications")}</Label>
+                <p className="text-sm text-muted-foreground">
+                  {t("receiveEmailNotifications")}
+                </p>
+              </div>
+              <Switch
+                id="email-notifications"
+                checked={user?.emailNotifications ?? true}
+                onCheckedChange={(checked) => {
+                  updatePreferencesMutation.mutate({ emailNotifications: checked });
+                }}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="whatsapp-notifications">{t("whatsappNotifications")}</Label>
+                <p className="text-sm text-muted-foreground">
+                  {t("receiveWhatsappNotifications")}
+                </p>
+              </div>
+              <Switch
+                id="whatsapp-notifications"
+                checked={user?.whatsappNotifications ?? true}
+                onCheckedChange={(checked) => {
+                  updatePreferencesMutation.mutate({ whatsappNotifications: checked });
+                }}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {isLoading ? (
           <div className="text-center py-12">
@@ -117,12 +191,47 @@ export default function UserDashboard() {
                       {booking.notes}
                     </div>
                   )}
+                  {booking.status === "completed" && (
+                    <div className="pt-2 border-t">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                        onClick={() => {
+                          if (booking.serviceId) {
+                            setSelectedBooking({
+                              id: booking.id,
+                              serviceId: booking.serviceId,
+                              serviceName: booking.serviceName || "Service",
+                            });
+                            setReviewDialogOpen(true);
+                          }
+                        }}
+                      >
+                        <Star className="mr-2 h-4 w-4" />
+                        Leave Review
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
           </div>
         )}
       </div>
+
+      {selectedBooking && (
+        <ReviewDialog
+          open={reviewDialogOpen}
+          onOpenChange={setReviewDialogOpen}
+          bookingId={selectedBooking.id}
+          serviceId={selectedBooking.serviceId}
+          serviceName={selectedBooking.serviceName}
+          onSuccess={() => {
+            utils.bookings.myBookings.invalidate();
+          }}
+        />
+      )}
     </DashboardLayout>
   );
 }

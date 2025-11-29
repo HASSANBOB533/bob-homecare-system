@@ -50,6 +50,13 @@
       "when": 1764433053379,
       "tag": "0006_soft_groot",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1764435985147,
+      "tag": "0007_windy_warpath",
+      "breakpoints": true
     }
   ]
 }

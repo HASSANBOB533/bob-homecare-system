@@ -57,17 +57,24 @@ export const appRouter = router({
         const isDev = process.env.NODE_ENV !== 'production';
         return { success: true, emailSent: true, ...(isDev && { token }) };
       }),
-    verifyEmail: publicProcedure
+    verifyEmail: protectedProcedure
       .input(z.object({ token: z.string() }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
         const { verifyEmailToken } = await import("./db");
         const success = await verifyEmailToken(input.token);
-        
         if (!success) {
           throw new Error("Invalid or expired verification token");
         }
-        
         return { success: true };
+      }),
+    updateNotificationPreferences: protectedProcedure
+      .input(z.object({
+        emailNotifications: z.boolean().optional(),
+        whatsappNotifications: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { updateNotificationPreferences } = await import("./db");
+        return updateNotificationPreferences(ctx.user.id, input);
       }),
   }),
 
@@ -256,6 +263,16 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const { getServiceAverageRating } = await import("./db");
         return getServiceAverageRating(input.serviceId);
+      }),
+    myReviews: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getUserReviews } = await import("./db");
+        return getUserReviews(ctx.user.id);
+      }),
+    myStats: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getUserReviewStats } = await import("./db");
+        return getUserReviewStats(ctx.user.id);
       }),
   }),
 });
