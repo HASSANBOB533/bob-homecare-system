@@ -170,8 +170,25 @@ export async function getAllBookings() {
 export async function getBookingById(id: number) {
   const db = await getDb();
   if (!db) return undefined;
-  const { bookings } = await import("../drizzle/schema");
-  const result = await db.select().from(bookings).where(eq(bookings.id, id)).limit(1);
+  const { bookings, services } = await import("../drizzle/schema");
+  const result = await db.select({
+    id: bookings.id,
+    userId: bookings.userId,
+    serviceId: bookings.serviceId,
+    customerName: bookings.customerName,
+    customerEmail: bookings.customerEmail,
+    address: bookings.address,
+    phone: bookings.phone,
+    dateTime: bookings.dateTime,
+    status: bookings.status,
+    notes: bookings.notes,
+    serviceName: services.name,
+    createdAt: bookings.createdAt,
+    updatedAt: bookings.updatedAt,
+  }).from(bookings)
+    .leftJoin(services, eq(bookings.serviceId, services.id))
+    .where(eq(bookings.id, id))
+    .limit(1);
   return result[0];
 }
 

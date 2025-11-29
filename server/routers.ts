@@ -3,6 +3,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { z } from "zod";
+import { sendBookingConfirmation } from "./whatsapp";
 
 export const appRouter = router({
     // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
@@ -147,6 +148,30 @@ export const appRouter = router({
         
         await deleteBooking(input.id);
         return { success: true };
+      }),
+    sendWhatsAppConfirmation: protectedProcedure
+      .input(z.object({ bookingId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can send confirmations");
+        }
+        
+        const { getBookingById } = await import("./db");
+        const booking = await getBookingById(input.bookingId);
+        if (!booking) {
+          throw new Error('Booking not found');
+        }
+        
+        const result = await sendBookingConfirmation({
+          customerName: booking.customerName,
+          customerPhone: booking.phone || '',
+          serviceName: booking.serviceName || 'Service',
+          dateTime: booking.dateTime,
+          address: booking.address,
+          bookingId: booking.id,
+        });
+        
+        return result;
       }),
   }),
 });
