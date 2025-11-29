@@ -579,3 +579,307 @@ export async function deleteReview(reviewId: number) {
 
   return { success: true };
 }
+
+// ============================================
+// Loyalty Program Functions
+// ============================================
+
+/**
+ * Award loyalty points to a user for completing a booking
+ * Points calculation: 10 points per booking
+ */
+export async function awardLoyaltyPoints(userId: number, bookingId: number, points: number = 10) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { loyaltyTransactions } = await import("../drizzle/schema");
+  
+  // Create transaction record
+  await db.insert(loyaltyTransactions).values({
+    userId,
+    points,
+    type: "earned",
+    bookingId,
+    description: `Earned ${points} points from booking #${bookingId}`,
+  });
+  
+  // Update user's total points
+  await db.update(users)
+    .set({ loyaltyPoints: sql`${users.loyaltyPoints} + ${points}` })
+    .where(eq(users.id, userId));
+}
+
+/**
+ * Get user's loyalty points balance
+ */
+export async function getUserLoyaltyPoints(userId: number) {
+  const db = await getDb();
+  if (!db) return 0;
+  
+  const result = await db.select({ loyaltyPoints: users.loyaltyPoints })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+  
+  return result[0]?.loyaltyPoints || 0;
+}
+
+/**
+ * Get user's loyalty transaction history
+ */
+export async function getLoyaltyTransactions(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { loyaltyTransactions, bookings, rewards } = await import("../drizzle/schema");
+  
+  return db.select({
+    id: loyaltyTransactions.id,
+    points: loyaltyTransactions.points,
+    type: loyaltyTransactions.type,
+    description: loyaltyTransactions.description,
+    createdAt: loyaltyTransactions.createdAt,
+    bookingId: loyaltyTransactions.bookingId,
+    rewardId: loyaltyTransactions.rewardId,
+    rewardName: rewards.name,
+    rewardNameEn: rewards.nameEn,
+  })
+    .from(loyaltyTransactions)
+    .leftJoin(bookings, eq(loyaltyTransactions.bookingId, bookings.id))
+    .leftJoin(rewards, eq(loyaltyTransactions.rewardId, rewards.id))
+    .where(eq(loyaltyTransactions.userId, userId))
+    .orderBy(desc(loyaltyTransactions.createdAt));
+}
+
+/**
+ * Get all available rewards
+ */
+export async function getActiveRewards() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { rewards, services } = await import("../drizzle/schema");
+  
+  return db.select({
+    id: rewards.id,
+    name: rewards.name,
+    nameEn: rewards.nameEn,
+    description: rewards.description,
+    descriptionEn: rewards.descriptionEn,
+    pointsCost: rewards.pointsCost,
+    discountType: rewards.discountType,
+    discountValue: rewards.discountValue,
+    serviceId: rewards.serviceId,
+    serviceName: services.name,
+    serviceNameEn: services.nameEn,
+    active: rewards.active,
+  })
+    .from(rewards)
+    .leftJoin(services, eq(rewards.serviceId, services.id))
+    .where(eq(rewards.active, true))
+    .orderBy(rewards.pointsCost);
+}
+
+/**
+ * Get reward by ID
+ */
+export async function getRewardById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  
+  const { rewards } = await import("../drizzle/schema");
+  const result = await db.select().from(rewards).where(eq(rewards.id, id)).limit(1);
+  return result[0];
+}
+
+/**
+ * Redeem a reward
+ */
+export async function redeemReward(userId: number, rewardId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { rewards, redemptions, loyaltyTransactions } = await import("../drizzle/schema");
+  
+  // Get reward details
+  const reward = await getRewardById(rewardId);
+  if (!reward) throw new Error("Reward not found");
+  if (!reward.active) throw new Error("Reward is not active");
+  
+  // Check user has enough points
+  const userPoints = await getUserLoyaltyPoints(userId);
+  if (userPoints < reward.pointsCost) {
+    throw new Error(`Insufficient points. You have ${userPoints} points but need ${reward.pointsCost}`);
+  }
+  
+  // Create redemption record
+  const redemptionResult = await db.insert(redemptions).values({
+    userId,
+    rewardId,
+    pointsSpent: reward.pointsCost,
+    status: "pending",
+  });
+  
+  // Create transaction record
+  await db.insert(loyaltyTransactions).values({
+    userId,
+    points: -reward.pointsCost,
+    type: "redeemed",
+    rewardId,
+    description: `Redeemed ${reward.nameEn || reward.name}`,
+  });
+  
+  // Deduct points from user
+  await db.update(users)
+    .set({ loyaltyPoints: sql`${users.loyaltyPoints} - ${reward.pointsCost}` })
+    .where(eq(users.id, userId));
+  
+  return { redemptionId: redemptionResult[0].insertId, reward };
+}
+
+/**
+ * Get user's redemption history
+ */
+export async function getUserRedemptions(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { redemptions, rewards } = await import("../drizzle/schema");
+  
+  return db.select({
+    id: redemptions.id,
+    rewardId: redemptions.rewardId,
+    rewardName: rewards.name,
+    rewardNameEn: rewards.nameEn,
+    pointsSpent: redemptions.pointsSpent,
+    status: redemptions.status,
+    createdAt: redemptions.createdAt,
+  })
+    .from(redemptions)
+    .leftJoin(rewards, eq(redemptions.rewardId, rewards.id))
+    .where(eq(redemptions.userId, userId))
+    .orderBy(desc(redemptions.createdAt));
+}
+
+/**
+ * Create a new reward (admin only)
+ */
+export async function createReward(data: {
+  name: string;
+  nameEn: string;
+  description?: string;
+  descriptionEn?: string;
+  pointsCost: number;
+  discountType: "percentage" | "fixed" | "free_service";
+  discountValue?: number;
+  serviceId?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { rewards } = await import("../drizzle/schema");
+  const result = await db.insert(rewards).values(data);
+  return result;
+}
+
+/**
+ * Update reward (admin only)
+ */
+export async function updateReward(id: number, data: Partial<{
+  name: string;
+  nameEn: string;
+  description: string;
+  descriptionEn: string;
+  pointsCost: number;
+  discountType: "percentage" | "fixed" | "free_service";
+  discountValue: number;
+  serviceId: number;
+  active: boolean;
+}>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { rewards } = await import("../drizzle/schema");
+  await db.update(rewards).set(data).where(eq(rewards.id, id));
+}
+
+/**
+ * Delete reward (admin only)
+ */
+export async function deleteReward(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { rewards } = await import("../drizzle/schema");
+  await db.delete(rewards).where(eq(rewards.id, id));
+}
+
+/**
+ * Get all rewards (admin only)
+ */
+export async function getAllRewards() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { rewards, services } = await import("../drizzle/schema");
+  
+  return db.select({
+    id: rewards.id,
+    name: rewards.name,
+    nameEn: rewards.nameEn,
+    description: rewards.description,
+    descriptionEn: rewards.descriptionEn,
+    pointsCost: rewards.pointsCost,
+    discountType: rewards.discountType,
+    discountValue: rewards.discountValue,
+    serviceId: rewards.serviceId,
+    serviceName: services.name,
+    serviceNameEn: services.nameEn,
+    active: rewards.active,
+    createdAt: rewards.createdAt,
+  })
+    .from(rewards)
+    .leftJoin(services, eq(rewards.serviceId, services.id))
+    .orderBy(desc(rewards.createdAt));
+}
+
+/**
+ * Manually adjust user points (admin only)
+ */
+export async function adjustUserPoints(userId: number, points: number, description: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { loyaltyTransactions } = await import("../drizzle/schema");
+  
+  // Create transaction record
+  await db.insert(loyaltyTransactions).values({
+    userId,
+    points,
+    type: points > 0 ? "bonus" : "penalty",
+    description,
+  });
+  
+  // Update user's total points
+  await db.update(users)
+    .set({ loyaltyPoints: sql`${users.loyaltyPoints} + ${points}` })
+    .where(eq(users.id, userId));
+}
+
+/**
+ * Get all users with their loyalty points (admin only)
+ */
+export async function getAllUsersWithPoints() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  return db.select({
+    id: users.id,
+    name: users.name,
+    email: users.email,
+    loyaltyPoints: users.loyaltyPoints,
+    role: users.role,
+  })
+    .from(users)
+    .orderBy(desc(users.loyaltyPoints));
+}

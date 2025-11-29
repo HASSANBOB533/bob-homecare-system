@@ -239,3 +239,29 @@
 - [x] Add Arabic language support for chatbot
 - [x] Test chatbot functionality with real WhatsApp messages (requires webhook configuration in Meta App Dashboard)
 - [x] Create comprehensive documentation for WhatsApp setup (see WHATSAPP_SETUP.md)
+
+## Loyalty Program Features
+
+- [x] Design loyalty points system (earn points per booking, point value calculation)
+- [x] Create loyalty_points table in database schema
+- [x] Create rewards table for available rewards/discounts
+- [x] Create redemptions table to track reward usage
+- [x] Add points field to users table
+- [x] Implement automatic points earning when booking is completed
+- [x] Create API endpoint to get user's loyalty points and history
+- [x] Create API endpoint to list available rewards
+- [x] Create API endpoint to redeem rewards
+- [x] Build loyalty dashboard UI showing points balance and history
+- [x] Build rewards catalog UI showing available rewards
+- [x] Build redemption flow UI with confirmation dialog
+- [x] Add loyalty points display in user profile dropdown
+- [x] Add admin interface to manage rewards (create/edit/delete)
+- [x] Add admin interface to view all users' loyalty points
+- [x] Add admin interface to manually adjust points (bonus/penalty)
+- [ ] Add notification when user earns points (deferred - can be added later)
+- [ ] Add notification when user unlocks new reward tier (deferred - can be added later)
+- [x] Write vitest tests for points earning logic
+- [x] Write vitest tests for reward redemption logic
+- [x] Write vitest tests for admin loyalty management
+- [x] Add Arabic/English translations for all loyalty features
+- [x] Seed sample rewards for demonstration

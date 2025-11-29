@@ -224,7 +224,7 @@ export const appRouter = router({
         notes: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
-        const { getBookingById, updateBooking } = await import("./db");
+        const { getBookingById, updateBooking, awardLoyaltyPoints } = await import("./db");
         const booking = await getBookingById(input.id);
         if (!booking) throw new Error("Booking not found");
         
@@ -234,7 +234,18 @@ export const appRouter = router({
         }
         
         const { id, ...data } = input;
+        
+        // Check if status is being changed to "completed" and award points
+        const wasCompleted = booking.status === "completed";
+        const isNowCompleted = input.status === "completed";
+        
         await updateBooking(id, data);
+        
+        // Award loyalty points when booking is completed (only once)
+        if (!wasCompleted && isNowCompleted && booking.userId) {
+          await awardLoyaltyPoints(booking.userId, booking.id, 10);
+        }
+        
         return { success: true };
       }),
     delete: protectedProcedure
@@ -343,6 +354,115 @@ export const appRouter = router({
         }
         const { deleteReview } = await import("./db");
         return deleteReview(input.id);
+      }),
+  }),
+
+  loyalty: router({
+    // User endpoints
+    getPoints: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getUserLoyaltyPoints } = await import("./db");
+        return getUserLoyaltyPoints(ctx.user.id);
+      }),
+    getTransactions: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getLoyaltyTransactions } = await import("./db");
+        return getLoyaltyTransactions(ctx.user.id);
+      }),
+    getRewards: publicProcedure
+      .query(async () => {
+        const { getActiveRewards } = await import("./db");
+        return getActiveRewards();
+      }),
+    redeemReward: protectedProcedure
+      .input(z.object({ rewardId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const { redeemReward } = await import("./db");
+        return redeemReward(ctx.user.id, input.rewardId);
+      }),
+    getRedemptions: protectedProcedure
+      .query(async ({ ctx }) => {
+        const { getUserRedemptions } = await import("./db");
+        return getUserRedemptions(ctx.user.id);
+      }),
+    
+    // Admin endpoints
+    getAllRewards: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view all rewards");
+        }
+        const { getAllRewards } = await import("./db");
+        return getAllRewards();
+      }),
+    createReward: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1),
+        nameEn: z.string().min(1),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        pointsCost: z.number().min(1),
+        discountType: z.enum(["percentage", "fixed", "free_service"]),
+        discountValue: z.number().optional(),
+        serviceId: z.number().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create rewards");
+        }
+        const { createReward } = await import("./db");
+        return createReward(input);
+      }),
+    updateReward: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        nameEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        pointsCost: z.number().optional(),
+        discountType: z.enum(["percentage", "fixed", "free_service"]).optional(),
+        discountValue: z.number().optional(),
+        serviceId: z.number().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update rewards");
+        }
+        const { updateReward } = await import("./db");
+        const { id, ...data } = input;
+        return updateReward(id, data);
+      }),
+    deleteReward: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete rewards");
+        }
+        const { deleteReward } = await import("./db");
+        return deleteReward(input.id);
+      }),
+    getAllUsersWithPoints: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view all users");
+        }
+        const { getAllUsersWithPoints } = await import("./db");
+        return getAllUsersWithPoints();
+      }),
+    adjustUserPoints: protectedProcedure
+      .input(z.object({
+        userId: z.number(),
+        points: z.number(),
+        description: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can adjust user points");
+        }
+        const { adjustUserPoints } = await import("./db");
+        return adjustUserPoints(input.userId, input.points, input.description);
       }),
   }),
 });

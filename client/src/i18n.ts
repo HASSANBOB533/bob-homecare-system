@@ -82,6 +82,47 @@ const resources = {
       "editReviewTitle": "Edit Review",
       "saveChanges": "Save Changes",
       
+      // Loyalty Program
+      "loyalty": {
+        "title": "Loyalty Rewards",
+        "description": "Earn points with every booking and redeem them for exclusive rewards",
+        "yourPoints": "Your Points",
+        "pointsBalance": "Total points balance",
+        "rewards": "Rewards",
+        "history": "Transaction History",
+        "redemptions": "Redemptions",
+        "cost": "Cost",
+        "discount": "Discount",
+        "fixedDiscount": "Fixed Discount",
+        "freeService": "Free Service",
+        "applicableTo": "Applicable to",
+        "insufficientPoints": "Insufficient Points",
+        "redeem": "Redeem",
+        "noRewards": "No rewards available at the moment",
+        "transactionHistory": "Transaction History",
+        "noTransactions": "No transactions yet",
+        "redemptionHistory": "Redemption History",
+        "noRedemptions": "No redemptions yet",
+        "points": "points",
+        "confirmRedeem": "Confirm Redemption",
+        "confirmRedeemDesc": "Are you sure you want to redeem this reward?",
+        "reward": "Reward",
+        "afterRedeem": "After Redemption",
+        "confirmButton": "Confirm Redemption",
+        "redeemSuccess": "Reward redeemed successfully!",
+        "redeemSuccessDesc": "Your reward has been applied to your account",
+        "redeemError": "Failed to redeem reward",
+        "status": {
+          "pending": "Pending",
+          "applied": "Applied",
+          "cancelled": "Cancelled"
+        }
+      },
+      "common": {
+        "cancel": "Cancel",
+        "loading": "Loading..."
+      },
+      
       // Hero Section
       "heroTitle": "BOB Home Care",
       "heroSubtitle": "Home Cleaning Services with International Hospitality Standards",
@@ -240,6 +281,47 @@ const resources = {
       "reviewedOn": "تاريخ التقييم",
       "editReviewTitle": "تحرير التقييم",
       "saveChanges": "حفظ التغييرات",
+      
+      // Loyalty Program
+      "loyalty": {
+        "title": "مكافآت الولاء",
+        "description": "اكسب نقاطًا مع كل حجز واستبدلها بمكافآت حصرية",
+        "yourPoints": "نقاطك",
+        "pointsBalance": "إجمالي رصيد النقاط",
+        "rewards": "المكافآت",
+        "history": "سجل المعاملات",
+        "redemptions": "الاستبدالات",
+        "cost": "التكلفة",
+        "discount": "الخصم",
+        "fixedDiscount": "خصم ثابت",
+        "freeService": "خدمة مجانية",
+        "applicableTo": "ينطبق على",
+        "insufficientPoints": "نقاط غير كافية",
+        "redeem": "استبدل",
+        "noRewards": "لا توجد مكافآت متاحة في الوقت الحالي",
+        "transactionHistory": "سجل المعاملات",
+        "noTransactions": "لا توجد معاملات بعد",
+        "redemptionHistory": "سجل الاستبدالات",
+        "noRedemptions": "لا توجد استبدالات بعد",
+        "points": "نقطة",
+        "confirmRedeem": "تأكيد الاستبدال",
+        "confirmRedeemDesc": "هل أنت متأكد من استبدال هذه المكافأة؟",
+        "reward": "المكافأة",
+        "afterRedeem": "بعد الاستبدال",
+        "confirmButton": "تأكيد الاستبدال",
+        "redeemSuccess": "تم استبدال المكافأة بنجاح!",
+        "redeemSuccessDesc": "تم تطبيق مكافأتك على حسابك",
+        "redeemError": "فشل استبدال المكافأة",
+        "status": {
+          "pending": "قيد الانتظار",
+          "applied": "مطبق",
+          "cancelled": "ملغى"
+        }
+      },
+      "common": {
+        "cancel": "إلغاء",
+        "loading": "جاري التحميل..."
+      },
       
       // Hero Section
       "heroTitle": "BOB Home Care",

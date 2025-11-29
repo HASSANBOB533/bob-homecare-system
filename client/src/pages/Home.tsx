@@ -13,7 +13,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar, Star } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar, Star, Award } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
@@ -158,6 +158,10 @@ export default function Home() {
                   <DropdownMenuItem onClick={() => setEditProfileOpen(true)}>
                     <UserCog className="mr-2 h-4 w-4" />
                     <span>{t('editProfile')}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLocation("/loyalty")}>
+                    <Award className="mr-2 h-4 w-4" />
+                    <span>{t('loyalty.title')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} disabled={logoutMutation.isPending}>

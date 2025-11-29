@@ -25,6 +25,7 @@ export const users = mysqlTable("users", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   lastSignedIn: timestamp("lastSignedIn").defaultNow().notNull(),
+  loyaltyPoints: int("loyaltyPoints").default(0).notNull(), // Total loyalty points balance
 });
 
 export type User = typeof users.$inferSelect;
@@ -79,3 +80,58 @@ export const bookings = mysqlTable("bookings", {
 
 export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = typeof bookings.$inferInsert;
+
+/**
+ * Rewards table for managing loyalty program rewards
+ */
+export const rewards = mysqlTable("rewards", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // Arabic name
+  nameEn: varchar("nameEn", { length: 255 }).notNull(), // English name
+  description: text("description"), // Arabic description
+  descriptionEn: text("descriptionEn"), // English description
+  pointsCost: int("pointsCost").notNull(), // Points required to redeem
+  discountType: mysqlEnum("discountType", ["percentage", "fixed", "free_service"]).notNull(),
+  discountValue: int("discountValue"), // Percentage (e.g., 10 for 10%) or fixed amount
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "set null" }), // For free_service type
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Reward = typeof rewards.$inferSelect;
+export type InsertReward = typeof rewards.$inferInsert;
+
+/**
+ * Loyalty points transactions table for tracking point earning and spending
+ */
+export const loyaltyTransactions = mysqlTable("loyaltyTransactions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  points: int("points").notNull(), // Positive for earning, negative for spending
+  type: mysqlEnum("type", ["earned", "redeemed", "bonus", "penalty"]).notNull(),
+  bookingId: int("bookingId").references(() => bookings.id, { onDelete: "set null" }), // For earned points
+  rewardId: int("rewardId").references(() => rewards.id, { onDelete: "set null" }), // For redeemed points
+  description: text("description"), // e.g., "Earned from booking #123", "Redeemed 10% discount"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type LoyaltyTransaction = typeof loyaltyTransactions.$inferSelect;
+export type InsertLoyaltyTransaction = typeof loyaltyTransactions.$inferInsert;
+
+/**
+ * Redemptions table for tracking reward usage
+ */
+export const redemptions = mysqlTable("redemptions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  rewardId: int("rewardId").references(() => rewards.id, { onDelete: "set null" }),
+  bookingId: int("bookingId").references(() => bookings.id, { onDelete: "set null" }), // Booking where reward was applied
+  pointsSpent: int("pointsSpent").notNull(),
+  status: mysqlEnum("status", ["pending", "applied", "cancelled"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Redemption = typeof redemptions.$inferSelect;
+export type InsertRedemption = typeof redemptions.$inferInsert;
