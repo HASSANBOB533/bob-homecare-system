@@ -289,3 +289,75 @@ export async function updateUserProfile(userId: number, data: {
   const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
   return result[0];
 }
+
+// Get upcoming bookings for dropdown preview
+export async function getUpcomingBookings(userId: number, limit: number = 3) {
+  const db = await getDb();
+  if (!db) return [];
+  const { bookings, services } = await import("../drizzle/schema");
+  const { gte, and, or, desc } = await import("drizzle-orm");
+  
+  const now = new Date();
+  
+  return db.select({
+    id: bookings.id,
+    customerName: bookings.customerName,
+    dateTime: bookings.dateTime,
+    status: bookings.status,
+    serviceId: bookings.serviceId,
+    serviceName: services.name,
+    serviceNameEn: services.nameEn,
+  }).from(bookings)
+    .leftJoin(services, eq(bookings.serviceId, services.id))
+    .where(
+      and(
+        eq(bookings.userId, userId),
+        or(
+          gte(bookings.dateTime, now),
+          eq(bookings.status, "pending"),
+          eq(bookings.status, "confirmed")
+        )
+      )
+    )
+    .orderBy(bookings.dateTime)
+    .limit(limit);
+}
+
+// Email verification functions
+export async function generateVerificationToken(userId: number): Promise<string> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  // Generate a random token
+  const token = Math.random().toString(36).substring(2) + Date.now().toString(36);
+  
+  await db.update(users).set({ verificationToken: token }).where(eq(users.id, userId));
+  
+  return token;
+}
+
+export async function verifyEmailToken(token: string): Promise<boolean> {
+  const db = await getDb();
+  if (!db) return false;
+  
+  const result = await db.select().from(users).where(eq(users.verificationToken, token)).limit(1);
+  
+  if (result.length === 0) return false;
+  
+  const user = result[0];
+  
+  // Mark email as verified and clear token
+  await db.update(users).set({
+    emailVerified: new Date(),
+    verificationToken: null,
+  }).where(eq(users.id, user.id));
+  
+  return true;
+}
+
+export async function getUserById(userId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return result[0];
+}

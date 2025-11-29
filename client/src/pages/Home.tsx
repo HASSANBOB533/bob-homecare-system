@@ -13,7 +13,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
@@ -24,6 +24,9 @@ export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+  const { data: upcomingBookings = [] } = trpc.bookings.upcomingBookings.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   
   const logoutMutation = trpc.auth.logout.useMutation({
@@ -84,6 +87,47 @@ export default function Home() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  
+                  {/* Upcoming Bookings Preview */}
+                  {user?.role !== 'admin' && (
+                    <>
+                      <DropdownMenuLabel className="text-xs text-muted-foreground">
+                        {t('upcomingBookings')}
+                      </DropdownMenuLabel>
+                      {upcomingBookings.length > 0 ? (
+                        <div className="px-2 py-1 max-h-32 overflow-y-auto">
+                          {upcomingBookings.map((booking) => (
+                            <div key={booking.id} className="text-xs py-1.5 px-2 hover:bg-accent rounded-sm">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-3 w-3 text-muted-foreground" />
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium truncate">
+                                    {i18n.language === 'ar' ? booking.serviceName : (booking.serviceNameEn || booking.serviceName)}
+                                  </p>
+                                  <p className="text-muted-foreground">
+                                    {booking.dateTime ? new Date(booking.dateTime).toLocaleDateString(i18n.language === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' }) : t('Not specified')}
+                                  </p>
+                                </div>
+                                <span className={`text-xs px-1.5 py-0.5 rounded ${
+                                  booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                  booking.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                                  'bg-gray-100 text-gray-700'
+                                }`}>
+                                  {t(booking.status || 'pending')}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="px-2 py-2 text-xs text-muted-foreground text-center">
+                          {t('noUpcomingBookings')}
+                        </div>
+                      )}
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  
                   <DropdownMenuItem onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     <span>{t('myDashboard')}</span>

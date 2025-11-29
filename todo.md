@@ -109,3 +109,21 @@
 - [x] Add Arabic translations for profile editing
 - [x] Implement form validation and error handling
 - [x] Write vitest tests for profile update functionality
+
+## Booking History Preview in Dropdown
+- [x] Create API to fetch user's upcoming bookings (next 2-3)
+- [x] Add booking preview section to dropdown menu
+- [x] Display booking details (service, date, status)
+- [x] Add "View All" link to full dashboard
+- [x] Add Arabic translations for booking preview
+
+## Email Verification
+- [x] Add emailVerified field to users table
+- [x] Add verificationToken field to users table
+- [x] Create backend API for sending verification emails
+- [x] Create backend API for verifying email tokens
+- [x] Add email verification banner/alert in profile dialog
+- [x] Require email verification before profile updates
+- [x] Add resend verification email functionality
+- [x] Add Arabic translations for email verification
+- [x] Write vitest tests for email verification flow

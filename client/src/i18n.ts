@@ -22,6 +22,16 @@ const resources = {
       "saving": "Saving...",
       "profileUpdated": "Profile updated successfully!",
       "profileUpdateFailed": "Failed to update profile. Please try again.",
+      "upcomingBookings": "Upcoming Bookings",
+      "noUpcomingBookings": "No upcoming bookings",
+      "viewAllBookings": "View All Bookings",
+      "emailNotVerified": "Email not verified",
+      "verifyEmailMessage": "Please verify your email address to update your profile and receive notifications.",
+      "sendVerificationEmail": "Send Verification Email",
+      "verificationEmailSent": "Verification email sent! Check your inbox.",
+      "emailVerified": "Email verified successfully!",
+      "verificationFailed": "Verification failed. Please try again.",
+      "resendVerification": "Resend Verification Email",
       
       // Hero Section
       "heroTitle": "BOB Home Care",
@@ -122,6 +132,16 @@ const resources = {
       "saving": "جاري الحفظ...",
       "profileUpdated": "تم تحديث الملف الشخصي بنجاح!",
       "profileUpdateFailed": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
+      "upcomingBookings": "الحجوزات القادمة",
+      "noUpcomingBookings": "لا توجد حجوزات قادمة",
+      "viewAllBookings": "عرض جميع الحجوزات",
+      "emailNotVerified": "البريد الإلكتروني غير موثق",
+      "verifyEmailMessage": "يرجى توثيق عنوان بريدك الإلكتروني لتحديث ملفك الشخصي واستلام الإشعارات.",
+      "sendVerificationEmail": "إرسال بريد التحقق",
+      "verificationEmailSent": "تم إرسال بريد التحقق! تحقق من صندوق الوارد.",
+      "emailVerified": "تم توثيق البريد الإلكتروني بنجاح!",
+      "verificationFailed": "فشل التحقق. يرجى المحاولة مرة أخرى.",
+      "resendVerification": "إعادة إرسال بريد التحقق",
       
       // Hero Section
       "heroTitle": "BOB Home Care",

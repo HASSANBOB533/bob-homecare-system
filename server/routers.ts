@@ -26,6 +26,35 @@ export const appRouter = router({
         const { updateUserProfile } = await import("./db");
         return updateUserProfile(ctx.user.id, input);
       }),
+    sendVerificationEmail: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        const { generateVerificationToken, getUserById } = await import("./db");
+        const user = await getUserById(ctx.user.id);
+        
+        if (!user?.email) {
+          throw new Error("No email address found");
+        }
+        
+        const token = await generateVerificationToken(ctx.user.id);
+        
+        // In a real app, send email here using a service like SendGrid, AWS SES, etc.
+        // For now, we'll just return the token (in production, this would be sent via email)
+        console.log(`[Email Verification] Token for ${user.email}: ${token}`);
+        
+        return { success: true, token }; // Remove token from response in production
+      }),
+    verifyEmail: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const { verifyEmailToken } = await import("./db");
+        const success = await verifyEmailToken(input.token);
+        
+        if (!success) {
+          throw new Error("Invalid or expired verification token");
+        }
+        
+        return { success: true };
+      }),
   }),
 
   services: router({
@@ -65,6 +94,10 @@ export const appRouter = router({
     myBookings: protectedProcedure.query(async ({ ctx }) => {
       const { getUserBookings } = await import("./db");
       return getUserBookings(ctx.user.id);
+    }),
+    upcomingBookings: protectedProcedure.query(async ({ ctx }) => {
+      const { getUpcomingBookings } = await import("./db");
+      return getUpcomingBookings(ctx.user.id, 3);
     }),
     createPublic: publicProcedure
       .input(z.object({

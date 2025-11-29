@@ -36,6 +36,13 @@
       "when": 1764432215717,
       "tag": "0004_superb_old_lace",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1764432544499,
+      "tag": "0005_special_eternals",
+      "breakpoints": true
     }
   ]
 }
