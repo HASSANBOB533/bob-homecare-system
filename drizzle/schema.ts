@@ -47,9 +47,10 @@ export type InsertService = typeof services.$inferInsert;
  */
 export const bookings = mysqlTable("bookings", {
   id: int("id").autoincrement().primaryKey(),
-  userId: int("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  userId: int("userId").references(() => users.id, { onDelete: "cascade" }), // Nullable for public bookings
   serviceId: int("serviceId").references(() => services.id, { onDelete: "set null" }),
   customerName: varchar("customerName", { length: 100 }).notNull(),
+  customerEmail: varchar("customerEmail", { length: 320 }), // Optional email for public bookings
   address: varchar("address", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 20 }),
   dateTime: timestamp("dateTime").notNull(),

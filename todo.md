@@ -62,3 +62,9 @@
 - [x] Simplify client booking flow - remove login requirement for booking
 - [x] Create public booking form accessible from main website
 - [x] Ensure clients can book without seeing admin dashboard
+
+## New Issues Reported by User
+- [x] Remove WhatsApp redirect from booking form submission (duplicate functionality)
+- [x] Save bookings to database so they appear in admin dashboard
+- [x] Add public booking status check page (no login required)
+- [x] Add payment confirmation message: "Reservation will be confirmed after sending payment link"

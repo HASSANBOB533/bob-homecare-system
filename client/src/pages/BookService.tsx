@@ -37,6 +37,29 @@ export default function BookService() {
     return service.nameEn || service.name || '';
   };
 
+  const createBookingMutation = trpc.bookings.createPublic.useMutation({
+    onSuccess: (data) => {
+      toast.success(t('Booking created successfully! We will contact you soon to confirm and send payment link.'));
+      // Reset form
+      setFormData({
+        serviceId: "",
+        date: "",
+        time: "",
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        notes: "",
+      });
+      // Show booking reference number
+      toast.info(`${t('Booking Reference')}: #${data.id}`);
+    },
+    onError: (error) => {
+      toast.error(t('Failed to create booking. Please try again or contact us via WhatsApp.'));
+      console.error('Booking error:', error);
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -45,34 +68,17 @@ export default function BookService() {
       return;
     }
 
-    // For now, just show success and send to WhatsApp
-    const service = services.find(s => s.id.toString() === formData.serviceId);
-    const serviceName = service ? getServiceName(service) : '';
-    
-    const message = `
-🏠 *New Booking Request*
-
-*Service:* ${serviceName}
-*Date:* ${formData.date}
-*Time:* ${formData.time}
-
-*Customer Details:*
-Name: ${formData.name}
-Phone: ${formData.phone}
-${formData.email ? `Email: ${formData.email}` : ''}
-Address: ${formData.address}
-
-${formData.notes ? `*Notes:* ${formData.notes}` : ''}
-    `.trim();
-
-    const phoneNumber = "201273518887";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    
-    toast.success(t('Booking request prepared! Redirecting to WhatsApp...'));
-    
-    setTimeout(() => {
-      window.open(whatsappUrl, '_blank');
-    }, 1000);
+    // Save booking to database
+    createBookingMutation.mutate({
+      serviceId: parseInt(formData.serviceId),
+      date: formData.date,
+      time: formData.time,
+      customerName: formData.name,
+      customerEmail: formData.email || undefined,
+      customerPhone: formData.phone,
+      address: formData.address,
+      notes: formData.notes || undefined,
+    });
   };
 
   return (

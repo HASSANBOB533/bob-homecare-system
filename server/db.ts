@@ -175,6 +175,30 @@ export async function getBookingById(id: number) {
   return result[0];
 }
 
+export async function getBookingByIdAndPhone(id: number, phone: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const { bookings, services } = await import("../drizzle/schema");
+  const { and } = await import("drizzle-orm");
+  const result = await db.select({
+    id: bookings.id,
+    customerName: bookings.customerName,
+    customerEmail: bookings.customerEmail,
+    address: bookings.address,
+    phone: bookings.phone,
+    dateTime: bookings.dateTime,
+    status: bookings.status,
+    notes: bookings.notes,
+    serviceId: bookings.serviceId,
+    serviceName: services.name,
+    createdAt: bookings.createdAt,
+  }).from(bookings)
+    .leftJoin(services, eq(bookings.serviceId, services.id))
+    .where(and(eq(bookings.id, id), eq(bookings.phone, phone)))
+    .limit(1);
+  return result[0] || null;
+}
+
 export async function createBooking(data: {
   userId: number;
   serviceId?: number;
@@ -189,6 +213,34 @@ export async function createBooking(data: {
   const { bookings } = await import("../drizzle/schema");
   const result = await db.insert(bookings).values(data);
   return result;
+}
+
+export async function createPublicBooking(data: {
+  serviceId?: number;
+  customerName: string;
+  customerEmail?: string;
+  customerPhone: string;
+  address: string;
+  dateTime: Date;
+  notes?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  // Create booking without userId (public booking)
+  const result = await db.insert(bookings).values({
+    serviceId: data.serviceId,
+    customerName: data.customerName,
+    customerEmail: data.customerEmail,
+    phone: data.customerPhone,
+    address: data.address,
+    dateTime: data.dateTime,
+    notes: data.notes,
+    status: "pending",
+  });
+  // Return the created booking with ID
+  const insertId = result[0].insertId;
+  return { id: insertId, ...data };
 }
 
 export async function updateBooking(id: number, data: Partial<{

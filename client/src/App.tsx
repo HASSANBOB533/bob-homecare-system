@@ -9,6 +9,7 @@ import UserDashboard from "./pages/UserDashboard";
 import BookingForm from "./pages/BookingForm";
 import AdminDashboard from "./pages/AdminDashboard";
 import BookService from "./pages/BookService";
+import CheckBooking from "./pages/CheckBooking";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -36,6 +37,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/book"} component={BookService} />
+      <Route path={"/check-booking"} component={CheckBooking} />
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}
       </Route>

@@ -54,6 +54,40 @@ export const appRouter = router({
       const { getUserBookings } = await import("./db");
       return getUserBookings(ctx.user.id);
     }),
+    createPublic: publicProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        date: z.string(),
+        time: z.string(),
+        customerName: z.string().min(1),
+        customerEmail: z.string().optional(),
+        customerPhone: z.string().min(1),
+        address: z.string().min(1),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { createPublicBooking } = await import("./db");
+        // Combine date and time into dateTime
+        const dateTime = new Date(`${input.date}T${input.time}`);
+        return createPublicBooking({
+          serviceId: input.serviceId,
+          customerName: input.customerName,
+          customerEmail: input.customerEmail,
+          customerPhone: input.customerPhone,
+          address: input.address,
+          dateTime,
+          notes: input.notes,
+        });
+      }),
+    checkStatus: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        phone: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getBookingByIdAndPhone } = await import("./db");
+        return getBookingByIdAndPhone(input.id, input.phone);
+      }),
     allBookings: protectedProcedure.query(async ({ ctx }) => {
       if (ctx.user.role !== "admin") {
         throw new Error("Only admins can view all bookings");
