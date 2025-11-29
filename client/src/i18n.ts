@@ -52,10 +52,8 @@ const resources = {
       "notificationPreferences": "Notification Preferences",
       "emailNotifications": "Email Notifications",
       "whatsappNotifications": "WhatsApp Notifications",
-      "smsNotifications": "SMS Notifications",
       "receiveEmailNotifications": "Receive booking confirmations and reminders via email",
       "receiveWhatsappNotifications": "Receive booking confirmations and reminders via WhatsApp",
-      "receiveSmsNotifications": "Receive booking confirmations and reminders via SMS",
       "preferencesUpdated": "Preferences updated successfully!",
       // Admin review management
       "reviewManagement": "Review Management",
@@ -254,10 +252,8 @@ const resources = {
       "notificationPreferences": "تفضيلات الإشعارات",
       "emailNotifications": "إشعارات البريد الإلكتروني",
       "whatsappNotifications": "إشعارات واتساب",
-      "smsNotifications": "إشعارات الرسائل النصية",
       "receiveEmailNotifications": "استلام تأكيدات الحجز والتذكيرات عبر البريد الإلكتروني",
       "receiveWhatsappNotifications": "استلام تأكيدات الحجز والتذكيرات عبر واتساب",
-      "receiveSmsNotifications": "استلام تأكيدات الحجز والتذكيرات عبر الرسائل النصية",
       "preferencesUpdated": "تم تحديث التفضيلات بنجاح!",
       // Admin review management
       "reviewManagement": "إدارة التقييمات",

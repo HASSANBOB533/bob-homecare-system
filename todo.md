@@ -283,3 +283,18 @@
 - [x] Write vitest tests for SMS notification functions
 - [ ] Test SMS delivery with real Twilio credentials (requires user to add credentials first)
 - [x] Add Arabic/English translations for SMS notification settings
+
+## Remove SMS Integration (Egyptian carriers block delivery)
+
+- [x] Remove SMS notification calls from booking creation endpoints
+- [x] Remove SMS notification calls from booking update endpoints
+- [x] Remove SMS notification calls from loyalty points earning
+- [x] Remove SMS notification calls from reward redemption
+- [x] Remove SMS preferences toggle from user dashboard
+- [x] Remove smsNotifications field from database schema
+- [x] Remove SMS notification preferences from backend API
+- [x] Uninstall Twilio SDK dependency
+- [x] Remove SMS helper files
+- [x] Remove SMS test files
+- [x] Update documentation to reflect WhatsApp + Email only
+- [x] Remove SMS translations from i18n

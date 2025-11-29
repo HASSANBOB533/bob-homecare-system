@@ -473,7 +473,7 @@ export async function getUserReviewStats(userId: number) {
  */
 export async function updateNotificationPreferences(
   userId: number,
-  preferences: { emailNotifications?: boolean; whatsappNotifications?: boolean; smsNotifications?: boolean }
+  preferences: { emailNotifications?: boolean; whatsappNotifications?: boolean }
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not initialized");

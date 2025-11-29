@@ -116,21 +116,7 @@ export default function UserDashboard() {
                 }}
               />
             </div>
-            <div className="flex items-center justify-between">
-              <div className="space-y-0.5">
-                <Label htmlFor="sms-notifications">{t("smsNotifications")}</Label>
-                <p className="text-sm text-muted-foreground">
-                  {t("receiveSmsNotifications")}
-                </p>
-              </div>
-              <Switch
-                id="sms-notifications"
-                checked={user?.smsNotifications ?? true}
-                onCheckedChange={(checked) => {
-                  updatePreferencesMutation.mutate({ smsNotifications: checked });
-                }}
-              />
-            </div>
+
           </CardContent>
         </Card>
 

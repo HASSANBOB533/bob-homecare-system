@@ -71,7 +71,6 @@ export const appRouter = router({
       .input(z.object({
         emailNotifications: z.boolean().optional(),
         whatsappNotifications: z.boolean().optional(),
-        smsNotifications: z.boolean().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
         const { updateNotificationPreferences } = await import("./db");
@@ -135,7 +134,6 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         const { createPublicBooking, getServiceById, getUserByEmail } = await import("./db");
         const { sendBookingConfirmation } = await import("./_core/whatsapp");
-        const { sendBookingConfirmationSMS } = await import("./_core/sms");
         
         const dateTime = new Date(`${input.date}T${input.time}`);
         const booking = await createPublicBooking({
@@ -150,12 +148,11 @@ export const appRouter = router({
         
         // Check notification preferences if user has an account
         let whatsappEnabled = true; // Default to true for public bookings
-        let smsEnabled = true; // Default to true for public bookings
+
         if (input.customerEmail) {
           const user = await getUserByEmail(input.customerEmail);
           if (user) {
             whatsappEnabled = user.whatsappNotifications ?? true;
-            smsEnabled = user.smsNotifications ?? true;
           }
         }
         
@@ -172,17 +169,7 @@ export const appRouter = router({
               address: input.address,
             });
           }
-          
-          // Send SMS confirmation if enabled
-          if (smsEnabled) {
-            await sendBookingConfirmationSMS(input.phone, {
-              customerName: input.customerName,
-              serviceName,
-              dateTime,
-              address: input.address,
-              bookingId: booking.id,
-            });
-          }
+
         }
         
         return booking;
@@ -215,7 +202,6 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         const { createBooking, getServiceById } = await import("./db");
         const { sendBookingConfirmation } = await import("./_core/whatsapp");
-        const { sendBookingConfirmationSMS } = await import("./_core/sms");
         
         const booking = await createBooking({ ...input, userId: ctx.user.id });
         
@@ -232,17 +218,7 @@ export const appRouter = router({
               address: input.address,
             });
           }
-          
-          // Send SMS confirmation if enabled
-          if (ctx.user.smsNotifications !== false) {
-            await sendBookingConfirmationSMS(input.phone, {
-              customerName: input.customerName,
-              serviceName,
-              dateTime: input.dateTime,
-              address: input.address,
-              bookingId: booking.id,
-            });
-          }
+
         }
         
         return booking;
@@ -260,7 +236,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         const { getBookingById, updateBooking, awardLoyaltyPoints, getUserLoyaltyPoints, getUserById } = await import("./db");
-        const { sendLoyaltyPointsEarnedSMS } = await import("./_core/sms");
+
         
         const booking = await getBookingById(input.id);
         if (!booking) throw new Error("Booking not found");
@@ -281,17 +257,6 @@ export const appRouter = router({
         // Award loyalty points when booking is completed (only once)
         if (!wasCompleted && isNowCompleted && booking.userId) {
           await awardLoyaltyPoints(booking.userId, booking.id, 10);
-          
-          // Send SMS notification if user has phone and SMS enabled
-          const user = await getUserById(booking.userId);
-          if (user?.phone && user.smsNotifications !== false) {
-            const totalPoints = await getUserLoyaltyPoints(booking.userId);
-            await sendLoyaltyPointsEarnedSMS(user.phone, {
-              customerName: user.name || 'Customer',
-              pointsEarned: 10,
-              totalPoints,
-            });
-          }
         }
         
         return { success: true };
@@ -426,20 +391,11 @@ export const appRouter = router({
       .input(z.object({ rewardId: z.number() }))
       .mutation(async ({ ctx, input }) => {
         const { redeemReward, getUserLoyaltyPoints } = await import("./db");
-        const { sendRewardRedeemedSMS } = await import("./_core/sms");
+
         
         const result = await redeemReward(ctx.user.id, input.rewardId);
         
-        // Send SMS notification if user has phone and SMS enabled
-        if (ctx.user.phone && ctx.user.smsNotifications !== false) {
-          const remainingPoints = await getUserLoyaltyPoints(ctx.user.id);
-          await sendRewardRedeemedSMS(ctx.user.phone, {
-            customerName: ctx.user.name || 'Customer',
-            rewardName: result.reward.nameEn || result.reward.name,
-            pointsSpent: result.reward.pointsCost,
-            remainingPoints,
-          });
-        }
+
         
         return result;
       }),

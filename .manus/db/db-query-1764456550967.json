@@ -1,0 +1,60 @@
+{
+  "query": "SELECT * FROM services LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT * FROM services LIMIT 5",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "description": "اعداد العقارات بمعايير الضيافة العالمية، شامل تغيير الملاءات والغسيل الجاف",
+      "duration": "180",
+      "createdAt": "2025-11-29 12:47:22",
+      "updatedAt": "2025-11-29 12:47:22",
+      "nameEn": "Airbnb and Hotel Apartments Cleaning",
+      "descriptionEn": "Preparing properties with international hospitality standards, including linen changing and dry cleaning"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "description": "صيانة دورية للشقق والفيلات بجدولة مرنة (أسبوعية، نصف شهرية، شهرية)",
+      "duration": "120",
+      "createdAt": "2025-11-29 12:47:22",
+      "updatedAt": "2025-11-29 12:47:22",
+      "nameEn": "Regular Cleaning Service",
+      "descriptionEn": "Regular maintenance for apartments and villas with flexible scheduling (weekly, bi-weekly, monthly)"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "description": "تنظيف شامل ومفصل لجميع أجزاء المنزل بما في ذلك الأماكن الصعبة الوصول",
+      "duration": "240",
+      "createdAt": "2025-11-29 12:47:22",
+      "updatedAt": "2025-11-29 12:47:22",
+      "nameEn": "Deep Cleaning Service",
+      "descriptionEn": "Comprehensive and detailed cleaning of all parts of the home including hard-to-reach areas"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "description": "مثالي للعقارات الجديدة او الوحدات المصيفية",
+      "duration": "180",
+      "createdAt": "2025-11-29 12:47:22",
+      "updatedAt": "2025-11-29 12:47:22",
+      "nameEn": "Move-in/Move-out Cleaning",
+      "descriptionEn": "Ideal for new properties or seasonal units"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "description": "خدمات تعقيم احترافية باستخدام أحدث تقنيات التبخير والتطهير",
+      "duration": "90",
+      "createdAt": "2025-11-29 12:47:22",
+      "updatedAt": "2025-11-29 12:47:22",
+      "nameEn": "Fumigation and Sterilization",
+      "descriptionEn": "Professional disinfection services using the latest fumigation and sanitization techniques"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdescription\tduration\tcreatedAt\tupdatedAt\tnameEn\tdescriptionEn\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tاعداد العقارات بمعايير الضيافة العالمية، شامل تغيير الملاءات والغسيل الجاف\t180\t2025-11-29 12:47:22\t2025-11-29 12:47:22\tAirbnb and Hotel Apartments Cleaning\tPreparing properties with international hospitality standards, including linen changing and dry cleaning\n30002\tخدمة التنظيف الدورية\tصيانة دورية للشقق والفيلات بجدولة مرنة (أسبوعية، نصف شهرية، شهرية)\t120\t2025-11-29 12:47:22\t2025-11-29 12:47:22\tRegular Cleaning Service\tRegular maintenance for apartments and villas with flexible scheduling (weekly, bi-weekly, monthly)\n30003\tخدمة التنظيف العميق\tتنظيف شامل ومفصل لجميع أجزاء المنزل بما في ذلك الأماكن الصعبة الوصول\t240\t2025-11-29 12:47:22\t2025-11-29 12:47:22\tDeep Cleaning Service\tComprehensive and detailed cleaning of all parts of the home including hard-to-reach areas\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tمثالي للعقارات الجديدة او الوحدات المصيفية\t180\t2025-11-29 12:47:22\t2025-11-29 12:47:22\tMove-in/Move-out Cleaning\tIdeal for new properties or seasonal units\n30005\tالتبخير والتعقيم\tخدمات تعقيم احترافية باستخدام أحدث تقنيات التبخير والتطهير\t90\t2025-11-29 12:47:22\t2025-11-29 12:47:22\tFumigation and Sterilization\tProfessional disinfection services using the latest fumigation and sanitization techniques\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}
