@@ -80,9 +80,3 @@
 - [x] Implement customer notes feature (admin can add private notes to bookings)
 - [ ] Add booking history view for customers
 - [x] Integrate automated WhatsApp booking confirmations
-
-## Customer Cancellation Feature
-- [x] Add public cancellation procedure to backend API
-- [x] Update CheckBooking page with cancel button
-- [x] Add cancellation confirmation dialog
-- [x] Test cancellation updates admin dashboard correctly

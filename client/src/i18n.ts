@@ -86,12 +86,6 @@ const resources = {
       "Booking not found. Please check your booking reference and phone number.": "Booking not found. Please check your booking reference and phone number.",
       "Failed to check booking status. Please try again.": "Failed to check booking status. Please try again.",
       "Please enter both booking reference and phone number": "Please enter both booking reference and phone number",
-      "Cancel Booking": "Cancel Booking",
-      "Are you sure you want to cancel this booking? This action cannot be undone.": "Are you sure you want to cancel this booking? This action cannot be undone.",
-      "No, Keep Booking": "No, Keep Booking",
-      "Yes, Cancel Booking": "Yes, Cancel Booking",
-      "Booking cancelled successfully": "Booking cancelled successfully",
-      "Failed to cancel booking": "Failed to cancel booking",
       
       // WhatsApp
       "bookViaWhatsApp": "Book via WhatsApp",
@@ -181,12 +175,6 @@ const resources = {
       "Booking not found. Please check your booking reference and phone number.": "لم يتم العثور على الحجز. يرجى التحقق من رقم الحجز ورقم الهاتف.",
       "Failed to check booking status. Please try again.": "فشل في التحقق من حالة الحجز. يرجى المحاولة مرة أخرى.",
       "Please enter both booking reference and phone number": "يرجى إدخال رقم الحجز ورقم الهاتف",
-      "Cancel Booking": "إلغاء الحجز",
-      "Are you sure you want to cancel this booking? This action cannot be undone.": "هل أنت متأكد من إلغاء هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.",
-      "No, Keep Booking": "لا، الاحتفاظ بالحجز",
-      "Yes, Cancel Booking": "نعم، إلغاء الحجز",
-      "Booking cancelled successfully": "تم إلغاء الحجز بنجاح",
-      "Failed to cancel booking": "فشل إلغاء الحجز",
       
       // WhatsApp
       "bookViaWhatsApp": "احجز عبر واتساب",
