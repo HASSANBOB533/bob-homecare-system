@@ -1,4 +1,4 @@
-import DashboardLayout from "@/components/DashboardLayout";
+import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
   const completedCount = bookings.filter((b) => b.status === "completed").length;
 
   return (
-    <DashboardLayout>
+    <AdminLayout>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
@@ -310,6 +310,6 @@ export default function AdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </DashboardLayout>
+    </AdminLayout>
   );
 }

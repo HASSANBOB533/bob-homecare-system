@@ -68,3 +68,9 @@
 - [x] Save bookings to database so they appear in admin dashboard
 - [x] Add public booking status check page (no login required)
 - [x] Add payment confirmation message: "Reservation will be confirmed after sending payment link"
+
+## Dashboard Overlap Issue
+- [x] Separate admin dashboard from client dashboard
+- [x] Admin dashboard should show all bookings and service management
+- [x] Client dashboard should only show customer's own bookings
+- [x] Make routes clear: /admin for admin, /dashboard for clients

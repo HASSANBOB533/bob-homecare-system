@@ -41,9 +41,6 @@ function Router() {
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}
       </Route>
-      <Route path={" /book-auth"}>
-        {() => <ProtectedRoute component={BookingForm} />}
-      </Route>
       <Route path={"/admin"}>
         {() => <ProtectedRoute component={AdminDashboard} requireAdmin />}
       </Route>
