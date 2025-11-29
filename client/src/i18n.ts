@@ -16,6 +16,12 @@ const resources = {
       "myDashboard": "My Dashboard",
       "myProfile": "My Profile",
       "signOut": "Sign Out",
+      "editProfile": "Edit Profile",
+      "updateProfile": "Update Profile",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "profileUpdated": "Profile updated successfully!",
+      "profileUpdateFailed": "Failed to update profile. Please try again.",
       
       // Hero Section
       "heroTitle": "BOB Home Care",
@@ -110,6 +116,12 @@ const resources = {
       "myDashboard": "لوحة التحكم",
       "myProfile": "الملف الشخصي",
       "signOut": "تسجيل الخروج",
+      "editProfile": "تحرير الملف الشخصي",
+      "updateProfile": "تحديث الملف الشخصي",
+      "cancel": "إلغاء",
+      "saving": "جاري الحفظ...",
+      "profileUpdated": "تم تحديث الملف الشخصي بنجاح!",
+      "profileUpdateFailed": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.",
       
       // Hero Section
       "heroTitle": "BOB Home Care",

@@ -100,3 +100,12 @@
 - [x] Add Arabic translations for dropdown menu items
 - [x] Replace Sign In/Sign Up buttons with dropdown when user is authenticated
 - [x] Test dropdown functionality and write vitest tests
+
+## User Profile Editing
+- [x] Add phone field to users table in database schema
+- [x] Create backend tRPC procedure for updating user profile
+- [x] Create EditProfileDialog component with form fields (name, email, phone)
+- [x] Add "Edit Profile" option to dropdown menu
+- [x] Add Arabic translations for profile editing
+- [x] Implement form validation and error handling
+- [x] Write vitest tests for profile update functionality

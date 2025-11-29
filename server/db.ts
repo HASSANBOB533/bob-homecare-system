@@ -264,3 +264,28 @@ export async function deleteBooking(id: number) {
   const { bookings } = await import("../drizzle/schema");
   await db.delete(bookings).where(eq(bookings.id, id));
 }
+
+// User profile update
+export async function updateUserProfile(userId: number, data: {
+  name?: string;
+  email?: string;
+  phone?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const updateData: Record<string, unknown> = {};
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.email !== undefined) updateData.email = data.email;
+  if (data.phone !== undefined) updateData.phone = data.phone;
+  
+  if (Object.keys(updateData).length === 0) {
+    throw new Error("No fields to update");
+  }
+  
+  await db.update(users).set(updateData).where(eq(users.id, userId));
+  
+  // Return updated user
+  const result = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return result[0];
+}

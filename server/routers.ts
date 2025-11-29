@@ -16,6 +16,16 @@ export const appRouter = router({
         success: true,
       } as const;
     }),
+    updateProfile: protectedProcedure
+      .input(z.object({
+        name: z.string().min(1).optional(),
+        email: z.string().email().optional(),
+        phone: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { updateUserProfile } = await import("./db");
+        return updateUserProfile(ctx.user.id, input);
+      }),
   }),
 
   services: router({

@@ -13,15 +13,19 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
+import { EditProfileDialog } from "@/components/EditProfileDialog";
+import { useState } from "react";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+  const [editProfileOpen, setEditProfileOpen] = useState(false);
+  
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess: () => {
       window.location.href = '/';
@@ -83,6 +87,10 @@ export default function Home() {
                   <DropdownMenuItem onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     <span>{t('myDashboard')}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setEditProfileOpen(true)}>
+                    <UserCog className="mr-2 h-4 w-4" />
+                    <span>{t('editProfile')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} disabled={logoutMutation.isPending}>
@@ -245,6 +253,15 @@ export default function Home() {
           <p>{t('copyright')}</p>
         </div>
       </footer>
+
+      {/* Edit Profile Dialog */}
+      {user && (
+        <EditProfileDialog
+          open={editProfileOpen}
+          onOpenChange={setEditProfileOpen}
+          user={user}
+        />
+      )}
     </div>
   );
 }
