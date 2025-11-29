@@ -89,4 +89,120 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// Services queries
+export async function getAllServices() {
+  const db = await getDb();
+  if (!db) return [];
+  const { services } = await import("../drizzle/schema");
+  return db.select().from(services);
+}
+
+export async function getServiceById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const { services } = await import("../drizzle/schema");
+  const result = await db.select().from(services).where(eq(services.id, id)).limit(1);
+  return result[0];
+}
+
+export async function createService(data: { name: string; description?: string; price?: number; duration?: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { services } = await import("../drizzle/schema");
+  const result = await db.insert(services).values(data);
+  return result;
+}
+
+export async function deleteService(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { services } = await import("../drizzle/schema");
+  await db.delete(services).where(eq(services.id, id));
+}
+
+// Bookings queries
+export async function getUserBookings(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  const { bookings, services } = await import("../drizzle/schema");
+  return db.select({
+    id: bookings.id,
+    customerName: bookings.customerName,
+    address: bookings.address,
+    phone: bookings.phone,
+    dateTime: bookings.dateTime,
+    status: bookings.status,
+    notes: bookings.notes,
+    serviceId: bookings.serviceId,
+    serviceName: services.name,
+    createdAt: bookings.createdAt,
+  }).from(bookings).leftJoin(services, eq(bookings.serviceId, services.id)).where(eq(bookings.userId, userId));
+}
+
+export async function getAllBookings() {
+  const db = await getDb();
+  if (!db) return [];
+  const { bookings, services, users } = await import("../drizzle/schema");
+  return db.select({
+    id: bookings.id,
+    customerName: bookings.customerName,
+    address: bookings.address,
+    phone: bookings.phone,
+    dateTime: bookings.dateTime,
+    status: bookings.status,
+    notes: bookings.notes,
+    serviceId: bookings.serviceId,
+    serviceName: services.name,
+    userName: users.name,
+    userEmail: users.email,
+    createdAt: bookings.createdAt,
+  }).from(bookings)
+    .leftJoin(services, eq(bookings.serviceId, services.id))
+    .leftJoin(users, eq(bookings.userId, users.id));
+}
+
+export async function getBookingById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const { bookings } = await import("../drizzle/schema");
+  const result = await db.select().from(bookings).where(eq(bookings.id, id)).limit(1);
+  return result[0];
+}
+
+export async function createBooking(data: {
+  userId: number;
+  serviceId?: number;
+  customerName: string;
+  address: string;
+  phone?: string;
+  dateTime: Date;
+  notes?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  const result = await db.insert(bookings).values(data);
+  return result;
+}
+
+export async function updateBooking(id: number, data: Partial<{
+  customerName: string;
+  address: string;
+  phone: string;
+  dateTime: Date;
+  serviceId: number;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
+  notes: string;
+}>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  await db.update(bookings).set(data).where(eq(bookings.id, id));
+}
+
+export async function deleteBooking(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  await db.delete(bookings).where(eq(bookings.id, id));
+}

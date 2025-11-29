@@ -5,14 +5,45 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import UserDashboard from "./pages/UserDashboard";
+import BookingForm from "./pages/BookingForm";
+import AdminDashboard from "./pages/AdminDashboard";
+import { useAuth } from "./_core/hooks/useAuth";
+import { getLoginUrl } from "./const";
+
+function ProtectedRoute({ component: Component, requireAdmin = false }: { component: React.ComponentType; requireAdmin?: boolean }) {
+  const { user, loading, isAuthenticated } = useAuth();
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    window.location.href = getLoginUrl();
+    return null;
+  }
+
+  if (requireAdmin && user?.role !== "admin") {
+    return <div className="min-h-screen flex items-center justify-center">Access Denied</div>;
+  }
+
+  return <Component />;
+}
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/dashboard"}>
+        {() => <ProtectedRoute component={UserDashboard} />}
+      </Route>
+      <Route path={"/book"}>
+        {() => <ProtectedRoute component={BookingForm} />}
+      </Route>
+      <Route path={"/admin"}>
+        {() => <ProtectedRoute component={AdminDashboard} requireAdmin />}
+      </Route>
       <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
