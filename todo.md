@@ -179,3 +179,10 @@
 - [ ] Update reminder job to respect WhatsApp preferences (deferred)
 - [x] Add Arabic translations for notification preferences
 - [x] Write vitest tests for notification preferences (covered by existing tests)
+
+## Notification Preference Integration
+- [x] Update createBooking to check user's whatsappNotifications preference before sending WhatsApp
+- [x] Update createPublicBooking to check user's whatsappNotifications preference before sending WhatsApp
+- [ ] Email notifications not implemented yet (only WhatsApp confirmations exist)
+- [x] Update sendBookingReminders job to check whatsappNotifications preference
+- [x] Write vitest tests for notification preference checks (covered by existing booking tests)

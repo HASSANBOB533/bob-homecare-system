@@ -132,7 +132,7 @@ export const appRouter = router({
         notes: z.string().optional(),
       }))
       .mutation(async ({ input }) => {
-        const { createPublicBooking, getServiceById } = await import("./db");
+        const { createPublicBooking, getServiceById, getUserByEmail } = await import("./db");
         const { sendBookingConfirmation } = await import("./_core/whatsapp");
         
         const dateTime = new Date(`${input.date}T${input.time}`);
@@ -146,8 +146,17 @@ export const appRouter = router({
           notes: input.notes,
         });
         
-        // Send WhatsApp confirmation if phone is provided
-        if (input.phone) {
+        // Check notification preferences if user has an account
+        let whatsappEnabled = true; // Default to true for public bookings
+        if (input.customerEmail) {
+          const user = await getUserByEmail(input.customerEmail);
+          if (user) {
+            whatsappEnabled = user.whatsappNotifications ?? true;
+          }
+        }
+        
+        // Send WhatsApp confirmation if phone is provided and user hasn't disabled it
+        if (input.phone && whatsappEnabled) {
           const service = await getServiceById(input.serviceId);
           await sendBookingConfirmation(input.phone, {
             customerName: input.customerName,
@@ -185,8 +194,23 @@ export const appRouter = router({
         notes: z.string().optional(),
       }))
       .mutation(async ({ ctx, input }) => {
-        const { createBooking } = await import("./db");
-        return createBooking({ ...input, userId: ctx.user.id });
+        const { createBooking, getServiceById } = await import("./db");
+        const { sendBookingConfirmation } = await import("./_core/whatsapp");
+        
+        const booking = await createBooking({ ...input, userId: ctx.user.id });
+        
+        // Send WhatsApp confirmation if phone is provided and user hasn't disabled it
+        if (input.phone && ctx.user.whatsappNotifications !== false) {
+          const service = input.serviceId ? await getServiceById(input.serviceId) : null;
+          await sendBookingConfirmation(input.phone, {
+            customerName: input.customerName,
+            serviceName: service?.nameEn || service?.name || 'Cleaning Service',
+            dateTime: input.dateTime,
+            address: input.address,
+          });
+        }
+        
+        return booking;
       }),
     update: protectedProcedure
       .input(z.object({

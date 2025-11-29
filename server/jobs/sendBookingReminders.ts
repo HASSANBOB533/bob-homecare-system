@@ -28,7 +28,8 @@ export async function sendBookingReminders() {
     
     console.log(`[Reminders] Checking bookings between ${reminderStart.toISOString()} and ${reminderEnd.toISOString()}`);
     
-    // Find bookings that need reminders
+    // Find bookings that need reminders (join with users to check preferences)
+    const { users } = await import("../../drizzle/schema");
     const upcomingBookings = await db.select({
       id: bookings.id,
       customerName: bookings.customerName,
@@ -38,9 +39,12 @@ export async function sendBookingReminders() {
       status: bookings.status,
       serviceName: services.name,
       serviceNameEn: services.nameEn,
+      userId: bookings.userId,
+      whatsappNotifications: users.whatsappNotifications,
     })
     .from(bookings)
     .leftJoin(services, eq(bookings.serviceId, services.id))
+    .leftJoin(users, eq(bookings.userId, users.id))
     .where(
       and(
         gte(bookings.dateTime, reminderStart),
@@ -63,6 +67,12 @@ export async function sendBookingReminders() {
       
       if (!booking.dateTime) {
         console.log(`[Reminders] Skipping booking ${booking.id} - no date/time`);
+        continue;
+      }
+      
+      // Check if user has disabled WhatsApp notifications
+      if (booking.userId && booking.whatsappNotifications === false) {
+        console.log(`[Reminders] Skipping booking ${booking.id} - user disabled WhatsApp notifications`);
         continue;
       }
       

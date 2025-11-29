@@ -488,3 +488,20 @@ export async function updateNotificationPreferences(
 
   return getUserById(userId);
 }
+
+
+/**
+ * Get user by email address
+ */
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+  
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1);
+  
+  return result[0] || null;
+}
