@@ -212,7 +212,7 @@ export async function createBooking(data: {
   if (!db) throw new Error("Database not available");
   const { bookings } = await import("../drizzle/schema");
   const result = await db.insert(bookings).values(data);
-  return result;
+  return { id: result[0].insertId, ...data };
 }
 
 export async function createPublicBooking(data: {
@@ -473,7 +473,7 @@ export async function getUserReviewStats(userId: number) {
  */
 export async function updateNotificationPreferences(
   userId: number,
-  preferences: { emailNotifications?: boolean; whatsappNotifications?: boolean }
+  preferences: { emailNotifications?: boolean; whatsappNotifications?: boolean; smsNotifications?: boolean }
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not initialized");

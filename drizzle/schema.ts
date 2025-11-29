@@ -19,6 +19,7 @@ export const users = mysqlTable("users", {
   verificationToken: varchar("verificationToken", { length: 255 }),
   emailNotifications: boolean("emailNotifications").default(true).notNull(),
   whatsappNotifications: boolean("whatsappNotifications").default(true).notNull(),
+  smsNotifications: boolean("smsNotifications").default(true).notNull(),
   phone: varchar("phone", { length: 20 }),
   loginMethod: varchar("loginMethod", { length: 64 }),
   role: mysqlEnum("role", ["user", "admin"]).default("user").notNull(),

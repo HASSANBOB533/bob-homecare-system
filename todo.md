@@ -265,3 +265,21 @@
 - [x] Write vitest tests for admin loyalty management
 - [x] Add Arabic/English translations for all loyalty features
 - [x] Seed sample rewards for demonstration
+
+## SMS Notifications Integration
+
+- [ ] Set up Twilio account and obtain API credentials (user action required)
+- [ ] Add Twilio credentials to environment variables via secrets card (user action required)
+- [x] Create SMS helper functions (sendSMS, sendBookingConfirmationSMS, sendLoyaltyUpdateSMS)
+- [x] Integrate SMS notifications into booking creation flow
+- [x] Integrate SMS notifications into booking status updates
+- [x] Add SMS notification when user earns loyalty points
+- [x] Add SMS notification when user redeems a reward
+- [x] Add smsNotifications field to users table
+- [x] Create API endpoint to update SMS notification preferences
+- [x] Add SMS notification toggle to user dashboard settings
+- [x] Update booking flow to check SMS notification preferences
+- [x] Update loyalty flow to check SMS notification preferences
+- [x] Write vitest tests for SMS notification functions
+- [ ] Test SMS delivery with real Twilio credentials (requires user to add credentials first)
+- [x] Add Arabic/English translations for SMS notification settings
