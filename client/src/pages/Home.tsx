@@ -24,15 +24,8 @@ export default function Home() {
   };
 
   const handleGetStarted = () => {
-    if (isAuthenticated) {
-      if (user?.role === "admin") {
-        setLocation("/admin");
-      } else {
-        setLocation("/dashboard");
-      }
-    } else {
-      window.location.href = getLoginUrl();
-    }
+    // Always go to booking page for clients
+    setLocation("/book");
   };
 
   return (
