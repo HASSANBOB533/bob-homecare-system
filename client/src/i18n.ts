@@ -92,16 +92,6 @@ const resources = {
       "Yes, Cancel Booking": "Yes, Cancel Booking",
       "Booking cancelled successfully": "Booking cancelled successfully",
       "Failed to cancel booking": "Failed to cancel booking",
-      "Cancellation Policy": "Cancellation Policy",
-      "Cancellations are non-refundable. Bookings can be rescheduled if requested at least 24 hours before the scheduled service time.": "Cancellations are non-refundable. Bookings can be rescheduled if requested at least 24 hours before the scheduled service time.",
-      "Reschedule Booking": "Reschedule Booking",
-      "Select new date and time for your booking": "Select new date and time for your booking",
-      "New Date": "New Date",
-      "New Time": "New Time",
-      "Reschedule": "Reschedule",
-      "Booking rescheduled successfully": "Booking rescheduled successfully",
-      "Failed to reschedule booking": "Failed to reschedule booking",
-      "Cannot reschedule: Booking must be at least 24 hours away": "Cannot reschedule: Booking must be at least 24 hours away",
       
       // WhatsApp
       "bookViaWhatsApp": "Book via WhatsApp",
@@ -197,16 +187,6 @@ const resources = {
       "Yes, Cancel Booking": "نعم، إلغاء الحجز",
       "Booking cancelled successfully": "تم إلغاء الحجز بنجاح",
       "Failed to cancel booking": "فشل إلغاء الحجز",
-      "Cancellation Policy": "سياسة الإلغاء",
-      "Cancellations are non-refundable. Bookings can be rescheduled if requested at least 24 hours before the scheduled service time.": "الإلغاءات غير قابلة للاسترداد. يمكن إعادة جدولة الحجز إذا تم الطلب قبل 24 ساعة على الأقل من موعد الخدمة.",
-      "Reschedule Booking": "إعادة جدولة الحجز",
-      "Select new date and time for your booking": "اختر تاريخاً ووقتاً جديدً لحجزك",
-      "New Date": "التاريخ الجديد",
-      "New Time": "الوقت الجديد",
-      "Reschedule": "إعادة الجدولة",
-      "Booking rescheduled successfully": "تم إعادة جدولة الحجز بنجاح",
-      "Failed to reschedule booking": "فشل في إعادة جدولة الحجز",
-      "Cannot reschedule: Booking must be at least 24 hours away": "لا يمكن إعادة الجدولة: يجب أن يكون الحجز قبل 24 ساعة على الأقل",
       
       // WhatsApp
       "bookViaWhatsApp": "احجز عبر واتساب",

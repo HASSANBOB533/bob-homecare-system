@@ -18,9 +18,6 @@ export default function CheckBooking() {
   const [phone, setPhone] = useState("");
   const [booking, setBooking] = useState<any>(null);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const [showRescheduleDialog, setShowRescheduleDialog] = useState(false);
-  const [newDate, setNewDate] = useState("");
-  const [newTime, setNewTime] = useState("");
 
   const checkBookingMutation = trpc.bookings.checkStatus.useMutation({
     onSuccess: (data) => {
@@ -51,24 +48,6 @@ export default function CheckBooking() {
     },
   });
 
-  const rescheduleMutation = trpc.bookings.reschedulePublic.useMutation({
-    onSuccess: () => {
-      toast.success(t('Booking rescheduled successfully'));
-      setShowRescheduleDialog(false);
-      setNewDate("");
-      setNewTime("");
-      // Refresh booking status
-      checkBookingMutation.mutate({
-        id: parseInt(bookingId),
-        phone: phone,
-      });
-    },
-    onError: (error) => {
-      toast.error(error.message || t('Failed to reschedule booking'));
-      setShowRescheduleDialog(false);
-    },
-  });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingId || !phone) {
@@ -85,19 +64,6 @@ export default function CheckBooking() {
     cancelMutation.mutate({
       id: parseInt(bookingId),
       phone: phone,
-    });
-  };
-
-  const handleRescheduleBooking = () => {
-    if (!newDate || !newTime) {
-      toast.error(t('Please select both date and time'));
-      return;
-    }
-    rescheduleMutation.mutate({
-      id: parseInt(bookingId),
-      phone: phone,
-      newDate: newDate,
-      newTime: newTime,
     });
   };
 
@@ -232,25 +198,8 @@ export default function CheckBooking() {
                     </div>
                   )}
 
-                  {/* Cancellation Policy */}
-                  <div className="mt-4 p-4 border border-yellow-200 bg-yellow-50 dark:bg-yellow-950 rounded-lg">
-                    <h3 className="font-semibold text-sm mb-2 text-yellow-900 dark:text-yellow-100">
-                      {t('Cancellation Policy')}
-                    </h3>
-                    <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                      {t('Cancellations are non-refundable. Bookings can be rescheduled if requested at least 24 hours before the scheduled service time.')}
-                    </p>
-                  </div>
-
                   {(booking.status === "pending" || booking.status === "confirmed") && (
-                    <div className="mt-6 pt-6 border-t space-y-3">
-                      <Button
-                        variant="outline"
-                        className="w-full"
-                        onClick={() => setShowRescheduleDialog(true)}
-                      >
-                        {t('Reschedule Booking')}
-                      </Button>
+                    <div className="mt-6 pt-6 border-t">
                       <Button
                         variant="destructive"
                         className="w-full"
@@ -289,58 +238,6 @@ export default function CheckBooking() {
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               {t('Yes, Cancel Booking')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog open={showRescheduleDialog} onOpenChange={setShowRescheduleDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('Reschedule Booking')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t('Select new date and time for your booking')}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="newDate">{t('New Date')}</Label>
-              <Input
-                id="newDate"
-                type="date"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="newTime">{t('New Time')}</Label>
-              <select
-                id="newTime"
-                value={newTime}
-                onChange={(e) => setNewTime(e.target.value)}
-                className="w-full rounded-md border border-input bg-background px-3 py-2"
-              >
-                <option value="">{t('Select time')}</option>
-                <option value="09:00">09:00 AM</option>
-                <option value="10:00">10:00 AM</option>
-                <option value="11:00">11:00 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="13:00">01:00 PM</option>
-                <option value="14:00">02:00 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="16:00">04:00 PM</option>
-                <option value="17:00">05:00 PM</option>
-                <option value="18:00">06:00 PM</option>
-                <option value="19:00">07:00 PM</option>
-                <option value="20:00">08:00 PM</option>
-              </select>
-            </div>
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleRescheduleBooking}>
-              {t('Reschedule')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
