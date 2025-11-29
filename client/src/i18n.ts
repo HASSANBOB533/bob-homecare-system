@@ -13,6 +13,9 @@ const resources = {
       "logout": "Logout",
       "signIn": "Sign In",
       "signUp": "Sign Up",
+      "myDashboard": "My Dashboard",
+      "myProfile": "My Profile",
+      "signOut": "Sign Out",
       
       // Hero Section
       "heroTitle": "BOB Home Care",
@@ -104,6 +107,9 @@ const resources = {
       "logout": "تسجيل الخروج",
       "signIn": "تسجيل الدخول",
       "signUp": "إنشاء حساب",
+      "myDashboard": "لوحة التحكم",
+      "myProfile": "الملف الشخصي",
+      "signOut": "تسجيل الخروج",
       
       // Hero Section
       "heroTitle": "BOB Home Care",

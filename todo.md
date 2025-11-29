@@ -91,3 +91,12 @@
 - [x] Add Sign Up button to homepage header
 - [x] Add Arabic translations for Sign In/Sign Up
 - [x] Query and provide existing user credentials from database
+
+## User Profile Dropdown Menu
+- [x] Add user profile dropdown component to homepage header
+- [x] Show user name and role in dropdown
+- [x] Add "My Dashboard" link (routes to /dashboard for users, /admin for admins)
+- [x] Add "Sign Out" button with logout functionality
+- [x] Add Arabic translations for dropdown menu items
+- [x] Replace Sign In/Sign Up buttons with dropdown when user is authenticated
+- [x] Test dropdown functionality and write vitest tests

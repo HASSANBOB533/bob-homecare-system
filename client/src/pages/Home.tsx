@@ -1,11 +1,19 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 
@@ -14,6 +22,15 @@ export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      window.location.href = '/';
+    },
+  });
+
+  const handleSignOut = () => {
+    logoutMutation.mutate();
+  };
 
   // Get service name and description based on current language
   const getServiceText = (service: any, field: 'name' | 'description') => {
@@ -46,9 +63,34 @@ export default function Home() {
             </a>
             <LanguageSwitcher />
             {isAuthenticated ? (
-              <Button variant="default" size="sm" onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
-                {user?.role === "admin" ? t('adminDashboard') : t('userDashboard')}
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span>{user?.name}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user?.name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user?.role === 'admin' ? t('adminDashboard') : t('userDashboard')}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setLocation(user?.role === "admin" ? "/admin" : "/dashboard")}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <span>{t('myDashboard')}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} disabled={logoutMutation.isPending}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>{logoutMutation.isPending ? t('Checking...') : t('signOut')}</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={() => window.location.href = getLoginUrl()}>
