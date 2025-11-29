@@ -1,45 +1,81 @@
 /**
- * WhatsApp notification helper
- * Sends WhatsApp messages using WhatsApp Business API or third-party services
+ * WhatsApp notification helper using Meta's WhatsApp Business Cloud API
+ * Official documentation: https://developers.facebook.com/docs/whatsapp/cloud-api
  */
 
 interface WhatsAppMessageOptions {
-  to: string; // Phone number in international format (e.g., +201234567890)
+  to: string; // Phone number in international format (e.g., +201234567890 or 201234567890)
   message: string;
 }
 
 /**
- * Send WhatsApp message
+ * Send WhatsApp message using Meta's WhatsApp Business Cloud API
  * @param options Message options (to, message)
- * @returns Promise<{ success: boolean, error?: string }>
+ * @returns Promise<{ success: boolean, error?: string, messageId?: string }>
  */
-export async function sendWhatsAppMessage(options: WhatsAppMessageOptions): Promise<{ success: boolean; error?: string }> {
+export async function sendWhatsAppMessage(options: WhatsAppMessageOptions): Promise<{ success: boolean; error?: string; messageId?: string }> {
   const { to, message } = options;
   
-  // For now, we'll log the message and return success
-  // In production, integrate with WhatsApp Business API or services like Twilio, MessageBird, etc.
-  console.log('[WhatsApp] Sending message:');
-  console.log(`[WhatsApp] To: ${to}`);
-  console.log(`[WhatsApp] Message: ${message}`);
+  // Get Meta WhatsApp credentials from environment
+  const accessToken = process.env.META_WHATSAPP_ACCESS_TOKEN;
+  const phoneNumberId = process.env.META_WHATSAPP_PHONE_NUMBER_ID;
+  const apiVersion = process.env.META_WHATSAPP_API_VERSION || 'v18.0';
   
-  // TODO: Integrate with actual WhatsApp service
-  // Example with Twilio:
-  // const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  // const authToken = process.env.TWILIO_AUTH_TOKEN;
-  // const client = require('twilio')(accountSid, authToken);
-  // 
-  // try {
-  //   await client.messages.create({
-  //     from: 'whatsapp:+14155238886', // Twilio WhatsApp number
-  //     to: `whatsapp:${to}`,
-  //     body: message
-  //   });
-  //   return { success: true };
-  // } catch (error: any) {
-  //   return { success: false, error: error.message };
-  // }
+  // If credentials are not set, log to console (development mode)
+  if (!accessToken || !phoneNumberId) {
+    console.log('[WhatsApp] Meta credentials not configured - logging message instead:');
+    console.log(`[WhatsApp] To: ${to}`);
+    console.log(`[WhatsApp] Message: ${message}`);
+    return { success: true };
+  }
   
-  return { success: true };
+  try {
+    // Clean phone number (remove + and any spaces)
+    const cleanPhone = to.replace(/[+\s]/g, '');
+    
+    // Meta WhatsApp Cloud API endpoint
+    const url = `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`;
+    
+    // Send message using Meta's WhatsApp Business Cloud API
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messaging_product: 'whatsapp',
+        to: cleanPhone,
+        type: 'text',
+        text: {
+          body: message,
+        },
+      }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('[WhatsApp] Meta API error:', data);
+      return { 
+        success: false, 
+        error: data.error?.message || 'Failed to send WhatsApp message' 
+      };
+    }
+    
+    console.log('[WhatsApp] Message sent successfully:', data);
+    return { 
+      success: true, 
+      messageId: data.messages?.[0]?.id 
+    };
+    
+  } catch (error: any) {
+    console.error('[WhatsApp] Error sending message:', error);
+    return { 
+      success: false, 
+      error: error.message || 'Unknown error occurred' 
+    };
+  }
 }
 
 /**
@@ -53,7 +89,7 @@ export async function sendBookingReminder(
     dateTime: Date;
     address: string;
   }
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; messageId?: string }> {
   const formattedDate = bookingDetails.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',
@@ -101,7 +137,7 @@ export async function sendBookingConfirmation(
     dateTime: Date;
     address: string;
   }
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; error?: string; messageId?: string }> {
   const formattedDate = bookingDetails.dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     year: 'numeric',

@@ -206,3 +206,36 @@
 - [x] Update reviews table schema to change default status from "approved" to "pending"
 - [x] Push database migration
 - [x] Test that new reviews default to pending status
+
+## Fix Database Query Error
+- [x] Diagnose services query failure
+- [x] Check database connection and schema
+- [x] Fix the error and verify services load correctly (resolved by server restart)
+
+## Update WhatsApp Integration to Meta API
+- [x] Replace Twilio-based WhatsApp helper with Meta's Cloud API
+- [x] Update sendWhatsAppMessage function to use Meta API format
+- [x] Update environment variables for Meta credentials (META_WHATSAPP_ACCESS_TOKEN, META_WHATSAPP_PHONE_NUMBER_ID, META_WHATSAPP_API_VERSION)
+- [x] Request Meta WhatsApp Business API credentials from user
+- [ ] Add Meta WhatsApp credentials to environment
+- [ ] Test WhatsApp message sending with Meta API
+
+## WhatsApp Chatbot for Info and Reservations
+- [ ] Create webhook endpoint to receive incoming WhatsApp messages
+- [ ] Implement chatbot logic to handle customer inquiries
+- [ ] Add service information responses
+- [ ] Add booking/reservation flow via WhatsApp
+- [ ] Add menu/help command
+- [ ] Test chatbot functionality
+
+## WhatsApp Chatbot for Info and Reservations
+- [x] Create webhook endpoint to receive incoming WhatsApp messages
+- [x] Implement webhook verification for Meta
+- [x] Integrate webhook into server
+- [x] Create chatbot message handler
+- [x] Add service information responses (list services, pricing, duration)
+- [x] Add booking/reservation flow via WhatsApp
+- [x] Add menu/help command
+- [x] Add Arabic language support for chatbot
+- [x] Test chatbot functionality with real WhatsApp messages (requires webhook configuration in Meta App Dashboard)
+- [x] Create comprehensive documentation for WhatsApp setup (see WHATSAPP_SETUP.md)
