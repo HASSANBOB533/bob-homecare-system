@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { trpc } from "@/lib/trpc";
-import { Search } from "lucide-react";
+import { Search, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export default function CheckBooking() {
   const { t, i18n } = useTranslation();
@@ -16,6 +17,7 @@ export default function CheckBooking() {
   const [bookingId, setBookingId] = useState("");
   const [phone, setPhone] = useState("");
   const [booking, setBooking] = useState<any>(null);
+  const [showCancelDialog, setShowCancelDialog] = useState(false);
 
   const checkBookingMutation = trpc.bookings.checkStatus.useMutation({
     onSuccess: (data) => {
@@ -30,6 +32,22 @@ export default function CheckBooking() {
     },
   });
 
+  const cancelMutation = trpc.bookings.cancelPublic.useMutation({
+    onSuccess: () => {
+      toast.success(t('Booking cancelled successfully'));
+      setShowCancelDialog(false);
+      // Refresh booking status
+      checkBookingMutation.mutate({
+        id: parseInt(bookingId),
+        phone: phone,
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message || t('Failed to cancel booking'));
+      setShowCancelDialog(false);
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!bookingId || !phone) {
@@ -37,6 +55,13 @@ export default function CheckBooking() {
       return;
     }
     checkBookingMutation.mutate({
+      id: parseInt(bookingId),
+      phone: phone,
+    });
+  };
+
+  const handleCancelBooking = () => {
+    cancelMutation.mutate({
       id: parseInt(bookingId),
       phone: phone,
     });
@@ -172,6 +197,19 @@ export default function CheckBooking() {
                       </p>
                     </div>
                   )}
+
+                  {(booking.status === "pending" || booking.status === "confirmed") && (
+                    <div className="mt-6 pt-6 border-t">
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        onClick={() => setShowCancelDialog(true)}
+                      >
+                        <XCircle className="w-4 h-4 mr-2" />
+                        {t('Cancel Booking')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
@@ -184,6 +222,26 @@ export default function CheckBooking() {
           {t('copyright')}
         </div>
       </footer>
+
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('Cancel Booking')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('Are you sure you want to cancel this booking? This action cannot be undone.')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('No, Keep Booking')}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleCancelBooking}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {t('Yes, Cancel Booking')}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

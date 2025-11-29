@@ -89,6 +89,30 @@ export const appRouter = router({
         const { getBookingByIdAndPhone } = await import("./db");
         return getBookingByIdAndPhone(input.id, input.phone);
       }),
+    cancelPublic: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        phone: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getBookingByIdAndPhone, updateBooking } = await import("./db");
+        const booking = await getBookingByIdAndPhone(input.id, input.phone);
+        
+        if (!booking) {
+          throw new Error("Booking not found or phone number doesn't match");
+        }
+        
+        if (booking.status === "cancelled") {
+          throw new Error("Booking is already cancelled");
+        }
+        
+        if (booking.status === "completed") {
+          throw new Error("Cannot cancel a completed booking");
+        }
+        
+        await updateBooking(input.id, { status: "cancelled" });
+        return { success: true, message: "Booking cancelled successfully" };
+      }),
     allBookings: protectedProcedure.query(async ({ ctx }) => {
       if (ctx.user.role !== "admin") {
         throw new Error("Only admins can view all bookings");
