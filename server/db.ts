@@ -265,6 +265,17 @@ export async function deleteBooking(id: number) {
   await db.delete(bookings).where(eq(bookings.id, id));
 }
 
+export async function updateBookingPayment(id: number, data: {
+  paymentId?: string;
+  paymentStatus?: "pending" | "success" | "failed";
+  amount?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  await db.update(bookings).set(data).where(eq(bookings.id, id));
+}
+
 // User profile update
 export async function updateUserProfile(userId: number, data: {
   name?: string;

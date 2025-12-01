@@ -14,6 +14,8 @@ import { AdminLoyalty } from "./pages/AdminLoyalty";
 import BookService from "./pages/BookService";
 import CheckBooking from "./pages/CheckBooking";
 import VerifyEmail from "./pages/VerifyEmail";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -41,6 +43,8 @@ function Router() {
     <Switch>          <Route path="/" component={Home} />
           <Route path="/verify-email" component={VerifyEmail} />      <Route path={"/book"} component={BookService} />
       <Route path={"/check-booking"} component={CheckBooking} />
+      <Route path={"/payment-success"} component={PaymentSuccess} />
+      <Route path={"/payment-failed"} component={PaymentFailed} />
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}
       </Route>

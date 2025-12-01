@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function BookService() {
   const { t, i18n } = useTranslation();
@@ -29,6 +30,21 @@ export default function BookService() {
     notes: "",
   });
 
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
+  const [currentBookingId, setCurrentBookingId] = useState<number | null>(null);
+
+  const initiatePaymentMutation = trpc.bookings.initiatePayment.useMutation({
+    onSuccess: (data) => {
+      setPaymentUrl(data.iframeUrl);
+      setShowPaymentDialog(true);
+    },
+    onError: (error) => {
+      toast.error(t('Payment initialization failed. Please try again.'));
+      console.error('Payment error:', error);
+    },
+  });
+
   // Get service name based on current language
   const getServiceName = (service: any) => {
     if (i18n.language === 'ar') {
@@ -39,20 +55,22 @@ export default function BookService() {
 
   const createBookingMutation = trpc.bookings.createPublic.useMutation({
     onSuccess: (data) => {
-      toast.success(t('Booking created successfully! We will contact you soon to confirm and send payment link.'));
-      // Reset form
-      setFormData({
-        serviceId: "",
-        date: "",
-        time: "",
-        name: "",
-        email: "",
-        phone: "",
-        address: "",
-        notes: "",
-      });
-      // Show booking reference number
-      toast.info(`${t('Booking Reference')}: #${data.id}`);
+      setCurrentBookingId(data.id);
+      toast.success(t('Booking created! Proceeding to payment...'));
+      
+      // Initiate payment
+      if (formData.email) {
+        initiatePaymentMutation.mutate({
+          bookingId: data.id,
+          serviceId: parseInt(formData.serviceId),
+          customerName: formData.name,
+          customerEmail: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+        });
+      } else {
+        toast.error(t('Email is required for payment. Please add your email.'));
+      }
     },
     onError: (error) => {
       toast.error(t('Failed to create booking. Please try again or contact us via WhatsApp.'));
@@ -68,13 +86,18 @@ export default function BookService() {
       return;
     }
 
+    if (!formData.email) {
+      toast.error(t('Email is required for online payment'));
+      return;
+    }
+
     // Save booking to database
     createBookingMutation.mutate({
       serviceId: parseInt(formData.serviceId),
       date: formData.date,
       time: formData.time,
       customerName: formData.name,
-      customerEmail: formData.email || undefined,
+      customerEmail: formData.email,
       phone: formData.phone,
       address: formData.address,
       notes: formData.notes || undefined,
@@ -200,7 +223,7 @@ export default function BookService() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">{t('Email')} ({t('optional')})</Label>
+                      <Label htmlFor="email">{t('Email')} *</Label>
                       <Input
                         id="email"
                         type="email"
@@ -253,6 +276,24 @@ export default function BookService() {
           </Card>
         </div>
       </main>
+
+      {/* Payment Dialog */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>{t('Complete Payment')}</DialogTitle>
+          </DialogHeader>
+          <div className="w-full h-[600px]">
+            {paymentUrl && (
+              <iframe
+                src={paymentUrl}
+                className="w-full h-full border-0"
+                title="Payment Gateway"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="border-t py-6 bg-background">

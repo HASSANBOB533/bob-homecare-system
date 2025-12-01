@@ -324,3 +324,24 @@
 - [x] Integrate calendar with existing booking data
 - [x] Add Arabic/English translations for calendar view
 - [x] Test calendar functionality and responsiveness
+
+## Paymob Payment Gateway Integration
+
+- [ ] Research Paymob API documentation and authentication requirements
+- [ ] Understand Paymob payment flow (authentication, order creation, payment key generation)
+- [ ] Identify required API credentials (API key, integration ID, iframe ID, HMAC secret- [x] Create payments table in database schema
+- [x] Add payment fields to bookings table (paymentId, paymentStatus, amount)
+-- [x] Create Paymob helper module for API calls
+- [x] Implement authentication token generation
+- [x] Implement order registration endpoint
+- [x] Implement payment key generation endpointt
+- [ ] Add payment amount field to services table
+- [ ] Update booking form to include payment step
+- [ ] Create payment checkout UI with Paymob iframe
+- [x] Implement payment callback/webhook handler
+- [x] Update booking status based on payment success/failure
+- [ ] Add payment confirmation notifications (WhatsApp/Email)
+- [ ] Add Arabic/English translations for payment UI
+- [ ] Request Paymob credentials from user
+- [ ] Test payment flow end-to-end
+- [ ] Write vitest tests for payment integration

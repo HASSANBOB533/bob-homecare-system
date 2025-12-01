@@ -273,8 +273,66 @@ export const appRouter = router({
           throw new Error("Not authorized");
         }
         
-        await deleteBooking(input.id);
-        return { success: true };
+        return deleteBooking(input.id);
+      }),
+    initiatePayment: publicProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        serviceId: z.number(),
+        customerName: z.string(),
+        customerEmail: z.string().email(),
+        phone: z.string(),
+        address: z.string(),
+      }))
+      .mutation(async ({ input }) => {
+        const { getServiceById, updateBookingPayment } = await import("./db");
+        const { initiatePaymobPayment, isPaymobConfigured } = await import("./_core/paymob");
+        
+        if (!isPaymobConfigured()) {
+          throw new Error("Payment gateway not configured");
+        }
+        
+        // Get service price
+        const service = await getServiceById(input.serviceId);
+        if (!service) {
+          throw new Error("Service not found");
+        }
+        
+        if (!service.price || service.price === 0) {
+          throw new Error("Service price not set");
+        }
+        
+        // Prepare billing data
+        const [firstName, ...lastNameParts] = input.customerName.split(" ");
+        const billingData = {
+          first_name: firstName || input.customerName,
+          last_name: lastNameParts.join(" ") || firstName,
+          email: input.customerEmail,
+          phone_number: input.phone,
+          street: input.address,
+          city: "Cairo",
+          country: "EG",
+        };
+        
+        // Initiate payment with Paymob
+        const paymentResult = await initiatePaymobPayment(
+          service.price,
+          input.bookingId,
+          billingData
+        );
+        
+        // Update booking with payment info
+        await updateBookingPayment(input.bookingId, {
+          paymentId: paymentResult.orderId.toString(),
+          paymentStatus: "pending",
+          amount: service.price,
+        });
+        
+        return {
+          iframeUrl: paymentResult.iframeUrl,
+          paymentToken: paymentResult.paymentToken,
+          amount: service.price,
+        };
       }),
   }),
 

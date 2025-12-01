@@ -41,6 +41,7 @@ export const services = mysqlTable("services", {
   description: text("description"), // Arabic description
   descriptionEn: text("descriptionEn"), // English description
   duration: int("duration"), // Duration in minutes
+  price: int("price").notNull().default(0), // Price in cents (e.g., 100 EGP = 10000 cents)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -74,6 +75,10 @@ export const bookings = mysqlTable("bookings", {
   dateTime: timestamp("dateTime").notNull(),
   status: mysqlEnum("status", ["pending", "confirmed", "completed", "cancelled"]).default("pending").notNull(),
   notes: text("notes"),
+  // Payment fields
+  paymentId: varchar("paymentId", { length: 255 }), // Paymob transaction ID
+  paymentStatus: mysqlEnum("paymentStatus", ["pending", "success", "failed"]).default("pending"),
+  amount: int("amount"), // Amount in cents
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

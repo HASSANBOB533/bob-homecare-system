@@ -38,6 +38,10 @@ async function startServer() {
   registerOAuthRoutes(app);
   // WhatsApp webhook under /api/whatsapp/webhook
   app.use("/api/whatsapp", whatsappWebhook);
+  // Paymob payment callbacks
+  const { handlePaymobCallback, handlePaymobResponse } = await import("../paymentCallback");
+  app.post("/api/payment/callback", handlePaymobCallback);
+  app.get("/api/payment/response", handlePaymobResponse);
   // tRPC API
   app.use(
     "/api/trpc",
