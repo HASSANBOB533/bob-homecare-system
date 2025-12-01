@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
 import { ReviewDialog } from "@/components/ReviewDialog";
+import { BookingCalendar } from "@/components/BookingCalendar";
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ export default function UserDashboard() {
     serviceId: number;
     serviceName: string;
   } | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
 
   const { data: bookings = [], isLoading } = trpc.bookings.myBookings.useQuery();
   const { data: myReviews = [] } = trpc.reviews.myReviews.useQuery();
@@ -120,6 +122,27 @@ export default function UserDashboard() {
           </CardContent>
         </Card>
 
+        {/* View Toggle */}
+        {bookings.length > 0 && (
+          <div className="flex justify-end gap-2">
+            <Button
+              variant={viewMode === 'list' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+            >
+              {t('listView')}
+            </Button>
+            <Button
+              variant={viewMode === 'calendar' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('calendar')}
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              {t('calendarView')}
+            </Button>
+          </div>
+        )}
+
         {isLoading ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">Loading bookings...</p>
@@ -138,6 +161,8 @@ export default function UserDashboard() {
               </Button>
             </CardContent>
           </Card>
+        ) : viewMode === 'calendar' ? (
+          <BookingCalendar bookings={bookings} />
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {bookings.map((booking) => (

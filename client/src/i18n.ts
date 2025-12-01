@@ -55,6 +55,8 @@ const resources = {
       "receiveEmailNotifications": "Receive booking confirmations and reminders via email",
       "receiveWhatsappNotifications": "Receive booking confirmations and reminders via WhatsApp",
       "preferencesUpdated": "Preferences updated successfully!",
+      "listView": "List View",
+      "calendarView": "Calendar View",
       // Admin review management
       "reviewManagement": "Review Management",
       "allReviews": "All Reviews",
@@ -255,6 +257,8 @@ const resources = {
       "receiveEmailNotifications": "استلام تأكيدات الحجز والتذكيرات عبر البريد الإلكتروني",
       "receiveWhatsappNotifications": "استلام تأكيدات الحجز والتذكيرات عبر واتساب",
       "preferencesUpdated": "تم تحديث التفضيلات بنجاح!",
+      "listView": "عرض القائمة",
+      "calendarView": "عرض التقويم",
       // Admin review management
       "reviewManagement": "إدارة التقييمات",
       "allReviews": "جميع التقييمات",

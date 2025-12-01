@@ -298,3 +298,29 @@
 - [x] Remove SMS test files
 - [x] Update documentation to reflect WhatsApp + Email only
 - [x] Remove SMS translations from i18n
+
+## Booking Calendar Feature
+
+- [ ] Install calendar dependencies (date-fns for date manipulation)
+- [ ] Create BookingCalendar component with monthly view
+- [ ] Add calendar navigation (previous/next month, today button)
+- [ ] Integrate bookings data with calendar dates
+- [ ] Add color-coded status indicators (pending: yellow, confirmed: blue, completed: green, cancelled: red)
+- [ ] Display booking details on date hover/click
+- [ ] Add booking count badges on calendar dates
+- [ ] Create calendar view toggle in user dashboard (list/calendar view)
+- [ ] Add responsive design for mobile calendar view
+- [ ] Add Arabic/English translations for calendar labels
+- [ ] Test calendar with multiple bookings on same date
+- [ ] Test calendar navigation and date selection
+
+## Booking Calendar View
+
+- [x] Install react-big-calendar library for calendar component
+- [x] Create BookingCalendar component with monthly view
+- [x] Add color-coded status indicators (pending=yellow, confirmed=blue, completed=green, cancelled=red)
+- [x] Display booking details on calendar events
+- [x] Add view toggle between list and calendar views in user dashboard
+- [x] Integrate calendar with existing booking data
+- [x] Add Arabic/English translations for calendar view
+- [x] Test calendar functionality and responsiveness
