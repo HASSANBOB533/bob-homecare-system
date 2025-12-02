@@ -28,6 +28,7 @@ import Referrals from "./pages/Referrals";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 import { DebugPanel } from "./components/DebugPanel";
+import { PWAInstallBanner } from "./components/PWAInstallBanner";
 
 function ProtectedRoute({ component: Component, requireAdmin = false }: { component: React.ComponentType; requireAdmin?: boolean }) {
   const { user, loading, isAuthenticated } = useAuth();
@@ -111,6 +112,7 @@ function App() {
           <Toaster />
           <Router />
           <DebugPanel />
+          <PWAInstallBanner />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

@@ -8,6 +8,7 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
 import "./i18n";
+import { registerServiceWorker, setupInstallPrompt } from "./registerSW";
 
 const queryClient = new QueryClient();
 
@@ -60,3 +61,7 @@ createRoot(document.getElementById("root")!).render(
     </QueryClientProvider>
   </trpc.Provider>
 );
+
+// Register PWA Service Worker
+registerServiceWorker();
+setupInstallPrompt();

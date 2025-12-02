@@ -399,6 +399,12 @@ const resources = {
       "Delete": "Delete",
       "Booking deleted successfully": "Booking deleted successfully",
       "Failed to delete booking": "Failed to delete booking",
+      
+      // PWA Install
+      "Install BOB Home Care App": "Install BOB Home Care App",
+      "Get quick access and work offline": "Get quick access and work offline",
+      "Installing...": "Installing...",
+      "Install": "Install",
     }
   },
   ar: {
@@ -797,6 +803,12 @@ const resources = {
       "Delete": "حذف",
       "Booking deleted successfully": "تم حذف الحجز بنجاح",
       "Failed to delete booking": "فشل حذف الحجز",
+      
+      // PWA Install
+      "Install BOB Home Care App": "تثبيت تطبيق BOB Home Care",
+      "Get quick access and work offline": "احصل على وصول سريع واعمل بدون إنترنت",
+      "Installing...": "جاري التثبيت...",
+      "Install": "تثبيت",
     }
   }
 };
