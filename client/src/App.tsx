@@ -23,6 +23,7 @@ import PaymentFailed from "./pages/PaymentFailed";
 import QuoteViewer from "./pages/QuoteViewer";
 import ServiceDetail from "./pages/ServiceDetail";
 import AdminBookings from "./pages/AdminBookings";
+import AdminCalendar from "./pages/AdminCalendar";
 import AdminServiceGallery from "./pages/AdminServiceGallery";
 import Referrals from "./pages/Referrals";
 import { useAuth } from "./_core/hooks/useAuth";
@@ -86,6 +87,9 @@ function Router() {
       </Route>
       <Route path={"/admin/bookings"}>
         {() => <ProtectedRoute component={AdminBookings} requireAdmin />}
+      </Route>
+      <Route path={"/admin/calendar"}>
+        {() => <ProtectedRoute component={AdminCalendar} requireAdmin />}
       </Route>
       <Route path={"/admin/services/:id/gallery"}>
         {() => <ProtectedRoute component={AdminServiceGallery} requireAdmin />}

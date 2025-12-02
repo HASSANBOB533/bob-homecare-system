@@ -316,6 +316,16 @@ export async function deleteBooking(id: number) {
   return { success: true };
 }
 
+export async function updateBookingDateTime(id: number, dateTime: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { bookings } = await import("../drizzle/schema");
+  await db.update(bookings)
+    .set({ dateTime: new Date(dateTime) })
+    .where(eq(bookings.id, id));
+  return { success: true };
+}
+
 export async function updateBookingPayment(id: number, data: {
   paymentId?: string;
   paymentStatus?: "pending" | "success" | "failed";

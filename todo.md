@@ -1361,3 +1361,20 @@
 - [x] Add bilingual translations for all new UI elements
 - [x] Improve Actions column with View Notes + Delete buttons
 - [x] All fixes tested and working correctly
+
+## Booking Calendar View with Drag-and-Drop (January 2, 2025)
+- [x] Install calendar library (FullCalendar 6.1.19)
+- [x] Create AdminCalendar component
+- [x] Fetch bookings and format for calendar display
+- [x] Implement color coding by booking status (pending/confirmed/completed/cancelled)
+- [x] Add drag-and-drop rescheduling functionality
+- [x] Create backend endpoint for updating booking dateTime (bookings.reschedule)
+- [x] Add calendar navigation (prev/next/today buttons built-in)
+- [x] Implement view switching (day/week/month)
+- [x] Add booking details popup on event click
+- [x] Add filter by service type
+- [x] Add filter by booking status
+- [x] Add bilingual translations for calendar UI (English/Arabic)
+- [x] Write vitest tests for reschedule endpoint (3/3 tests passing)
+- [x] Add Calendar View link to admin sidebar navigation
+- [x] Calendar fully functional and ready for use

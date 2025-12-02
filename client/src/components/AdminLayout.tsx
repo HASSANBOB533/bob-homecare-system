@@ -28,7 +28,8 @@ import { Button } from "./ui/button";
 import { trpc } from "@/lib/trpc";
 
 const adminMenuItems = [
-  { icon: Calendar, label: "All Bookings", path: "/admin" },
+  { icon: Calendar, label: "All Bookings", path: "/admin/bookings" },
+  { icon: Calendar, label: "Calendar View", path: "/admin/calendar" },
   { icon: Settings, label: "Services Management", path: "/admin#services" },
   { icon: Star, label: "Review Management", path: "/admin/reviews" },
   { icon: Award, label: "Loyalty Management", path: "/admin/loyalty" },

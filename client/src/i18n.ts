@@ -405,6 +405,17 @@ const resources = {
       "No notes provided": "No notes provided",
       "Close": "Close",
       
+      // Calendar
+      "Booking Calendar": "Booking Calendar",
+      "Drag and drop bookings to reschedule": "Drag and drop bookings to reschedule",
+      "Schedule Overview": "Schedule Overview",
+      "Month View": "Month View",
+      "Week View": "Week View",
+      "Day View": "Day View",
+      "All Services": "All Services",
+      "Booking Details": "Booking Details",
+      "Failed to reschedule booking": "Failed to reschedule booking",
+      
       // PWA Install
       "Install BOB Home Care App": "Install BOB Home Care App",
       "Get quick access and work offline": "Get quick access and work offline",
@@ -813,6 +824,17 @@ const resources = {
       "Customer Notes": "ملاحظات العميل",
       "No notes provided": "لا توجد ملاحظات",
       "Close": "إغلاق",
+      
+      // Calendar
+      "Booking Calendar": "تقويم الحجوزات",
+      "Drag and drop bookings to reschedule": "اسحب وأفلت الحجوزات لإعادة الجدولة",
+      "Schedule Overview": "نظرة عامة على الجدول",
+      "Month View": "عرض شهري",
+      "Week View": "عرض أسبوعي",
+      "Day View": "عرض يومي",
+      "All Services": "جميع الخدمات",
+      "Booking Details": "تفاصيل الحجز",
+      "Failed to reschedule booking": "فشل إعادة جدولة الحجز",
       
       // PWA Install
       "Install BOB Home Care App": "تثبيت تطبيق BOB Home Care",

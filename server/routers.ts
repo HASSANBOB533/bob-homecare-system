@@ -470,6 +470,23 @@ export const appRouter = router({
         
         return deleteBooking(input.id);
       }),
+    reschedule: protectedProcedure
+      .input(z.object({ 
+        id: z.number(),
+        dateTime: z.string()
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getBookingById, updateBookingDateTime } = await import("./db");
+        const booking = await getBookingById(input.id);
+        if (!booking) throw new Error("Booking not found");
+        
+        // Only admins can reschedule bookings
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can reschedule bookings");
+        }
+        
+        return updateBookingDateTime(input.id, input.dateTime);
+      }),
     initiatePayment: publicProcedure
       .input(z.object({
         bookingId: z.number(),
