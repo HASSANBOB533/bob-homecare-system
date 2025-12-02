@@ -225,8 +225,10 @@ const resources = {
       
       // Quote Management
       "quote": {
-        "saveQuote": "Save as Quote",
-        "shareQuote": "Share Quote",
+        saveQuote: "Save as Quote",
+        shareQuote: "Share Quote",
+        "Download Checklist": "Download Checklist",
+        "Downloading...": "Downloading...",
         "quoteSaved": "Quote saved successfully!",
         "quoteFailed": "Failed to save quote. Please try again.",
         "quoteCode": "Quote Code",
@@ -468,8 +470,10 @@ const resources = {
       // Pricing
       // Quote Management
       "quote": {
-        "saveQuote": "حفظ كعرض سعر",
-        "shareQuote": "مشاركة عرض السعر",
+        saveQuote: "حفظ كعرض سعر",
+        shareQuote: "مشاركة العرض",
+        "Download Checklist": "تحميل قائمة المهام",
+        "Downloading...": "جاري التحميل...",
         "quoteSaved": "تم حفظ عرض السعر بنجاح!",
         "quoteFailed": "فشل حفظ عرض السعر. يرجى المحاولة مرة أخرى.",
         "quoteCode": "رمز عرض السعر",

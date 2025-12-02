@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CheckCircle2, ArrowRight, Home } from "lucide-react";
+import { CheckCircle2, ArrowRight, Home, Download } from "lucide-react";
 import { useState, useMemo } from "react";
 import { PhotoGallery } from "@/components/PhotoGallery";
 
@@ -30,6 +30,8 @@ export default function ServiceDetail() {
     { serviceId },
     { enabled: !!serviceId }
   );
+  
+  const downloadChecklistMutation = trpc.pricing.downloadChecklist.useMutation();
 
   // Pricing calculator state
   const [selectedBedrooms, setSelectedBedrooms] = useState<string | null>(null);
@@ -71,6 +73,36 @@ export default function ServiceDetail() {
 
   const handleBookNow = () => {
     setLocation(`/book?serviceId=${serviceId}`);
+  };
+  
+  const handleDownloadChecklist = async () => {
+    try {
+      const result = await downloadChecklistMutation.mutateAsync({
+        serviceId,
+        language: language as "ar" | "en",
+      });
+      
+      // Convert base64 to blob and download
+      const byteCharacters = atob(result.pdf);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Failed to download checklist:", error);
+    }
   };
 
   if (serviceLoading || pricingLoading) {
@@ -122,10 +154,21 @@ export default function ServiceDetail() {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{serviceName}</h1>
             <p className="text-xl text-gray-600 mb-8">{serviceDescription}</p>
-            <Button onClick={handleBookNow} size="lg" className="bg-green-600 hover:bg-green-700">
-              {t("Book Now")}
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+            <div className="flex gap-4 justify-center">
+              <Button onClick={handleBookNow} size="lg" className="bg-green-600 hover:bg-green-700">
+                {t("Book Now")}
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button 
+                onClick={handleDownloadChecklist} 
+                size="lg" 
+                variant="outline"
+                disabled={downloadChecklistMutation.isPending}
+              >
+                <Download className="w-5 h-5 mr-2" />
+                {downloadChecklistMutation.isPending ? t("Downloading...") : t("Download Checklist")}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

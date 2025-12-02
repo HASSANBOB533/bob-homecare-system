@@ -211,6 +211,37 @@ export const appRouter = router({
               address: input.address,
             });
           }
+          
+          // Send email confirmation if email provided and pricing breakdown available
+          if (input.customerEmail && input.pricingBreakdown && input.amount) {
+            const { sendEmail } = await import("./emailSender");
+            const { generateBookingConfirmationEmail } = await import("./emailTemplates");
+            
+            const emailData = generateBookingConfirmationEmail({
+              customerName: input.customerName,
+              serviceName,
+              date: input.date,
+              time: input.time,
+              address: input.address,
+              pricingBreakdown: {
+                basePrice: input.pricingBreakdown.basePrice || 0,
+                addOns: input.pricingBreakdown.addOns || [],
+                packageDiscount: input.pricingBreakdown.packageDiscount,
+                specialOffer: input.pricingBreakdown.specialOffer,
+                finalPrice: input.amount,
+              },
+              bookingReference: `BOB-${booking.id}`,
+              language: "en", // Default to English, can be made dynamic based on user preference
+            });
+            
+            // Send email (don't fail booking if email fails)
+            await sendEmail({
+              to: input.customerEmail,
+              subject: emailData.subject,
+              html: emailData.html,
+              text: emailData.text,
+            }).catch(err => console.error("Failed to send booking confirmation email:", err));
+          }
 
         }
         
@@ -960,6 +991,37 @@ export const appRouter = router({
         }
         const { deleteSpecialOffer } = await import("./db");
         return deleteSpecialOffer(input.id);
+      }),
+    
+    // Download service checklist as PDF
+    downloadChecklist: publicProcedure
+      .input(z.object({ serviceId: z.number(), language: z.enum(["ar", "en"]).optional() }))
+      .mutation(async ({ input }) => {
+        const { getServiceById } = await import("./db");
+        const { generateChecklistPDF } = await import("./pdfGenerator");
+        
+        const service = await getServiceById(input.serviceId);
+        if (!service) {
+          throw new Error("Service not found");
+        }
+        
+        // Get checklist from service (already parsed by Drizzle)
+        const checklist = service.checklist || [];
+        
+        const pdfBuffer = await generateChecklistPDF({
+          serviceName: service.name,
+          serviceNameEn: service.nameEn || undefined,
+          checklist,
+          language: input.language || "en",
+        });
+        
+        // Convert buffer to base64 for transmission
+        const base64Pdf = pdfBuffer.toString("base64");
+        
+        return {
+          pdf: base64Pdf,
+          filename: `${service.nameEn || service.name}-checklist.pdf`,
+        };
       }),
   }),
 
