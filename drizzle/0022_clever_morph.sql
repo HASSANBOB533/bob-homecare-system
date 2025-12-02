@@ -1,0 +1,1 @@
+ALTER TABLE `services` ADD `isVisible` boolean DEFAULT true NOT NULL;

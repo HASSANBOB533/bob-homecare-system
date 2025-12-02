@@ -45,6 +45,7 @@ export const services = mysqlTable("services", {
   pricingType: mysqlEnum("pricingType", ["BEDROOM_BASED", "SQM_BASED", "ITEM_BASED", "FIXED"]).default("FIXED").notNull(),
   galleryImages: json("galleryImages").$type<string[]>(), // Array of image URLs for photo gallery
   checklist: json("checklist").$type<Array<{ text: string; textEn?: string }>>(), // Service checklist items
+  isVisible: boolean("isVisible").default(true).notNull(), // Visibility toggle for hiding test/inactive services
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

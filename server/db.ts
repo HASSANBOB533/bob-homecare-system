@@ -94,7 +94,8 @@ export async function getAllServices() {
   const db = await getDb();
   if (!db) return [];
   const { services } = await import("../drizzle/schema");
-  return db.select().from(services);
+  const { eq } = await import("drizzle-orm");
+  return db.select().from(services).where(eq(services.isVisible, true));
 }
 
 export async function getServiceById(id: number) {

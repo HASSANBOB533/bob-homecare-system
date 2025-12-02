@@ -1118,18 +1118,29 @@
 ### Phase 3: Button Functionality Testing ⏳ IN PROGRESS
 - [x] Create button inventory (118 buttons across 22 pages)
 - [x] Set up debug panel for tracking button clicks
-- [ ] Test all navigation buttons systematically
+- [x] Add isVisible field to services table schema
+- [x] Push database migration for isVisible field (drizzle/0022_clever_morph.sql)
+- [x] Update all service queries to filter by isVisible=true
+- [x] Hide 22 test services by setting isVisible=false
+- [x] Verify test services don't appear on public pages
+- [x] Write vitest tests for service visibility (3 tests passing)
+- [ ] Test all navigation buttons systematically (pending page stability)
 - [ ] Test all CTA buttons (Book Now, WhatsApp, View Services)
 - [ ] Test all form submission buttons
 - [ ] Document broken buttons in diagnostic report
 - [ ] Fix broken event handlers
 
-### Phase 4: Dashboard Logic Review ⏳ PENDING
-- [ ] Test dashboard access with different user roles
-- [ ] Verify role-based routing logic
+### Phase 4: Dashboard Logic Review ⏳ IN PROGRESS
+- [ ] Test dashboard access as regular user
+- [ ] Test dashboard access as admin user
+- [ ] Test dashboard access as unauthenticated user
+- [ ] Verify role-based routing logic in App.tsx
 - [ ] Check for conflicting CSS or layout components
+- [ ] Verify UserDashboard shows only user's bookings
+- [ ] Verify AdminDashboard shows all bookings
+- [ ] Test navigation between dashboards
 - [ ] Consolidate duplicate code if found
-- [ ] Add role-based navigation guards
+- [ ] Add role-based navigation guards if missing
 
 ### Phase 5: Add-On System Audit ⏳ PENDING
 - [ ] Query all add-ons and their service associations
