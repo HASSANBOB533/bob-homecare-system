@@ -250,9 +250,9 @@ export default function AdminBookings() {
                             <span className="text-gray-400">{t("N/A")}</span>
                           )}
                         </TableCell>
-                        <TableCell>{getStatusBadge(booking.status)}</TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
+                            {getStatusBadge(booking.status)}
                             <Select
                               value={booking.status}
                               onValueChange={(value) => handleStatusUpdate(booking.id, value as BookingStatus)}
@@ -267,6 +267,10 @@ export default function AdminBookings() {
                                 <SelectItem value="cancelled">{t("Cancelled")}</SelectItem>
                               </SelectContent>
                             </Select>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
                             <Button
                               variant="ghost"
                               size="sm"

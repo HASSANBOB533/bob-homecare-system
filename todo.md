@@ -1378,3 +1378,13 @@
 - [x] Write vitest tests for reschedule endpoint (3/3 tests passing)
 - [x] Add Calendar View link to admin sidebar navigation
 - [x] Calendar fully functional and ready for use
+
+## Fix Empty Actions Column in Admin Bookings (January 2, 2025)
+- [x] Investigate why Actions column is empty
+- [x] Verify delete button code is present in AdminBookings.tsx
+- [x] Verify View Notes button code is present in AdminBookings.tsx
+- [x] Fix rendering issue - moved status dropdown to Status column
+- [x] Actions column now shows only View Notes and Delete buttons
+- [x] Reorganized table structure for better clarity
+- [x] Both buttons now visible and functional
+- [x] Ready for user testing
