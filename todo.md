@@ -891,10 +891,16 @@
 - [x] Write vitest tests for referral validation
 
 ### Property Manager Discount Validation
-- [ ] Add property count input field for property manager offer
-- [ ] Validate minProperties requirement before applying discount
-- [ ] Show validation error if property count is below minimum
-- [ ] Add Arabic/English translations for property validation
+- [x] Add property count input field to booking form (conditional display)
+- [x] Show property count input only when property manager offer is selected
+- [x] Implement backend validation for minProperties requirement
+- [x] Update price calculation to verify property count before applying discount
+- [x] Add validation error messages for insufficient property count
+- [x] Add Arabic/English translations for property count input
+- [x] Write vitest tests for property manager discount validation
+- [x] Test property count validation in browser
+- [x] Show validation error if property count is below minimum
+- [x] Extract pricing logic into pure function for testability
 
 ### Loyalty Program Integration with Booking Form
 - [ ] Add "Use Loyalty Points" option in booking form

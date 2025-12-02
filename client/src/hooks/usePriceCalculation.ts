@@ -20,6 +20,7 @@ interface SpecialOffer {
   discountType: string;
   discountValue: number;
   maxDiscount: number | null;
+  minProperties: number | null;
 }
 
 interface PriceCalculationInput {
@@ -37,6 +38,9 @@ interface PriceCalculationInput {
   
   // Referral discount (percentage)
   referralDiscountPercent?: number;
+  
+  // Property count (for property manager discount validation)
+  propertyCount?: number;
 }
 
 interface PriceBreakdown {
@@ -50,9 +54,12 @@ interface PriceBreakdown {
   finalPrice: number;
 }
 
-export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdown {
-  return useMemo(() => {
-    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer, referralDiscountPercent = 0 } = input;
+/**
+ * Pure function for calculating price breakdown
+ * Can be tested without React context
+ */
+export function calculatePriceBreakdown(input: PriceCalculationInput): PriceBreakdown {
+    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer, referralDiscountPercent = 0, propertyCount = 0 } = input;
 
     // Calculate add-ons total
     const addOnsTotal = selectedAddOns.reduce((sum, addOn) => sum + addOn.price, 0);
@@ -69,6 +76,15 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
     let priceAfterSpecialOffer = subtotalAfterPackage;
 
     if (specialOffer) {
+      // Validate property count for property manager discount
+      const isPropertyManagerOffer = specialOffer.minProperties && specialOffer.minProperties > 0;
+      const meetsPropertyRequirement = !isPropertyManagerOffer || (propertyCount >= (specialOffer.minProperties || 0));
+      
+      // Only apply discount if property count requirement is met
+      if (!meetsPropertyRequirement) {
+        // Skip special offer if property count requirement not met
+        priceAfterSpecialOffer = subtotalAfterPackage;
+      } else {
       if (specialOffer.discountType === "PERCENTAGE") {
         // Discount (negative adjustment)
         specialOfferAdjustment = (subtotalAfterPackage * specialOffer.discountValue) / 100;
@@ -83,6 +99,7 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
         // Premium (positive adjustment)
         specialOfferAdjustment = (subtotalAfterPackage * specialOffer.discountValue) / 100;
         priceAfterSpecialOffer = subtotalAfterPackage + specialOfferAdjustment;
+      }
       }
     }
 
@@ -103,5 +120,18 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
       referralDiscount: Math.round(referralDiscount / 100),
       finalPrice: Math.round(finalPrice / 100),
     };
-  }, [input.basePrice, input.selectedAddOns, input.packageDiscountPercent, input.specialOffer, input.referralDiscountPercent]);
+}
+
+/**
+ * React hook wrapper for price calculation
+ */
+export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdown {
+  return useMemo(() => calculatePriceBreakdown(input), [
+    input.basePrice,
+    input.selectedAddOns,
+    input.packageDiscountPercent,
+    input.specialOffer,
+    input.referralDiscountPercent,
+    input.propertyCount,
+  ]);
 }

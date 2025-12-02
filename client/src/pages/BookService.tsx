@@ -85,6 +85,10 @@ export default function BookService() {
 
   // Referral code state
   const [referralCode, setReferralCode] = useState("");
+  
+  // Property count state (for property manager discount)
+  const [propertyCount, setPropertyCount] = useState<number>(0);
+  const [propertyCountError, setPropertyCountError] = useState<string | null>(null);
   const [referralValidation, setReferralValidation] = useState<{
     isValid: boolean;
     message: string;
@@ -220,6 +224,7 @@ export default function BookService() {
     packageDiscountPercent,
     specialOffer: selectedOfferData,
     referralDiscountPercent: referralValidation?.isValid ? referralValidation.discount : 0,
+    propertyCount,
   });
 
   const initiatePaymentMutation = trpc.bookings.initiatePayment.useMutation({
@@ -281,6 +286,12 @@ export default function BookService() {
 
     if (basePrice === 0) {
       toast.error(t('Please select pricing options for the service'));
+      return;
+    }
+
+    // Validate property count for property manager discount
+    if (selectedOfferData?.minProperties && propertyCount < selectedOfferData.minProperties) {
+      toast.error(t('booking.propertyCountTooLow', { min: selectedOfferData.minProperties }));
       return;
     }
 
@@ -447,8 +458,50 @@ export default function BookService() {
                             onSelect={(offerId, offer) => {
                               setSelectedOffer(offerId);
                               setSelectedOfferData(offer);
+                              // Reset property count when offer changes
+                              setPropertyCount(0);
+                              setPropertyCountError(null);
                             }}
                           />
+                        )}
+
+                        {/* Property Count Input (for Property Manager discount) */}
+                        {selectedOfferData?.minProperties && (
+                          <div className="space-y-2 mt-4">
+                            <Label htmlFor="propertyCount" className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4 text-primary" />
+                              {t('booking.propertyCount')} *
+                            </Label>
+                            <Input
+                              id="propertyCount"
+                              type="number"
+                              min="1"
+                              value={propertyCount || ""}
+                              onChange={(e) => {
+                                const count = parseInt(e.target.value) || 0;
+                                setPropertyCount(count);
+                                
+                                // Validate property count
+                                if (count > 0 && selectedOfferData?.minProperties && count < selectedOfferData.minProperties) {
+                                  setPropertyCountError(
+                                    t('booking.propertyCountTooLow', { min: selectedOfferData.minProperties })
+                                  );
+                                } else {
+                                  setPropertyCountError(null);
+                                }
+                              }}
+                              placeholder={t('booking.enterPropertyCount')}
+                              className={propertyCountError ? "border-red-500" : ""}
+                            />
+                            {selectedOfferData.minProperties && (
+                              <p className="text-sm text-muted-foreground">
+                                {t('booking.minPropertiesRequired', { min: selectedOfferData.minProperties })}
+                              </p>
+                            )}
+                            {propertyCountError && (
+                              <p className="text-sm text-red-600">{propertyCountError}</p>
+                            )}
+                          </div>
                         )}
                       </div>
                     )}

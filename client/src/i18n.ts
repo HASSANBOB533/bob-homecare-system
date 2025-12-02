@@ -225,7 +225,11 @@ const resources = {
         "enterReferralCode": "Enter referral code (optional)",
         "referralValid": "Valid referral code! Discount applied",
         "referralInvalid": "Invalid or already used referral code",
-        "referralDiscount": "Referral Discount"
+        "referralDiscount": "Referral Discount",
+        "propertyCount": "Number of Properties",
+        "enterPropertyCount": "Enter number of properties you manage",
+        "minPropertiesRequired": "Minimum {{min}} properties required for this discount",
+        "propertyCountTooLow": "You need at least {{min}} properties to qualify for this discount"
       },
       
       // Quote Management
@@ -669,7 +673,11 @@ const resources = {
         "enterReferralCode": "أدخل كود الإحالة (اختياري)",
         "referralValid": "كود إحالة صالح! تم تطبيق الخصم",
         "referralInvalid": "كود إحالة غير صالح أو مستخدم بالفعل",
-        "referralDiscount": "خصم الإحالة"
+        "referralDiscount": "خصم الإحالة",
+        "propertyCount": "عدد العقارات",
+        "enterPropertyCount": "أدخل عدد العقارات التي تديرها",
+        "minPropertiesRequired": "يتطلب حد أدنى {{min}} عقار للحصول على هذا الخصم",
+        "propertyCountTooLow": "تحتاج إلى {{min}} عقار على الأقل للتأهل لهذا الخصم"
       },
       
       "Payment Failed": "فشل الدفع",
