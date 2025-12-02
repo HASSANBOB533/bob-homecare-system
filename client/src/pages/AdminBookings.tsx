@@ -26,8 +26,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp, Trash2, Download } from "lucide-react";
+import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp, Trash2, Download, Printer } from "lucide-react";
 import { toast } from "sonner";
+import { jsPDF } from "jspdf";
 
 type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 
@@ -108,6 +109,109 @@ export default function AdminBookings() {
     // Download file
     XLSX.writeFile(wb, filename);
     toast.success(t("Bookings exported successfully"));
+  };
+
+  // Generate PDF Receipt
+  const generateReceipt = (booking: any) => {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    
+    // Header - Company Name
+    doc.setFontSize(24);
+    doc.setTextColor(16, 185, 129); // Green color
+    doc.text("BOB Home Care", pageWidth / 2, 20, { align: "center" });
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text("Professional Cleaning Services", pageWidth / 2, 28, { align: "center" });
+    
+    // Receipt Title
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
+    doc.text("BOOKING RECEIPT", pageWidth / 2, 45, { align: "center" });
+    
+    // Booking Reference
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Reference: #${booking.id}`, pageWidth / 2, 52, { align: "center" });
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth / 2, 58, { align: "center" });
+    
+    // Line separator
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, 65, pageWidth - 20, 65);
+    
+    // Customer Information
+    let yPos = 75;
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Customer Information", 20, yPos);
+    
+    yPos += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    doc.text(`Name: ${booking.customerName}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Phone: ${booking.phone || 'N/A'}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Email: ${booking.email || 'N/A'}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Address: ${booking.address}`, 20, yPos);
+    
+    // Service Details
+    yPos += 15;
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Service Details", 20, yPos);
+    
+    yPos += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    doc.text(`Service: ${booking.service?.nameEn || booking.service?.name || 'N/A'}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Date & Time: ${new Date(booking.dateTime).toLocaleString()}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Status: ${booking.status.toUpperCase()}`, 20, yPos);
+    
+    if (booking.notes) {
+      yPos += 6;
+      doc.text("Notes:", 20, yPos);
+      yPos += 6;
+      const splitNotes = doc.splitTextToSize(booking.notes, pageWidth - 40);
+      doc.text(splitNotes, 20, yPos);
+      yPos += (splitNotes.length * 5);
+    }
+    
+    // Payment Information
+    yPos += 15;
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Payment Information", 20, yPos);
+    
+    yPos += 8;
+    doc.setFontSize(10);
+    doc.setTextColor(60, 60, 60);
+    
+    const amount = booking.amount ? (booking.amount / 100).toFixed(0) : '0';
+    doc.text(`Total Amount: ${amount} EGP`, 20, yPos);
+    yPos += 6;
+    doc.text(`Payment Status: ${booking.status === 'completed' ? 'PAID' : 'PENDING'}`, 20, yPos);
+    
+    // Line separator before footer
+    yPos += 15;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPos, pageWidth - 20, yPos);
+    
+    // Footer
+    yPos += 10;
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    doc.text("Thank you for choosing BOB Home Care!", pageWidth / 2, yPos, { align: "center" });
+    yPos += 5;
+    doc.text("For inquiries, contact us via WhatsApp or email.", pageWidth / 2, yPos, { align: "center" });
+    
+    // Save PDF
+    doc.save(`BOB_Receipt_${booking.id}_${new Date().toISOString().split('T')[0]}.pdf`);
+    toast.success(t("Receipt downloaded successfully"));
   };
 
   // Calculate revenue statistics
@@ -502,7 +606,15 @@ export default function AdminBookings() {
                   )}
                 </div>
               </div>
-              <div className="flex justify-end">
+              <div className="flex justify-between">
+                <Button
+                  onClick={() => generateReceipt(bookingNotes.booking)}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <Printer className="w-4 h-4" />
+                  {t("Print Receipt")}
+                </Button>
                 <Button onClick={() => setNotesDialogOpen(false)}>
                   {t("Close")}
                 </Button>

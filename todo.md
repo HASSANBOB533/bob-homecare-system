@@ -1402,3 +1402,17 @@
 - [x] Add bilingual translations for export UI (English/Arabic)
 - [x] Dynamic filename with date range and export date
 - [x] Excel export feature fully functional
+
+## Print Receipt Feature (January 2, 2025)
+- [x] Install jsPDF library for PDF generation (v3.0.4)
+- [x] Create receipt template with BOB branding and green color scheme
+- [x] Add Print Receipt button to View Notes dialog
+- [x] Implement PDF generation with complete booking details
+- [x] Include customer info (name, phone, email, address)
+- [x] Include service details (name, date/time, status, notes)
+- [x] Add payment information (amount, payment status)
+- [x] Format receipt professionally with proper spacing and sections
+- [x] Add company branding and thank you message in footer
+- [x] Add bilingual translations for receipt UI (English/Arabic)
+- [x] Dynamic filename with booking ID and date
+- [x] Print receipt feature fully functional

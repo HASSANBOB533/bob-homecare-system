@@ -413,6 +413,8 @@ const resources = {
       "Customer Name": "Customer Name",
       "Phone": "Phone",
       "Created At": "Created At",
+      "Print Receipt": "Print Receipt",
+      "Receipt downloaded successfully": "Receipt downloaded successfully",
       
       // Calendar
       "Booking Calendar": "Booking Calendar",
@@ -842,6 +844,8 @@ const resources = {
       "Customer Name": "اسم العميل",
       "Phone": "الهاتف",
       "Created At": "تاريخ الإنشاء",
+      "Print Receipt": "طباعة الإيصال",
+      "Receipt downloaded successfully": "تم تنزيل الإيصال بنجاح",
       
       // Calendar
       "Booking Calendar": "تقويم الحجوزات",
