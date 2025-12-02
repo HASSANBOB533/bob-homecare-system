@@ -1388,3 +1388,17 @@
 - [x] Reorganized table structure for better clarity
 - [x] Both buttons now visible and functional
 - [x] Ready for user testing
+
+## Export Bookings to Excel (January 2, 2025)
+- [x] Install xlsx library for Excel generation (v0.18.5)
+- [x] Create export utility function with XLSX
+- [x] Add date range picker component to admin bookings
+- [x] Add export button with download icon
+- [x] Implement export with date range filter (From/To dates)
+- [x] Implement export with status filter
+- [x] Format Excel file with headers and all booking details
+- [x] Include all booking details (ID, customer, service, amount, status, notes, dates)
+- [x] Add Clear Filters button when filters are active
+- [x] Add bilingual translations for export UI (English/Arabic)
+- [x] Dynamic filename with date range and export date
+- [x] Excel export feature fully functional

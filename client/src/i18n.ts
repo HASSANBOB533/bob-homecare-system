@@ -404,6 +404,15 @@ const resources = {
       "Customer Notes": "Customer Notes",
       "No notes provided": "No notes provided",
       "Close": "Close",
+      "Export to Excel": "Export to Excel",
+      "From": "From",
+      "To": "To",
+      "Clear Filters": "Clear Filters",
+      "Bookings exported successfully": "Bookings exported successfully",
+      "Booking ID": "Booking ID",
+      "Customer Name": "Customer Name",
+      "Phone": "Phone",
+      "Created At": "Created At",
       
       // Calendar
       "Booking Calendar": "Booking Calendar",
@@ -824,6 +833,15 @@ const resources = {
       "Customer Notes": "ملاحظات العميل",
       "No notes provided": "لا توجد ملاحظات",
       "Close": "إغلاق",
+      "Export to Excel": "تصدير إلى Excel",
+      "From": "من",
+      "To": "إلى",
+      "Clear Filters": "مسح الفلاتر",
+      "Bookings exported successfully": "تم تصدير الحجوزات بنجاح",
+      "Booking ID": "رقم الحجز",
+      "Customer Name": "اسم العميل",
+      "Phone": "الهاتف",
+      "Created At": "تاريخ الإنشاء",
       
       // Calendar
       "Booking Calendar": "تقويم الحجوزات",

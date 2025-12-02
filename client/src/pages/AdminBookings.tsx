@@ -26,7 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
+import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
 
 type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
@@ -34,6 +34,8 @@ type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 export default function AdminBookings() {
   const { t } = useTranslation();
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [dateFrom, setDateFrom] = useState<string>("");
+  const [dateTo, setDateTo] = useState<string>("");
   const [expandedBooking, setExpandedBooking] = useState<number | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -64,11 +66,49 @@ export default function AdminBookings() {
     },
   });
 
-  // Filter bookings by status
+  // Filter bookings by status and date range
   const filteredBookings = bookings.filter((booking: any) => {
-    if (statusFilter === "all") return true;
-    return booking.status === statusFilter;
+    // Status filter
+    if (statusFilter !== "all" && booking.status !== statusFilter) return false;
+    
+    // Date range filter
+    if (dateFrom && new Date(booking.dateTime) < new Date(dateFrom)) return false;
+    if (dateTo && new Date(booking.dateTime) > new Date(dateTo + "T23:59:59")) return false;
+    
+    return true;
   });
+
+  // Export to Excel function
+  const exportToExcel = () => {
+    const XLSX = require('xlsx');
+    
+    // Prepare data for export
+    const exportData = filteredBookings.map((booking: any) => ({
+      [t("Booking ID")]: `#${booking.id}`,
+      [t("Customer Name")]: booking.customerName,
+      [t("Phone")]: booking.phone,
+      [t("Email")]: booking.email || "N/A",
+      [t("Service")]: booking.service?.nameEn || booking.service?.name || "N/A",
+      [t("Date & Time")]: new Date(booking.dateTime).toLocaleString(),
+      [t("Address")]: booking.address,
+      [t("Amount")]: booking.amount ? `${(booking.amount / 100).toFixed(0)} EGP` : "N/A",
+      [t("Status")]: booking.status.toUpperCase(),
+      [t("Notes")]: booking.notes || "N/A",
+      [t("Created At")]: new Date(booking.createdAt).toLocaleString(),
+    }));
+
+    // Create worksheet and workbook
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, t("Bookings"));
+
+    // Generate filename with date range
+    const filename = `BOB_Bookings_${dateFrom || 'all'}_to_${dateTo || 'all'}_${new Date().toISOString().split('T')[0]}.xlsx`;
+    
+    // Download file
+    XLSX.writeFile(wb, filename);
+    toast.success(t("Bookings exported successfully"));
+  };
 
   // Calculate revenue statistics
   const stats = {
@@ -189,20 +229,59 @@ export default function AdminBookings() {
         {/* Filters */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>{t("All Bookings")}</CardTitle>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder={t("Filter by status")} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t("All Status")}</SelectItem>
-                  <SelectItem value="pending">{t("Pending")}</SelectItem>
-                  <SelectItem value="confirmed">{t("Confirmed")}</SelectItem>
-                  <SelectItem value="completed">{t("Completed")}</SelectItem>
-                  <SelectItem value="cancelled">{t("Cancelled")}</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <CardTitle>{t("All Bookings")}</CardTitle>
+                <Button onClick={exportToExcel} variant="outline" className="gap-2">
+                  <Download className="w-4 h-4" />
+                  {t("Export to Excel")}
+                </Button>
+              </div>
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium">{t("From")}:</label>
+                  <input
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="border rounded px-3 py-2 text-sm"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium">{t("To")}:</label>
+                  <input
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="border rounded px-3 py-2 text-sm"
+                  />
+                </div>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder={t("Filter by status")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">{t("All Status")}</SelectItem>
+                    <SelectItem value="pending">{t("Pending")}</SelectItem>
+                    <SelectItem value="confirmed">{t("Confirmed")}</SelectItem>
+                    <SelectItem value="completed">{t("Completed")}</SelectItem>
+                    <SelectItem value="cancelled">{t("Cancelled")}</SelectItem>
+                  </SelectContent>
+                </Select>
+                {(dateFrom || dateTo || statusFilter !== "all") && (
+                  <Button
+                    onClick={() => {
+                      setDateFrom("");
+                      setDateTo("");
+                      setStatusFilter("all");
+                    }}
+                    variant="ghost"
+                    size="sm"
+                  >
+                    {t("Clear Filters")}
+                  </Button>
+                )}
+              </div>
             </div>
           </CardHeader>
           <CardContent>
