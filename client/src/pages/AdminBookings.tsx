@@ -38,6 +38,8 @@ export default function AdminBookings() {
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [bookingToDelete, setBookingToDelete] = useState<number | null>(null);
+  const [notesDialogOpen, setNotesDialogOpen] = useState(false);
+  const [bookingNotes, setBookingNotes] = useState<{ booking: any } | null>(null);
 
   const { data: bookings = [], refetch } = trpc.bookings.allBookings.useQuery();
   const updateStatusMutation = trpc.bookings.updateStatus.useMutation({
@@ -91,6 +93,11 @@ export default function AdminBookings() {
     if (bookingToDelete) {
       deleteBookingMutation.mutate({ id: bookingToDelete });
     }
+  };
+
+  const handleViewNotes = (booking: any) => {
+    setBookingNotes({ booking });
+    setNotesDialogOpen(true);
   };
 
   const getStatusBadge = (status: string) => {
@@ -261,10 +268,19 @@ export default function AdminBookings() {
                               </SelectContent>
                             </Select>
                             <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleViewNotes(booking)}
+                              title={t("View Notes")}
+                            >
+                              {t("View Notes")}
+                            </Button>
+                            <Button
                               variant="destructive"
                               size="sm"
                               onClick={() => handleDeleteClick(booking.id)}
                               disabled={deleteBookingMutation.isPending}
+                              title={t("Delete Booking")}
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -364,6 +380,54 @@ export default function AdminBookings() {
           </CardContent>
         </Card>
       </div>
+
+      {/* View Notes Dialog */}
+      <Dialog open={notesDialogOpen} onOpenChange={setNotesDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>{t("Booking Notes & Details")}</DialogTitle>
+          </DialogHeader>
+          {bookingNotes && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">{t("Customer")}</p>
+                  <p className="text-base">{bookingNotes.booking.customerName}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">{t("Phone")}</p>
+                  <p className="text-base">{bookingNotes.booking.phone || t("N/A")}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">{t("Service")}</p>
+                  <p className="text-base">
+                    {bookingNotes.booking.service?.nameEn || bookingNotes.booking.service?.name || t("N/A")}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-500">{t("Address")}</p>
+                  <p className="text-base">{bookingNotes.booking.address}</p>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-2">{t("Customer Notes")}</p>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  {bookingNotes.booking.notes ? (
+                    <p className="text-gray-700 whitespace-pre-wrap">{bookingNotes.booking.notes}</p>
+                  ) : (
+                    <p className="text-gray-400 italic">{t("No notes provided")}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button onClick={() => setNotesDialogOpen(false)}>
+                  {t("Close")}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>

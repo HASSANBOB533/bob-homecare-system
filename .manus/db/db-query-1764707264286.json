@@ -1,0 +1,9 @@
+{
+  "query": "DELETE FROM bookings WHERE customerName LIKE '%Test%' OR customerName LIKE '%test%' OR address LIKE '%Test%' OR address LIKE '%123%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute DELETE FROM bookings WHERE customerName LIKE '%Test%' OR customerName LIKE '%test%' OR address LIKE '%Test%' OR address LIKE '%123%';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 75
+}

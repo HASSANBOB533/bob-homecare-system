@@ -1350,3 +1350,14 @@
 - [x] Update HTML favicon references
 - [x] Generated 16 total icon files from professional logo
 - [x] All icons optimized and ready for deployment
+
+## Admin Dashboard Fixes (January 2, 2025)
+- [x] Fix service column showing "N/A" - Backend already includes service data
+- [x] Fix missing delete button in Actions column - Now visible with trash icon
+- [x] Fix "View Notes" button not working - Added full Notes dialog
+- [x] Ensure delete button appears next to status dropdown - Properly positioned
+- [x] Clean up test bookings from database - Deleted all test bookings
+- [x] Add View Notes dialog with customer details and notes
+- [x] Add bilingual translations for all new UI elements
+- [x] Improve Actions column with View Notes + Delete buttons
+- [x] All fixes tested and working correctly

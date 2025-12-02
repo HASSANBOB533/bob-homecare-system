@@ -399,6 +399,11 @@ const resources = {
       "Delete": "Delete",
       "Booking deleted successfully": "Booking deleted successfully",
       "Failed to delete booking": "Failed to delete booking",
+      "View Notes": "View Notes",
+      "Booking Notes & Details": "Booking Notes & Details",
+      "Customer Notes": "Customer Notes",
+      "No notes provided": "No notes provided",
+      "Close": "Close",
       
       // PWA Install
       "Install BOB Home Care App": "Install BOB Home Care App",
@@ -803,6 +808,11 @@ const resources = {
       "Delete": "حذف",
       "Booking deleted successfully": "تم حذف الحجز بنجاح",
       "Failed to delete booking": "فشل حذف الحجز",
+      "View Notes": "عرض الملاحظات",
+      "Booking Notes & Details": "ملاحظات وتفاصيل الحجز",
+      "Customer Notes": "ملاحظات العميل",
+      "No notes provided": "لا توجد ملاحظات",
+      "Close": "إغلاق",
       
       // PWA Install
       "Install BOB Home Care App": "تثبيت تطبيق BOB Home Care",
