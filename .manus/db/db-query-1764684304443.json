@@ -1,0 +1,16 @@
+{
+  "query": "SELECT s.id, s.name, s.pricingType, COUNT(pt.id) as tier_count \nFROM services s \nLEFT JOIN pricingTiers pt ON s.id = pt.serviceId \nWHERE s.name LIKE '%Airbnb%' OR s.nameEn LIKE '%Service Apartments%'\nGROUP BY s.id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT s.id, s.name, s.pricingType, COUNT(pt.id) as tier_count \nFROM services s \nLEFT JOIN pricingTiers pt ON s.id = pt.serviceId \nWHERE s.name LIKE '%Airbnb%' OR s.nameEn LIKE '%Service Apartments%'\nGROUP BY s.id;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "pricingType": "FIXED",
+      "tier_count": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tpricingType\ttier_count\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tFIXED\t0\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

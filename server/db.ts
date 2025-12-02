@@ -894,3 +894,102 @@ export async function getAllUsersWithPoints() {
     .from(users)
     .orderBy(desc(users.loyaltyPoints));
 }
+
+/**
+ * Get comprehensive pricing data for a specific service
+ */
+export async function getServicePricingData(serviceId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { services, pricingTiers, pricingSqm, pricingItems } = await import("../drizzle/schema");
+  
+  // Get service details
+  const service = await db.select().from(services).where(eq(services.id, serviceId)).limit(1);
+  if (!service.length) throw new Error("Service not found");
+  
+  const serviceData = service[0];
+  
+  // Get pricing based on type
+  let pricingData: any = {};
+  
+  if (serviceData.pricingType === "BEDROOM_BASED") {
+    // Get bedroom tiers
+    const tiers = await db.select().from(pricingTiers)
+      .where(eq(pricingTiers.serviceId, serviceId))
+      .orderBy(pricingTiers.bedrooms);
+    pricingData.tiers = tiers;
+  } else if (serviceData.pricingType === "SQM_BASED") {
+    // Get square meter pricing
+    const sqmPricing = await db.select().from(pricingSqm)
+      .where(eq(pricingSqm.serviceId, serviceId));
+    pricingData.sqmPricing = sqmPricing;
+  } else if (serviceData.pricingType === "ITEM_BASED") {
+    // Get item pricing
+    const items = await db.select().from(pricingItems)
+      .where(eq(pricingItems.serviceId, serviceId))
+      .orderBy(pricingItems.itemName);
+    pricingData.items = items;
+  }
+  
+  return {
+    service: serviceData,
+    pricing: pricingData,
+  };
+}
+
+/**
+ * Get all add-ons with their tiers
+ */
+export async function getAllAddOns() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { addOns, addOnTiers } = await import("../drizzle/schema");
+  
+  const addOnsList = await db.select().from(addOns).where(eq(addOns.active, true));
+  
+  // Get tiers for each add-on
+  const addOnsWithTiers = await Promise.all(
+    addOnsList.map(async (addOn) => {
+      const tiers = await db.select().from(addOnTiers)
+        .where(eq(addOnTiers.addOnId, addOn.id))
+        .orderBy(addOnTiers.bedrooms);
+      
+      return {
+        ...addOn,
+        tiers,
+      };
+    })
+  );
+  
+  return addOnsWithTiers;
+}
+
+/**
+ * Get package discounts for a specific service
+ */
+export async function getPackageDiscountsByService(serviceId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { packageDiscounts } = await import("../drizzle/schema");
+  
+  return db.select().from(packageDiscounts)
+    .where(eq(packageDiscounts.serviceId, serviceId))
+    .orderBy(packageDiscounts.visits);
+}
+
+/**
+ * Get all active special offers
+ */
+export async function getAllSpecialOffers() {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { specialOffers } = await import("../drizzle/schema");
+  
+  return db.select().from(specialOffers)
+    .where(eq(specialOffers.active, true))
+    .orderBy(specialOffers.name);
+}

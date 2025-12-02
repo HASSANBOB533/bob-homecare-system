@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, name, nameEn, pricingType FROM services ORDER BY id LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, nameEn, pricingType FROM services ORDER BY id LIMIT 10;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "nameEn": "Airbnb and Hotel Apartments Cleaning",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "nameEn": "Regular Cleaning Service",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "nameEn": "Deep Cleaning Service",
+      "pricingType": "SQM_BASED"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "nameEn": "Move-in/Move-out Cleaning",
+      "pricingType": "SQM_BASED"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "nameEn": "Fumigation and Sterilization",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات",
+      "nameEn": "Upholstery Cleaning",
+      "pricingType": "ITEM_BASED"
+    },
+    {
+      "id": "60001",
+      "name": "Test Service",
+      "nameEn": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "90001",
+      "name": "Test Service",
+      "nameEn": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "120001",
+      "name": "Test Service",
+      "nameEn": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "150001",
+      "name": "Test Service",
+      "nameEn": "NULL",
+      "pricingType": "FIXED"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameEn\tpricingType\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tAirbnb and Hotel Apartments Cleaning\tFIXED\n30002\tخدمة التنظيف الدورية\tRegular Cleaning Service\tFIXED\n30003\tخدمة التنظيف العميق\tDeep Cleaning Service\tSQM_BASED\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tMove-in/Move-out Cleaning\tSQM_BASED\n30005\tالتبخير والتعقيم\tFumigation and Sterilization\tFIXED\n30006\tتنظيف المفروشات\tUpholstery Cleaning\tITEM_BASED\n60001\tTest Service\tNULL\tFIXED\n90001\tTest Service\tNULL\tFIXED\n120001\tTest Service\tNULL\tFIXED\n150001\tTest Service\tNULL\tFIXED\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}

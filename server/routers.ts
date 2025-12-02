@@ -553,6 +553,36 @@ export const appRouter = router({
         const { seedPricingData } = await import("./pricing-seed");
         return seedPricingData();
       }),
+    
+    // Get pricing data for a specific service
+    getServicePricing: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getServicePricingData } = await import("./db");
+        return getServicePricingData(input.serviceId);
+      }),
+    
+    // Get all add-ons
+    getAddOns: publicProcedure
+      .query(async () => {
+        const { getAllAddOns } = await import("./db");
+        return getAllAddOns();
+      }),
+    
+    // Get package discounts for a service
+    getPackageDiscounts: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getPackageDiscountsByService } = await import("./db");
+        return getPackageDiscountsByService(input.serviceId);
+      }),
+    
+    // Get special offers
+    getSpecialOffers: publicProcedure
+      .query(async () => {
+        const { getAllSpecialOffers } = await import("./db");
+        return getAllSpecialOffers();
+      }),
   }),
 });
 

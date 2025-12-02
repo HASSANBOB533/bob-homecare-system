@@ -400,3 +400,59 @@
 - [ ] Integrate pricing calculator with Paymob payment flow
 - [ ] Test all pricing calculations for accuracy
 - [ ] Write vitest tests for pricing logic
+
+## Dynamic Booking Form Pricing
+
+- [ ] Create tRPC procedures to fetch pricing data by service
+- [ ] Build bedroom selector component with pricing display
+- [ ] Build square meter input component with rate calculation
+- [ ] Build upholstery item checklist with prices
+- [ ] Build add-ons selector with tiered pricing
+- [ ] Build package discount selector
+- [ ] Build special offers selector
+- [ ] Implement real-time price calculation engine
+- [ ] Update booking form to use dynamic pricing components
+- [ ] Test all service types with different pricing scenarios
+
+## Dynamic Booking Form Pricing Implementation
+
+### Backend Infrastructure (COMPLETED ✅)
+- [x] Create pricing tables schema (pricingTiers, pricingSqm, pricingItems, addOns, addOnTiers, packageDiscounts, specialOffers)
+- [x] Push database schema migration
+- [x] Create pricing seed script with correct service name matching
+- [x] Seed pricing data successfully (12 bedroom tiers, 3 sqm entries, 9 upholstery items, 4 add-ons, 4 discounts, 4 offers)
+- [x] Create tRPC procedures to fetch pricing data (getServicePricing, getAddOns, getPackageDiscounts, getSpecialOffers)
+- [x] Add pricing data fetch functions to db.ts
+- [x] Write comprehensive vitest tests for pricing seed (12 tests passing)
+
+### Frontend Components (COMPLETED ✅)
+- [x] Create BedroomSelector component for bedroom-based pricing
+- [x] Create SquareMeterInput component for sqm-based pricing
+- [x] Create UpholsteryItemSelector component for item-based pricing
+- [x] Create AddOnsSelector component
+- [x] Create PackageDiscountSelector component
+- [x] Create SpecialOffersSelector component
+- [x] Create PriceBreakdownCard component for real-time calculation display
+- [x] Create usePriceCalculation hook for price calculation logic
+- [x] Add pricing translations to i18n (Arabic/English)
+
+### Integration (IN PROGRESS ⚠️)
+- [x] Update BookService.tsx with dynamic pricing UI structure
+- [ ] Debug pricing components rendering issue (components not showing when service is selected)
+- [ ] Fix form state integration with shadcn Select component
+- [ ] Test dynamic pricing in booking form
+- [ ] Verify real-time price calculation
+
+### Known Issues
+- Pricing data is successfully seeded in database
+- tRPC procedures are working correctly
+- Pricing components are created and styled
+- **Issue**: Components not rendering when service is selected in booking form
+- **Root Cause**: Likely related to how shadcn Select component updates form state
+- **Next Steps**: Debug form state updates and ensure `pricingData` query is triggered correctly
+
+### Admin Pricing Management (COMPLETED ✅)
+- [x] Create AdminPricingManagement page
+- [x] Add "Seed All Pricing Data" button
+- [x] Add pricing management to admin menu
+- [x] Fix admin role access

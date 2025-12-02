@@ -22,7 +22,7 @@ export async function seedPricingData() {
     for (const service of services) {
       let pricingType: "BEDROOM_BASED" | "SQM_BASED" | "ITEM_BASED" | "FIXED" = "FIXED";
       
-      if (service.nameEn?.includes("Service Apartments") || service.nameEn?.includes("Periodical")) {
+      if (service.nameEn?.includes("Airbnb") || service.nameEn?.includes("Hotel Apartments") || service.nameEn?.includes("Regular Cleaning")) {
         pricingType = "BEDROOM_BASED";
       } else if (service.nameEn?.includes("Deep Cleaning") || service.nameEn?.includes("Move")) {
         pricingType = "SQM_BASED";
@@ -40,8 +40,8 @@ export async function seedPricingData() {
     // 2. Seed bedroom-based pricing (Service Apartments & Periodical Cleaning)
     console.log("\n2️⃣ Seeding bedroom-based pricing...");
     
-    const serviceApartmentsId = services.find((s: typeof schema.services.$inferSelect) => s.nameEn?.includes("Service Apartments"))?.id;
-    const periodicalCleaningId = services.find((s: typeof schema.services.$inferSelect) => s.nameEn?.includes("Periodical"))?.id;
+    const serviceApartmentsId = services.find((s: typeof schema.services.$inferSelect) => s.nameEn?.includes("Airbnb") || s.nameEn?.includes("Hotel Apartments"))?.id;
+    const periodicalCleaningId = services.find((s: typeof schema.services.$inferSelect) => s.nameEn?.includes("Regular Cleaning"))?.id;
     
     if (serviceApartmentsId) {
       const serviceApartmentsTiers = [
