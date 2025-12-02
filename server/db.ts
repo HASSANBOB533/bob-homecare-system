@@ -685,6 +685,35 @@ export async function getUserLoyaltyPoints(userId: number) {
 }
 
 /**
+ * Redeem loyalty points for a booking discount
+ */
+export async function redeemLoyaltyPoints(userId: number, points: number, bookingId: number) {
+  const db = await getDb();  if (!db) throw new Error("Database not available");
+  
+  const { loyaltyTransactions } = await import("../drizzle/schema");
+  
+  // Check if user has enough points
+  const currentPoints = await getUserLoyaltyPoints(userId);
+  if (currentPoints < points) {
+    throw new Error(`Insufficient loyalty points. Available: ${currentPoints}, Required: ${points}`);
+  }
+  
+  // Create redemption transaction record
+  await db.insert(loyaltyTransactions).values({
+    userId,
+    points: -points, // Negative for redemption
+    type: "redeemed",
+    bookingId,
+    description: `Redeemed ${points} points for booking #${bookingId} discount`,
+  });
+  
+  // Deduct points from user's balance
+  await db.update(users)
+    .set({ loyaltyPoints: sql`${users.loyaltyPoints} - ${points}` })
+    .where(eq(users.id, userId));
+}
+
+/**
  * Get user's loyalty transaction history
  */
 export async function getLoyaltyTransactions(userId: number) {

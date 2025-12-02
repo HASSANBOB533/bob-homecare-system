@@ -10,6 +10,7 @@ interface PriceBreakdown {
   subtotalAfterPackage: number;
   specialOfferAdjustment: number;
   referralDiscount: number;
+  loyaltyDiscount: number;
   finalPrice: number;
 }
 
@@ -92,6 +93,16 @@ export function PriceBreakdownCard({ breakdown, specialOfferType }: PriceBreakdo
             <span>{t("booking.referralDiscount")}:</span>
             <span className="font-semibold">
               -{breakdown.referralDiscount.toLocaleString()} {t("booking.egp")}
+            </span>
+          </div>
+        )}
+        
+        {/* Loyalty Points Discount */}
+        {breakdown.loyaltyDiscount > 0 && (
+          <div className="flex justify-between items-center text-green-600">
+            <span>{t("booking.loyaltyDiscount")}:</span>
+            <span className="font-semibold">
+              -{breakdown.loyaltyDiscount.toLocaleString()} {t("booking.egp")}
             </span>
           </div>
         )}

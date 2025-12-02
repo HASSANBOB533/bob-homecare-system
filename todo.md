@@ -903,12 +903,23 @@
 - [x] Extract pricing logic into pure function for testability
 
 ### Loyalty Program Integration with Booking Form
-- [ ] Add "Use Loyalty Points" option in booking form
-- [ ] Display user's available loyalty points balance
-- [ ] Calculate points-to-discount conversion
-- [ ] Apply loyalty points discount to total price
-- [ ] Deduct points from user balance when booking is confirmed
-- [ ] Show loyalty discount in price breakdown
+- [x] Fetch user's loyalty points balance from backend
+- [x] Add "Use Loyalty Points" checkbox in booking form
+- [x] Display available points balance with conversion rate info
+- [x] Calculate discount amount based on points redemption
+- [x] Update price calculation to apply loyalty points discount
+- [x] Prevent points redemption if balance is zero (checkbox hidden)
+- [x] Add validation to ensure points don't exceed booking total
+- [x] Track redeemed points in booking record
+- [x] Deduct redeemed points from user's balance after booking
+- [x] Add Arabic/English translations for loyalty points UI
+- [x] Write vitest tests for loyalty points redemption logic
+- [x] Calculate points-to-discount conversion (100 points = 10 EGP)
+- [x] Apply loyalty points discount to total price
+- [x] Deduct points from user balance when booking is confirmed
+- [x] Show loyalty discount in price breakdown
+- [x] Create redeemLoyaltyPoints function in db.ts
+- [x] Add loyaltyDiscount field to PriceBreakdownCard
 - [ ] Add Arabic/English translations for loyalty integration
 
 ### Bulk Pricing Import/Export

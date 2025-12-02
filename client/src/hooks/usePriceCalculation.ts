@@ -41,6 +41,9 @@ interface PriceCalculationInput {
   
   // Property count (for property manager discount validation)
   propertyCount?: number;
+  
+  // Loyalty points discount (in cents)
+  loyaltyDiscountCents?: number;
 }
 
 interface PriceBreakdown {
@@ -51,6 +54,7 @@ interface PriceBreakdown {
   subtotalAfterPackage: number;
   specialOfferAdjustment: number;
   referralDiscount: number;
+  loyaltyDiscount: number;
   finalPrice: number;
 }
 
@@ -59,7 +63,7 @@ interface PriceBreakdown {
  * Can be tested without React context
  */
 export function calculatePriceBreakdown(input: PriceCalculationInput): PriceBreakdown {
-    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer, referralDiscountPercent = 0, propertyCount = 0 } = input;
+    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer, referralDiscountPercent = 0, propertyCount = 0, loyaltyDiscountCents = 0 } = input;
 
     // Calculate add-ons total
     const addOnsTotal = selectedAddOns.reduce((sum, addOn) => sum + addOn.price, 0);
@@ -105,7 +109,11 @@ export function calculatePriceBreakdown(input: PriceCalculationInput): PriceBrea
 
     // Apply referral discount
     const referralDiscount = (priceAfterSpecialOffer * referralDiscountPercent) / 100;
-    let finalPrice = priceAfterSpecialOffer - referralDiscount;
+    let priceAfterReferral = priceAfterSpecialOffer - referralDiscount;
+    
+    // Apply loyalty points discount (already in cents)
+    const loyaltyDiscount = loyaltyDiscountCents;
+    let finalPrice = priceAfterReferral - loyaltyDiscount;
 
     // Ensure final price is never negative
     finalPrice = Math.max(0, Math.round(finalPrice));
@@ -118,6 +126,7 @@ export function calculatePriceBreakdown(input: PriceCalculationInput): PriceBrea
       subtotalAfterPackage: Math.round(subtotalAfterPackage / 100),
       specialOfferAdjustment: Math.round(specialOfferAdjustment / 100),
       referralDiscount: Math.round(referralDiscount / 100),
+      loyaltyDiscount: Math.round(loyaltyDiscount / 100),
       finalPrice: Math.round(finalPrice / 100),
     };
 }
@@ -133,5 +142,6 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
     input.specialOffer,
     input.referralDiscountPercent,
     input.propertyCount,
+    input.loyaltyDiscountCents,
   ]);
 }

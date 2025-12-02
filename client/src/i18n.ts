@@ -229,7 +229,13 @@ const resources = {
         "propertyCount": "Number of Properties",
         "enterPropertyCount": "Enter number of properties you manage",
         "minPropertiesRequired": "Minimum {{min}} properties required for this discount",
-        "propertyCountTooLow": "You need at least {{min}} properties to qualify for this discount"
+        "propertyCountTooLow": "You need at least {{min}} properties to qualify for this discount",
+        "useLoyaltyPoints": "Use Loyalty Points",
+        "availablePoints": "Available",
+        "redeeming": "Redeeming",
+        "points": "points",
+        "conversionRate": "Conversion rate",
+        "loyaltyDiscount": "Loyalty Points Discount"
       },
       
       // Quote Management
@@ -677,7 +683,13 @@ const resources = {
         "propertyCount": "عدد العقارات",
         "enterPropertyCount": "أدخل عدد العقارات التي تديرها",
         "minPropertiesRequired": "يتطلب حد أدنى {{min}} عقار للحصول على هذا الخصم",
-        "propertyCountTooLow": "تحتاج إلى {{min}} عقار على الأقل للتأهل لهذا الخصم"
+        "propertyCountTooLow": "تحتاج إلى {{min}} عقار على الأقل للتأهل لهذا الخصم",
+        "useLoyaltyPoints": "استخدام نقاط الولاء",
+        "availablePoints": "متاح",
+        "redeeming": "استبدال",
+        "points": "نقاط",
+        "conversionRate": "معدل التحويل",
+        "loyaltyDiscount": "خصم نقاط الولاء"
       },
       
       "Payment Failed": "فشل الدفع",

@@ -199,6 +199,16 @@ export const appRouter = router({
           }).catch(err => console.error("Failed to track referral:", err));
         }
         
+        // Deduct loyalty points if redeemed
+        if (input.pricingBreakdown?.loyaltyPointsRedeemed && input.pricingBreakdown.loyaltyPointsRedeemed > 0 && input.customerEmail) {
+          const { redeemLoyaltyPoints } = await import("./db");
+          const user = await getUserByEmail(input.customerEmail);
+          if (user) {
+            await redeemLoyaltyPoints(user.id, input.pricingBreakdown.loyaltyPointsRedeemed, booking.id)
+              .catch(err => console.error("Failed to redeem loyalty points:", err));
+          }
+        }
+        
         // Check notification preferences if user has an account
         let whatsappEnabled = true; // Default to true for public bookings
 

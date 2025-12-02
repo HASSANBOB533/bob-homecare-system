@@ -96,6 +96,10 @@ export default function BookService() {
     referrerUserId?: number;
   } | null>(null);
   const [isValidatingReferral, setIsValidatingReferral] = useState(false);
+  
+  // Loyalty points redemption state
+  const [useLoyaltyPoints, setUseLoyaltyPoints] = useState(false);
+  const [loyaltyPointsToRedeem, setLoyaltyPointsToRedeem] = useState(0);
 
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
@@ -124,6 +128,12 @@ export default function BookService() {
   const { data: packageDiscounts = [] } = trpc.pricing.getPackageDiscounts.useQuery(
     { serviceId: selectedServiceId! },
     { enabled: !!selectedServiceId }
+  );
+  
+  // Fetch user's loyalty points balance
+  const { data: loyaltyPointsBalance = 0 } = trpc.loyalty.getPoints.useQuery(
+    undefined,
+    { enabled: true }
   );
   const { data: specialOffers = [] } = trpc.pricing.getSpecialOffers.useQuery();
 
@@ -216,6 +226,29 @@ export default function BookService() {
   };
 
   const basePrice = calculateBasePrice();
+  
+  // Calculate loyalty points discount
+  // Conversion rate: 100 points = 10 EGP (0.1 EGP per point)
+  // Points are stored as integers, discount is in cents
+  const POINTS_TO_CENTS_RATE = 10; // 1 point = 10 cents = 0.1 EGP
+  
+  // Calculate maximum points that can be redeemed (can't exceed total price)
+  const maxRedeemablePoints = useLoyaltyPoints ? Math.min(
+    loyaltyPointsBalance,
+    Math.floor(basePrice / POINTS_TO_CENTS_RATE) // Don't redeem more than the booking total
+  ) : 0;
+  
+  // Calculate loyalty discount in cents
+  const loyaltyDiscountCents = maxRedeemablePoints * POINTS_TO_CENTS_RATE;
+  
+  // Update points to redeem when checkbox changes
+  useEffect(() => {
+    if (useLoyaltyPoints) {
+      setLoyaltyPointsToRedeem(maxRedeemablePoints);
+    } else {
+      setLoyaltyPointsToRedeem(0);
+    }
+  }, [useLoyaltyPoints, maxRedeemablePoints]);
 
   // Calculate final price
   const priceBreakdown = usePriceCalculation({
@@ -225,6 +258,7 @@ export default function BookService() {
     specialOffer: selectedOfferData,
     referralDiscountPercent: referralValidation?.isValid ? referralValidation.discount : 0,
     propertyCount,
+    loyaltyDiscountCents,
   });
 
   const initiatePaymentMutation = trpc.bookings.initiatePayment.useMutation({
@@ -312,6 +346,8 @@ export default function BookService() {
         packageDiscount: priceBreakdown.packageDiscount,
         specialOfferAdjustment: priceBreakdown.specialOfferAdjustment,
         referralDiscount: priceBreakdown.referralDiscount,
+        loyaltyDiscount: priceBreakdown.loyaltyDiscount,
+        loyaltyPointsRedeemed: useLoyaltyPoints ? loyaltyPointsToRedeem : 0,
         finalPrice: priceBreakdown.finalPrice,
         selections: {
           bedrooms: selectedVariant,
@@ -661,6 +697,39 @@ export default function BookService() {
                           </p>
                         )}
                       </div>
+                      
+                      {/* Loyalty Points Redemption */}
+                      {loyaltyPointsBalance > 0 && (
+                        <div className="space-y-2 pt-4 border-t">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                id="useLoyaltyPoints"
+                                checked={useLoyaltyPoints}
+                                onChange={(e) => setUseLoyaltyPoints(e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                              />
+                              <Label htmlFor="useLoyaltyPoints" className="cursor-pointer">
+                                {t('booking.useLoyaltyPoints')}
+                              </Label>
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {t('booking.availablePoints')}: <span className="font-semibold text-foreground">{loyaltyPointsBalance}</span>
+                            </div>
+                          </div>
+                          {useLoyaltyPoints && (
+                            <div className="text-sm space-y-1">
+                              <p className="text-green-600">
+                                {t('booking.redeeming')} {loyaltyPointsToRedeem} {t('booking.points')} = {(loyaltyPointsToRedeem * 0.1).toFixed(2)} {t('currency')}
+                              </p>
+                              <p className="text-muted-foreground text-xs">
+                                {t('booking.conversionRate')}: 100 {t('booking.points')} = 10 {t('currency')}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Submit Buttons */}
