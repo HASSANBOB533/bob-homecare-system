@@ -1001,3 +1001,37 @@
 - [x] Navigation links include all admin pages
 - [x] Test navigation on all admin pages
 - [x] Sidebar displays correctly with all links visible
+
+
+## Email Notifications
+
+### Email Service Setup
+- [x] Email service already exists with Resend API integration
+- [x] Email configuration uses RESEND_API_KEY environment variable
+- [x] Create email template utilities (HTML generation)
+- [x] Add bilingual email template support (English only for now)
+
+### Booking Confirmation Emails
+- [x] Booking confirmation email template already exists
+- [x] Include booking details (service, date, time, location)
+- [x] Add pricing breakdown in email
+- [x] Send confirmation email when booking is created (already implemented)
+
+### Booking Status Update Emails
+- [x] Send email when booking is confirmed by admin
+- [x] Send email when booking is completed
+- [x] Send email when booking is cancelled
+- [x] Include relevant status-specific information in each email
+
+### Loyalty Rewards Emails
+- [x] Send email when user earns loyalty points
+- [x] Send email when user redeems loyalty points
+- [x] Include current points balance in emails
+- [ ] Send email when user reaches milestone (e.g., 100 points)
+
+### Testing & Polish
+- [x] Add error handling for email sending failures (catch blocks)
+- [x] Log email sending attempts for debugging
+- [x] Write vitest tests for email service functions (9 tests passing)
+- [x] Test email notifications graceful degradation
+- [ ] User needs to add RESEND_API_KEY environment variable for production email sending

@@ -667,6 +667,18 @@ export async function awardLoyaltyPoints(userId: number, bookingId: number, poin
   await db.update(users)
     .set({ loyaltyPoints: sql`${users.loyaltyPoints} + ${points}` })
     .where(eq(users.id, userId));
+  
+  // Send email notification
+  const user = await getUserById(userId);
+  if (user?.email) {
+    const { sendLoyaltyPointsEarnedEmail } = await import("./_core/email");
+    await sendLoyaltyPointsEarnedEmail(user.email, {
+      customerName: user.name || "Customer",
+      pointsEarned: points,
+      totalPoints: (user.loyaltyPoints || 0) + points,
+      bookingId,
+    }).catch(err => console.error("Failed to send loyalty points email:", err));
+  }
 }
 
 /**
@@ -711,6 +723,20 @@ export async function redeemLoyaltyPoints(userId: number, points: number, bookin
   await db.update(users)
     .set({ loyaltyPoints: sql`${users.loyaltyPoints} - ${points}` })
     .where(eq(users.id, userId));
+  
+  // Send email notification
+  const user = await getUserById(userId);
+  if (user?.email) {
+    const { sendLoyaltyPointsRedeemedEmail } = await import("./_core/email");
+    const discountAmount = Math.floor(points / 10); // 100 points = 10 EGP
+    await sendLoyaltyPointsRedeemedEmail(user.email, {
+      customerName: user.name || "Customer",
+      pointsRedeemed: points,
+      discountAmount,
+      remainingPoints: (user.loyaltyPoints || 0) - points,
+      bookingId,
+    }).catch(err => console.error("Failed to send loyalty redemption email:", err));
+  }
 }
 
 /**

@@ -186,3 +186,206 @@ export async function sendBookingConfirmationEmail(
     html,
   });
 }
+
+/**
+ * Send loyalty points earned email
+ */
+export async function sendLoyaltyPointsEarnedEmail(
+  to: string,
+  details: {
+    customerName: string;
+    pointsEarned: number;
+    totalPoints: number;
+    bookingId: number;
+  }
+): Promise<{ success: boolean; error?: string }> {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #8b5cf6; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
+          .points-badge { background: white; padding: 30px; border-radius: 8px; text-align: center; margin: 20px 0; }
+          .points-number { font-size: 48px; color: #8b5cf6; font-weight: bold; }
+          .balance-box { background: #ede9fe; padding: 15px; border-radius: 6px; text-align: center; color: #6b21a8; }
+          .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 14px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>🎉 You've Earned Loyalty Points!</h1>
+          </div>
+          <div class="content">
+            <h2>Hello ${details.customerName},</h2>
+            <p>Thank you for using our services! You've earned new loyalty points.</p>
+            <div class="points-badge">
+              <div class="points-number">+${details.pointsEarned}</div>
+              <p style="color: #6b7280; margin: 10px 0;">New Points</p>
+              <p style="font-size: 14px; color: #9ca3af;">From Booking #${details.bookingId}</p>
+            </div>
+            <div class="balance-box">
+              <p style="margin: 0;"><strong>Your Current Balance:</strong> ${details.totalPoints} points</p>
+            </div>
+            <p>You can use your points to get discounts on your next bookings!</p>
+            <p style="font-size: 14px; color: #6b7280;">💡 100 points = 10 EGP discount</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2025 BOB Home Care. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  return sendEmail({
+    to,
+    subject: '🎉 You Earned Loyalty Points! - BOB Home Care',
+    html,
+  });
+}
+
+/**
+ * Send loyalty points redeemed email
+ */
+export async function sendLoyaltyPointsRedeemedEmail(
+  to: string,
+  details: {
+    customerName: string;
+    pointsRedeemed: number;
+    discountAmount: number;
+    remainingPoints: number;
+    bookingId: number;
+  }
+): Promise<{ success: boolean; error?: string }> {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: #8b5cf6; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
+          .redemption-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+          .discount-amount { font-size: 32px; color: #10b981; font-weight: bold; }
+          .balance-box { background: #ede9fe; padding: 15px; border-radius: 6px; text-align: center; color: #6b21a8; }
+          .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 14px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>✓ Points Redeemed Successfully!</h1>
+          </div>
+          <div class="content">
+            <h2>Hello ${details.customerName},</h2>
+            <p>You've successfully redeemed your loyalty points for a discount!</p>
+            <div class="redemption-box">
+              <p><strong>Points Redeemed:</strong> ${details.pointsRedeemed} points</p>
+              <p><strong>Discount Applied:</strong> <span class="discount-amount">${details.discountAmount} EGP</span></p>
+              <p style="font-size: 14px; color: #9ca3af;">On Booking #${details.bookingId}</p>
+            </div>
+            <div class="balance-box">
+              <p style="margin: 0;"><strong>Remaining Balance:</strong> ${details.remainingPoints} points</p>
+            </div>
+            <p>Keep using our services to earn more points and enjoy more discounts!</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2025 BOB Home Care. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  return sendEmail({
+    to,
+    subject: 'Points Redeemed Successfully - BOB Home Care',
+    html,
+  });
+}
+
+/**
+ * Send booking status update email
+ */
+export async function sendBookingStatusEmail(
+  to: string,
+  details: {
+    customerName: string;
+    serviceName: string;
+    bookingId: number;
+    status: 'confirmed' | 'completed' | 'cancelled';
+  }
+): Promise<{ success: boolean; error?: string }> {
+  const statusConfig = {
+    confirmed: {
+      color: '#10b981',
+      title: 'Booking Confirmed',
+      message: 'Your booking has been confirmed by our team. We\'ll see you soon!',
+      emoji: '✓',
+    },
+    completed: {
+      color: '#3b82f6',
+      title: 'Service Completed',
+      message: 'Your service has been completed. We hope you enjoyed our service! Please consider leaving us a review.',
+      emoji: '🎉',
+    },
+    cancelled: {
+      color: '#ef4444',
+      title: 'Booking Cancelled',
+      message: 'Your booking has been cancelled. If you have any questions or would like to rebook, please contact us.',
+      emoji: '✕',
+    },
+  };
+
+  const config = statusConfig[details.status];
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: ${config.color}; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
+          .content { background: #f9fafb; padding: 30px; border-radius: 0 0 8px 8px; }
+          .status-box { background: white; padding: 20px; border-radius: 8px; border-left: 4px solid ${config.color}; margin: 20px 0; }
+          .status-label { color: ${config.color}; font-weight: bold; font-size: 18px; }
+          .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 14px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>${config.emoji} ${config.title}</h1>
+          </div>
+          <div class="content">
+            <h2>Hello ${details.customerName},</h2>
+            <div class="status-box">
+              <p><strong>Booking ID:</strong> #${details.bookingId}</p>
+              <p><strong>Service:</strong> ${details.serviceName}</p>
+              <p><strong>Status:</strong> <span class="status-label">${config.title}</span></p>
+            </div>
+            <p>${config.message}</p>
+          </div>
+          <div class="footer">
+            <p>&copy; 2025 BOB Home Care. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+
+  return sendEmail({
+    to,
+    subject: `${config.title} - BOB Home Care`,
+    html,
+  });
+}

@@ -293,8 +293,29 @@ export const appRouter = router({
         if (ctx.user.role !== "admin") {
           throw new Error("Only admins can update booking status");
         }
-        const { updateBooking } = await import("./db");
-        return updateBooking(input.id, { status: input.status });
+        const { updateBooking, getBookingById, getServiceById, getUserById } = await import("./db");
+        
+        // Get booking details before update
+        const booking = await getBookingById(input.id);
+        if (!booking) throw new Error("Booking not found");
+        
+        // Update booking status
+        const result = await updateBooking(input.id, { status: input.status });
+        
+        // Send email notification for status changes
+        if (booking.customerEmail && booking.serviceId && (input.status === "confirmed" || input.status === "completed" || input.status === "cancelled")) {
+          const service = await getServiceById(booking.serviceId);
+          const { sendBookingStatusEmail } = await import("./_core/email");
+          
+          await sendBookingStatusEmail(booking.customerEmail, {
+            customerName: booking.customerName,
+            serviceName: service?.nameEn || service?.name || "Cleaning Service",
+            bookingId: booking.id,
+            status: input.status as "confirmed" | "completed" | "cancelled",
+          }).catch(err => console.error("Failed to send booking status email:", err));
+        }
+        
+        return result;
       }),
     downloadInvoice: protectedProcedure
       .input(z.object({
