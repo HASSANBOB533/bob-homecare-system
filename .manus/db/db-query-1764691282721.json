@@ -1,0 +1,60 @@
+{
+  "query": "SELECT id, name, nameEn FROM services WHERE name NOT LIKE '%Test%' ORDER BY id LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, nameEn FROM services WHERE name NOT LIKE '%Test%' ORDER BY id LIMIT 10;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "nameEn": "Airbnb and Hotel Apartments Cleaning"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "nameEn": "Regular Cleaning Service"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "nameEn": "Deep Cleaning Service"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "nameEn": "Move-in/Move-out Cleaning"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "nameEn": "Fumigation and Sterilization"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات",
+      "nameEn": "Upholstery Cleaning"
+    },
+    {
+      "id": "330001",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service"
+    },
+    {
+      "id": "330002",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service"
+    },
+    {
+      "id": "330003",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service"
+    },
+    {
+      "id": "330004",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameEn\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tAirbnb and Hotel Apartments Cleaning\n30002\tخدمة التنظيف الدورية\tRegular Cleaning Service\n30003\tخدمة التنظيف العميق\tDeep Cleaning Service\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tMove-in/Move-out Cleaning\n30005\tالتبخير والتعقيم\tFumigation and Sterilization\n30006\tتنظيف المفروشات\tUpholstery Cleaning\n330001\tخدمة اختبار\tTest Service\n330002\tخدمة اختبار\tTest Service\n330003\tخدمة اختبار\tTest Service\n330004\tخدمة اختبار\tTest Service\n",
+  "stderr": "",
+  "execution_time_ms": 59
+}

@@ -119,6 +119,18 @@ export async function createService(service: {
   return result;
 }
 
+export async function updateServiceGallery(serviceId: number, galleryImages: string[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const { services } = await import("../drizzle/schema");
+  
+  await db.update(services)
+    .set({ galleryImages })
+    .where(eq(services.id, serviceId));
+  
+  return { success: true };
+}
+
 export async function deleteService(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");

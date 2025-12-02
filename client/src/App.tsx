@@ -21,6 +21,7 @@ import PaymentFailed from "./pages/PaymentFailed";
 import QuoteViewer from "./pages/QuoteViewer";
 import ServiceDetail from "./pages/ServiceDetail";
 import AdminBookings from "./pages/AdminBookings";
+import AdminServiceGallery from "./pages/AdminServiceGallery";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -75,6 +76,9 @@ function Router() {
       </Route>
       <Route path={"/admin/bookings"}>
         {() => <ProtectedRoute component={AdminBookings} requireAdmin />}
+      </Route>
+      <Route path={"/admin/services/:id/gallery"}>
+        {() => <ProtectedRoute component={AdminServiceGallery} requireAdmin />}
       </Route>
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />

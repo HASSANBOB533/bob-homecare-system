@@ -109,6 +109,44 @@ export const appRouter = router({
         await deleteService(input.id);
         return { success: true };
       }),
+    uploadImage: protectedProcedure
+      .input(z.object({
+        fileName: z.string(),
+        fileType: z.string(),
+        fileData: z.string(), // Base64 encoded image data
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can upload images");
+        }
+        const { storagePut } = await import("./storage");
+        
+        // Generate unique file name
+        const timestamp = Date.now();
+        const randomSuffix = Math.random().toString(36).substring(7);
+        const fileKey = `service-gallery/${timestamp}-${randomSuffix}-${input.fileName}`;
+        
+        // Convert base64 to buffer
+        const base64Data = input.fileData.replace(/^data:image\/\w+;base64,/, "");
+        const buffer = Buffer.from(base64Data, "base64");
+        
+        // Upload to S3
+        const { url } = await storagePut(fileKey, buffer, input.fileType);
+        
+        return { url };
+      }),
+    updateGallery: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        galleryImages: z.array(z.string()),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update gallery images");
+        }
+        const { updateServiceGallery } = await import("./db");
+        return updateServiceGallery(input.serviceId, input.galleryImages);
+      }),
   }),
 
   bookings: router({

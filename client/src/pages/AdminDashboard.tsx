@@ -29,11 +29,13 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
-import { Calendar, CheckCircle, Plus, Trash2, XCircle } from "lucide-react";
+import { Calendar, CheckCircle, Plus, Trash2, XCircle, Image as ImageIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useLocation } from "wouter";
 
 export default function AdminDashboard() {
+  const [, setLocation] = useLocation();
   const utils = trpc.useUtils();
   const [showServiceDialog, setShowServiceDialog] = useState(false);
   const [newService, setNewService] = useState({
@@ -174,14 +176,24 @@ export default function AdminDashboard() {
                       {service.duration && <span>{service.duration} min</span>}
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDeleteService(service.id)}
-                    className="text-destructive"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setLocation(`/admin/services/${service.id}/gallery`)}
+                    >
+                      <ImageIcon className="h-4 w-4 mr-1" />
+                      Gallery
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleDeleteService(service.id)}
+                      className="text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
