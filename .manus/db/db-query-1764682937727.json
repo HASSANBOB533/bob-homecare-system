@@ -1,0 +1,28 @@
+{
+  "query": "SELECT id, name, email, role FROM users ORDER BY id DESC LIMIT 5",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, email, role FROM users ORDER BY id DESC LIMIT 5",
+  "rows": [
+    {
+      "id": "270010",
+      "name": "Hassan Abdel Rahman",
+      "email": "hassanahmed533@gmail.com",
+      "role": "user"
+    },
+    {
+      "id": "3",
+      "name": "Regular User",
+      "email": "user@test.com",
+      "role": "user"
+    },
+    {
+      "id": "1",
+      "name": "Updated Name",
+      "email": "updated@example.com",
+      "role": "admin"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\trole\n270010\tHassan Abdel Rahman\thassanahmed533@gmail.com\tuser\n3\tRegular User\tuser@test.com\tuser\n1\tUpdated Name\tupdated@example.com\tadmin\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

@@ -1,0 +1,55 @@
+{
+  "query": "SHOW TABLES",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SHOW TABLES",
+  "rows": [
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "__drizzle_migrations"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "addOnTiers"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "addOns"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "bookings"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "loyaltyTransactions"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "packageDiscounts"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "pricingItems"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "pricingSqm"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "pricingTiers"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "redemptions"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "reviews"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "rewards"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "services"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "specialOffers"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib": "users"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_Htf64TWdaDvosPeCL5WWib\n__drizzle_migrations\naddOnTiers\naddOns\nbookings\nloyaltyTransactions\npackageDiscounts\npricingItems\npricingSqm\npricingTiers\nredemptions\nreviews\nrewards\nservices\nspecialOffers\nusers\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

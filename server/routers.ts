@@ -542,6 +542,18 @@ export const appRouter = router({
         return adjustUserPoints(input.userId, input.points, input.description);
       }),
   }),
+  
+  // Pricing Management
+  pricing: router({
+    seedAllPricing: protectedProcedure
+      .mutation(async ({ ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can seed pricing data");
+        }
+        const { seedPricingData } = await import("./pricing-seed");
+        return seedPricingData();
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

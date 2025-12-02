@@ -345,3 +345,58 @@
 - [ ] Request Paymob credentials from user
 - [ ] Test payment flow end-to-end
 - [ ] Write vitest tests for payment integration
+
+## Dynamic Pricing Management System
+
+- [ ] Research Egypt market rates for cleaning services
+- [ ] Create pricing comparison document (BOB vs market)
+- [ ] Design database schema for flexible pricing (bedroom-based, sqm-based, item-based, package-based)
+- [ ] Create pricing tiers table for bedroom-based services
+- [ ] Create pricing items table for upholstery/item-based services
+- [ ] Create add-ons table for optional extras
+- [ ] Update services table with pricing type field
+- [ ] Build admin interface for managing service prices
+- [ ] Build admin interface for managing pricing tiers
+- [ ] Build admin interface for managing upholstery items
+- [ ] Build admin interface for managing add-ons
+- [ ] Update booking form to show dynamic pricing based on service type
+- [ ] Add bedroom selector for bedroom-based services
+- [ ] Add square meter input for sqm-based services
+- [ ] Add item quantity selectors for upholstery services
+- [ ] Add add-on checkboxes for optional extras
+- [ ] Implement real-time price calculation in booking form
+- [ ] Update payment integration to use calculated prices
+- [ ] Add Arabic/English translations for pricing UI
+- [ ] Write vitest tests for pricing calculations
+- [ ] Test complete booking flow with dynamic pricing
+
+## Client Pricing Presentation
+
+- [ ] Prepare slides content with pricing and company info
+- [ ] Generate professional presentation with images
+- [ ] Include all 5 services with clear pricing
+- [ ] Add special offers and discounts
+- [ ] Include company branding and contact information
+
+## Dynamic Pricing Management System
+
+- [ ] Update services table schema with pricing type field (BEDROOM_BASED, SQM_BASED, ITEM_BASED)
+- [ ] Create pricing_tiers table for bedroom-based pricing (1-6 BR)
+- [ ] Create pricing_sqm table for square-meter-based pricing
+- [ ] Create pricing_items table for upholstery item-based pricing
+- [ ] Create add_ons table for laundry, garden, kitchen add-ons with size tiers
+- [ ] Create package_discounts table for periodical cleaning packages (4, 6, 8, 12 visits)
+- [ ] Create special_offers table for referral, property manager, emergency pricing
+- [ ] Push database schema changes with drizzle
+- [ ] Create admin interface for managing all pricing
+- [ ] Create admin interface for managing add-ons
+- [ ] Create admin interface for managing package discounts
+- [ ] Create admin interface for managing special offers
+- [ ] Update booking form with service-specific price calculator
+- [ ] Add bedroom selector for Service Apartments and Periodical Cleaning
+- [ ] Add square meter input for Deep Cleaning and Move-In/Move-Out
+- [ ] Add item checklist for Upholstery Cleaning
+- [ ] Add add-ons selection with dynamic pricing
+- [ ] Integrate pricing calculator with Paymob payment flow
+- [ ] Test all pricing calculations for accuracy
+- [ ] Write vitest tests for pricing logic

@@ -41,7 +41,8 @@ export const services = mysqlTable("services", {
   description: text("description"), // Arabic description
   descriptionEn: text("descriptionEn"), // English description
   duration: int("duration"), // Duration in minutes
-  price: int("price").notNull().default(0), // Price in cents (e.g., 100 EGP = 10000 cents)
+  price: int("price").notNull().default(0), // Base price in cents (for backward compatibility)
+  pricingType: mysqlEnum("pricingType", ["BEDROOM_BASED", "SQM_BASED", "ITEM_BASED", "FIXED"]).default("FIXED").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -140,3 +141,125 @@ export const redemptions = mysqlTable("redemptions", {
 
 export type Redemption = typeof redemptions.$inferSelect;
 export type InsertRedemption = typeof redemptions.$inferInsert;
+
+/**
+ * Pricing tiers table for bedroom-based pricing (Service Apartments, Periodical Cleaning)
+ */
+export const pricingTiers = mysqlTable("pricingTiers", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }).notNull(),
+  bedrooms: int("bedrooms").notNull(), // 1, 2, 3, 4, 5, 6
+  price: int("price").notNull(), // Price in cents
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PricingTier = typeof pricingTiers.$inferSelect;
+export type InsertPricingTier = typeof pricingTiers.$inferInsert;
+
+/**
+ * Square meter pricing table (Deep Cleaning, Move-In/Move-Out)
+ */
+export const pricingSqm = mysqlTable("pricingSqm", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }).notNull(),
+  pricePerSqm: int("pricePerSqm").notNull(), // Price per square meter in cents
+  minimumCharge: int("minimumCharge"), // Minimum order amount in cents
+  tier: varchar("tier", { length: 50 }), // "normal" or "heavy" for Move-In/Move-Out
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PricingSqm = typeof pricingSqm.$inferSelect;
+export type InsertPricingSqm = typeof pricingSqm.$inferInsert;
+
+/**
+ * Item-based pricing table (Upholstery Cleaning)
+ */
+export const pricingItems = mysqlTable("pricingItems", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }).notNull(),
+  itemName: varchar("itemName", { length: 100 }).notNull(), // Arabic name
+  itemNameEn: varchar("itemNameEn", { length: 100 }).notNull(), // English name
+  price: int("price").notNull(), // Price per item in cents
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PricingItem = typeof pricingItems.$inferSelect;
+export type InsertPricingItem = typeof pricingItems.$inferInsert;
+
+/**
+ * Add-ons table (Laundry, Garden/Terrace, Kitchen Deep Clean, etc.)
+ */
+export const addOns = mysqlTable("addOns", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }), // Nullable for global add-ons
+  name: varchar("name", { length: 255 }).notNull(), // Arabic name
+  nameEn: varchar("nameEn", { length: 255 }).notNull(), // English name
+  description: text("description"), // Arabic description
+  descriptionEn: text("descriptionEn"), // English description
+  price: int("price").notNull(), // Base price in cents
+  pricingType: mysqlEnum("pricingType", ["FIXED", "PER_BEDROOM", "SIZE_TIERED"]).default("FIXED").notNull(),
+  sizeTierThreshold: int("sizeTierThreshold"), // Size threshold in sqm (e.g., 100 for garden)
+  sizeTierMultiplier: int("sizeTierMultiplier"), // Multiplier in percentage (e.g., 150 for +50%)
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AddOn = typeof addOns.$inferSelect;
+export type InsertAddOn = typeof addOns.$inferInsert;
+
+/**
+ * Add-on pricing tiers for bedroom-based add-ons (e.g., Laundry, Garden)
+ */
+export const addOnTiers = mysqlTable("addOnTiers", {
+  id: int("id").autoincrement().primaryKey(),
+  addOnId: int("addOnId").references(() => addOns.id, { onDelete: "cascade" }).notNull(),
+  bedrooms: int("bedrooms").notNull(), // 1, 2, 3, 4, 5, 6
+  price: int("price").notNull(), // Price in cents
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AddOnTier = typeof addOnTiers.$inferSelect;
+export type InsertAddOnTier = typeof addOnTiers.$inferInsert;
+
+/**
+ * Package discounts table (for Periodical Cleaning)
+ */
+export const packageDiscounts = mysqlTable("packageDiscounts", {
+  id: int("id").autoincrement().primaryKey(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }).notNull(),
+  visits: int("visits").notNull(), // Number of visits (4, 6, 8, 12)
+  discountPercentage: int("discountPercentage").notNull(), // Discount percentage (10, 12, 15, 20)
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PackageDiscount = typeof packageDiscounts.$inferSelect;
+export type InsertPackageDiscount = typeof packageDiscounts.$inferInsert;
+
+/**
+ * Special offers table (Referral, Property Manager, Emergency Same-Day)
+ */
+export const specialOffers = mysqlTable("specialOffers", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(), // Arabic name
+  nameEn: varchar("nameEn", { length: 255 }).notNull(), // English name
+  description: text("description"), // Arabic description
+  descriptionEn: text("descriptionEn"), // English description
+  offerType: mysqlEnum("offerType", ["REFERRAL", "PROPERTY_MANAGER", "EMERGENCY_SAME_DAY"]).notNull(),
+  discountType: mysqlEnum("discountType", ["percentage", "fixed"]).notNull(),
+  discountValue: int("discountValue").notNull(), // Percentage or fixed amount in cents
+  minProperties: int("minProperties"), // For property manager (5-10, 11+)
+  maxDiscount: int("maxDiscount"), // Max discount amount in cents (e.g., 500 EGP for referral)
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type SpecialOffer = typeof specialOffers.$inferSelect;
+export type InsertSpecialOffer = typeof specialOffers.$inferInsert;

@@ -1,0 +1,19 @@
+{
+  "query": "SHOW TABLES LIKE 'pricing%'",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SHOW TABLES LIKE 'pricing%'",
+  "rows": [
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib (pricing%)": "pricingItems"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib (pricing%)": "pricingSqm"
+    },
+    {
+      "Tables_in_Htf64TWdaDvosPeCL5WWib (pricing%)": "pricingTiers"
+    }
+  ],
+  "messages": [],
+  "stdout": "Tables_in_Htf64TWdaDvosPeCL5WWib (pricing%)\npricingItems\npricingSqm\npricingTiers\n",
+  "stderr": "",
+  "execution_time_ms": 65
+}

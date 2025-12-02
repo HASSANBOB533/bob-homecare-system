@@ -1,0 +1,19 @@
+{
+  "query": "SELECT \n  (SELECT COUNT(*) FROM pricingTiers) as bedroom_tiers,\n  (SELECT COUNT(*) FROM pricingSqm) as sqm_pricing,\n  (SELECT COUNT(*) FROM pricingItems) as upholstery_items,\n  (SELECT COUNT(*) FROM addOns) as add_ons,\n  (SELECT COUNT(*) FROM addOnTiers) as add_on_tiers,\n  (SELECT COUNT(*) FROM packageDiscounts) as package_discounts,\n  (SELECT COUNT(*) FROM specialOffers) as special_offers",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT \n  (SELECT COUNT(*) FROM pricingTiers) as bedroom_tiers,\n  (SELECT COUNT(*) FROM pricingSqm) as sqm_pricing,\n  (SELECT COUNT(*) FROM pricingItems) as upholstery_items,\n  (SELECT COUNT(*) FROM addOns) as add_ons,\n  (SELECT COUNT(*) FROM addOnTiers) as add_on_tiers,\n  (SELECT COUNT(*) FROM packageDiscounts) as package_discounts,\n  (SELECT COUNT(*) FROM specialOffers) as special_offers",
+  "rows": [
+    {
+      "bedroom_tiers": "0",
+      "sqm_pricing": "9",
+      "upholstery_items": "27",
+      "add_ons": "12",
+      "add_on_tiers": "36",
+      "package_discounts": "0",
+      "special_offers": "12"
+    }
+  ],
+  "messages": [],
+  "stdout": "bedroom_tiers\tsqm_pricing\tupholstery_items\tadd_ons\tadd_on_tiers\tpackage_discounts\tspecial_offers\n0\t9\t27\t12\t36\t0\t12\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}
