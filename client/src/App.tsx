@@ -30,6 +30,7 @@ const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
 const AdminBookings = lazy(() => import("./pages/AdminBookings"));
 const AdminCalendar = lazy(() => import("./pages/AdminCalendar"));
 const AdminServiceGallery = lazy(() => import("./pages/AdminServiceGallery"));
+const AdminDebug = lazy(() => import("./pages/AdminDebug"));
 const Referrals = lazy(() => import("./pages/Referrals"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -99,6 +100,9 @@ function App() {
               </Route>
               <Route path="/admin/calendar">
                 {() => <ProtectedRoute component={AdminCalendar} requireAdmin />}
+              </Route>
+              <Route path="/admin/debug">
+                {() => <ProtectedRoute component={AdminDebug} requireAdmin />}
               </Route>
               <Route path="/admin/reviews">
                 {() => <ProtectedRoute component={AdminReviews} requireAdmin />}

@@ -1528,3 +1528,48 @@
 - [ ] Test booking form validation with invalid inputs
 - [ ] Test rate limiting functionality
 - [ ] Verify SEO metadata displays correctly
+
+## Full-Stack Enhancement: PWA + Admin + Self-Healing
+### 1. Ultimate PWA Enhancement
+- [x] Rebuild service worker with smart caching strategy (v2.0.0)
+- [x] Implement stale-while-revalidate caching
+- [x] Add precaching for core assets
+- [x] Implement automatic cleanup of outdated caches
+- [x] Optimize manifest.json (already excellent)
+- [x] Implement fully functional "Install App" button (already implemented)
+- [x] Add beforeinstallprompt listener (already implemented)
+- [x] Enable offline access to homepage, bookings, dashboard
+- [x] Create graceful fallback pages for network failure (offline.html)
+- [x] Optimize cache size and auto-expire old versions
+
+### 2. Admin Dashboard Optimization
+- [ ] Improve admin dashboard layout and mobile responsiveness
+- [ ] Fix misaligned elements and overlapping text
+- [ ] Add lazy-loading for admin tables
+- [ ] Implement pagination for bookings list
+- [ ] Optimize API calls and eliminate repeated queries
+- [ ] Add search and filters for bookings
+- [ ] Add sorting by date, service, status, price
+- [ ] Add charts for daily/weekly/monthly bookings
+- [ ] Add revenue summary visualization
+- [ ] Fix all console errors in admin dashboard
+
+### 3. Bug Auto-Detection & Self-Healing
+- [x] Create central diagnostic module for runtime error monitoring (selfHealing.ts)
+- [x] Implement error logging (type, page, component, browser, timestamp)
+- [x] Add retry logic for failed API calls with exponential backoff (apiRetry.ts)
+- [x] Implement circuit breaker pattern for cascading failure prevention
+- [x] Add component reload without full page reload
+- [x] Implement fallback to cached data when API fails (in service worker)
+- [x] Implement slow operation scanner (>200ms)
+- [x] Add admin debug mode toggle
+- [x] Create real-time error dashboard for admins (AdminDebug.tsx)
+- [x] Add performance monitoring and logging
+
+### 4. Testing & Validation
+- [ ] Test PWA installation on desktop Chrome/Safari/Edge
+- [ ] Test on iPhone Safari
+- [ ] Test on Android Chrome
+- [ ] Test offline mode functionality
+- [ ] Test with slow network (3G/4G throttling)
+- [ ] Verify no console errors across all pages
