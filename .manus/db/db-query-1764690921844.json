@@ -1,0 +1,50 @@
+{
+  "query": "SELECT id, name FROM services ORDER BY id LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name FROM services ORDER BY id LIMIT 10;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات"
+    },
+    {
+      "id": "60001",
+      "name": "Test Service"
+    },
+    {
+      "id": "90001",
+      "name": "Test Service"
+    },
+    {
+      "id": "120001",
+      "name": "Test Service"
+    },
+    {
+      "id": "150001",
+      "name": "Test Service"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\n30001\tتنظيف شقق Airbnb والشقق الفندقية\n30002\tخدمة التنظيف الدورية\n30003\tخدمة التنظيف العميق\n30004\tتنظيف الانتقال، والفتح او الاغلاق\n30005\tالتبخير والتعقيم\n30006\tتنظيف المفروشات\n60001\tTest Service\n90001\tTest Service\n120001\tTest Service\n150001\tTest Service\n",
+  "stderr": "",
+  "execution_time_ms": 63
+}

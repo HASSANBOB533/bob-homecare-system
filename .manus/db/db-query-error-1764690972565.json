@@ -1,0 +1,8 @@
+{
+  "query": "DELETE FROM services WHERE name LIKE '%Test%' OR name LIKE '%test%' OR name LIKE '%اختبار%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute DELETE FROM services WHERE name LIKE '%Test%' OR name LIKE '%test%' OR name LIKE '%اختبار%';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1451 (23000) at line 1: Cannot delete or update a parent row: a foreign key constraint fails (`htf64twdadvospecl5wwib`.`quotes`, CONSTRAINT `quotes_serviceId_services_id_fk` FOREIGN KEY (`serviceId`) REFERENCES `services` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION)"
+  ]
+}

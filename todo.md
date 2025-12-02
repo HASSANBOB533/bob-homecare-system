@@ -674,3 +674,39 @@
 - [x] Admin bookings dashboard tests (8 tests passing)
 - [x] Quote system tests (17 tests passing)
 - [x] Pricing integration tests (5 tests passing)
+
+
+## Phase 4: Service Photo Galleries (IN PROGRESS)
+
+### Database Schema
+- [ ] Add galleryImages field to services table (JSON array of image URLs)
+- [ ] Push schema changes to database
+
+### Gallery Component
+- [ ] Create PhotoGallery component with grid layout
+- [ ] Add lightbox/modal functionality for full-size image viewing
+- [ ] Add image navigation (prev/next) in lightbox
+- [ ] Make gallery responsive for mobile devices
+
+### Service Detail Pages
+- [ ] Integrate PhotoGallery component into ServiceDetail page
+- [ ] Display gallery below hero section
+- [ ] Add placeholder images for services without photos
+
+### Admin Interface
+- [ ] Add image upload functionality to admin service editor
+- [ ] Allow adding/removing gallery images
+- [ ] Support drag-and-drop image ordering
+- [ ] Integrate with S3 storage for image uploads
+
+
+## Phase 4: Service Photo Gallery (COMPLETED)
+
+- [x] Add galleryImages JSON field to services schema
+- [x] Push database schema changes
+- [x] Create PhotoGallery component with lightbox functionality
+- [x] Add keyboard navigation (arrow keys, Escape)
+- [x] Integrate gallery into ServiceDetail page
+- [x] Copy sample cleaning service images to public/gallery
+- [x] Add sample gallery images to all services
+- [x] Gallery component created with 4 sample images per service

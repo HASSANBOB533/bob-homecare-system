@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { CheckCircle2, ArrowRight, Home } from "lucide-react";
 import { useState, useMemo } from "react";
+import { PhotoGallery } from "@/components/PhotoGallery";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -128,6 +129,19 @@ export default function ServiceDetail() {
           </div>
         </div>
       </div>
+
+      {/* Photo Gallery */}
+      {service.galleryImages && service.galleryImages.length > 0 && (
+        <div className="container py-12">
+          <h2 className="text-3xl font-bold mb-6 text-center">
+            {language === "ar" ? "معرض الصور" : "Photo Gallery"}
+          </h2>
+          <PhotoGallery 
+            images={service.galleryImages} 
+            alt={serviceName || "Service"}
+          />
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="container py-12">

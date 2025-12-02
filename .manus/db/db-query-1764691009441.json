@@ -1,0 +1,46 @@
+{
+  "query": "SELECT id, name, nameEn, galleryImages FROM services WHERE name NOT LIKE '%Test%' AND name NOT LIKE '%test%' AND name NOT LIKE '%اختبار%' ORDER BY id LIMIT 6;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, nameEn, galleryImages FROM services WHERE name NOT LIKE '%Test%' AND name NOT LIKE '%test%' AND name NOT LIKE '%اختبار%' ORDER BY id LIMIT 6;",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "nameEn": "Airbnb and Hotel Apartments Cleaning",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "nameEn": "Regular Cleaning Service",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "nameEn": "Deep Cleaning Service",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "nameEn": "Move-in/Move-out Cleaning",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "nameEn": "Fumigation and Sterilization",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات",
+      "nameEn": "Upholstery Cleaning",
+      "galleryImages": "[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameEn\tgalleryImages\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tAirbnb and Hotel Apartments Cleaning\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n30002\tخدمة التنظيف الدورية\tRegular Cleaning Service\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n30003\tخدمة التنظيف العميق\tDeep Cleaning Service\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tMove-in/Move-out Cleaning\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n30005\tالتبخير والتعقيم\tFumigation and Sterilization\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n30006\tتنظيف المفروشات\tUpholstery Cleaning\t[\"/gallery/cleaning-team-1.jpg\", \"/gallery/cleaning-professional-2.jpg\", \"/gallery/cleaning-room-4.jpg\", \"/gallery/before-after-5.jpg\"]\n",
+  "stderr": "",
+  "execution_time_ms": 54
+}
