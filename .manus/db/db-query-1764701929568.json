@@ -1,0 +1,120 @@
+{
+  "query": "SELECT id, name, description FROM services WHERE name LIKE '%Test%' OR name LIKE '%test%' OR name LIKE '%اختبار%' ORDER BY id;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, description FROM services WHERE name LIKE '%Test%' OR name LIKE '%test%' OR name LIKE '%اختبار%' ORDER BY id;",
+  "rows": [
+    {
+      "id": "330001",
+      "name": "خدمة اختبار",
+      "description": "خدمة للاختبار"
+    },
+    {
+      "id": "330002",
+      "name": "خدمة اختبار",
+      "description": "خدمة للاختبار"
+    },
+    {
+      "id": "330003",
+      "name": "خدمة اختبار",
+      "description": "خدمة للاختبار"
+    },
+    {
+      "id": "330004",
+      "name": "خدمة اختبار",
+      "description": "خدمة للاختبار"
+    },
+    {
+      "id": "330005",
+      "name": "خدمة اختبار",
+      "description": "خدمة للاختبار"
+    },
+    {
+      "id": "360003",
+      "name": "Test Pricing Service",
+      "description": "Test service for pricing integration"
+    },
+    {
+      "id": "360011",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360012",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360013",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360014",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360015",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360016",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360017",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360018",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360019",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360022",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360023",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360024",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360025",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360026",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360027",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    },
+    {
+      "id": "360028",
+      "name": "Test Admin Service",
+      "description": "Test service for admin bookings"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdescription\n330001\tخدمة اختبار\tخدمة للاختبار\n330002\tخدمة اختبار\tخدمة للاختبار\n330003\tخدمة اختبار\tخدمة للاختبار\n330004\tخدمة اختبار\tخدمة للاختبار\n330005\tخدمة اختبار\tخدمة للاختبار\n360003\tTest Pricing Service\tTest service for pricing integration\n360011\tTest Admin Service\tTest service for admin bookings\n360012\tTest Admin Service\tTest service for admin bookings\n360013\tTest Admin Service\tTest service for admin bookings\n360014\tTest Admin Service\tTest service for admin bookings\n360015\tTest Admin Service\tTest service for admin bookings\n360016\tTest Admin Service\tTest service for admin bookings\n360017\tTest Admin Service\tTest service for admin bookings\n360018\tTest Admin Service\tTest service for admin bookings\n360019\tTest Admin Service\tTest service for admin bookings\n360022\tTest Admin Service\tTest service for admin bookings\n360023\tTest Admin Service\tTest service for admin bookings\n360024\tTest Admin Service\tTest service for admin bookings\n360025\tTest Admin Service\tTest service for admin bookings\n360026\tTest Admin Service\tTest service for admin bookings\n360027\tTest Admin Service\tTest service for admin bookings\n360028\tTest Admin Service\tTest service for admin bookings\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

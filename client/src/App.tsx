@@ -27,6 +27,7 @@ import AdminServiceGallery from "./pages/AdminServiceGallery";
 import Referrals from "./pages/Referrals";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
+import { DebugPanel } from "./components/DebugPanel";
 
 function ProtectedRoute({ component: Component, requireAdmin = false }: { component: React.ComponentType; requireAdmin?: boolean }) {
   const { user, loading, isAuthenticated } = useAuth();
@@ -109,6 +110,7 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <DebugPanel />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

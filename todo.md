@@ -1035,3 +1035,130 @@
 - [x] Write vitest tests for email service functions (9 tests passing)
 - [x] Test email notifications graceful degradation
 - [ ] User needs to add RESEND_API_KEY environment variable for production email sending
+
+
+## System-Wide Diagnostic & Repair
+
+### 1. Fix All Non-Functional Buttons
+- [ ] Audit all buttons across the website
+- [ ] Identify buttons with missing event handlers
+- [ ] Fix incorrect selectors or broken JavaScript
+- [ ] Test all buttons on desktop and mobile
+- [ ] Verify redirects and actions work correctly
+
+### 2. Unify Dashboard Logic (Admin vs User)
+- [ ] Audit current dashboard implementations
+- [ ] Identify why two dashboards appear inconsistently
+- [ ] Consolidate dashboard routing logic
+- [ ] Ensure role-based access control works correctly
+- [ ] Remove duplicated or conflicting dashboard code
+- [ ] Unify navigation and UI structure
+
+### 3. Fix Add-On Service Management
+- [ ] Audit entire add-on system
+- [ ] Ensure users can add/remove add-ons easily
+- [ ] Restrict add-ons to relevant services only
+- [ ] Remove unrelated or incorrectly assigned add-ons
+- [ ] Improve UI clarity for add-on selection
+- [ ] Test add-on pricing calculations
+
+### 4. Implement Error Logging & Debugging
+- [ ] Add console logging for critical actions
+- [ ] Log errors with type, file, line number, user action
+- [ ] Identify and fix all current console errors
+- [ ] Add try/catch blocks around unstable operations
+- [ ] Create debug flag for verbose logging
+- [ ] Implement error boundary components
+
+### 5. Frontend Debugging & Validation
+- [ ] Validate HTML/CSS/JS assets
+- [ ] Remove unused or conflicting CSS rules
+- [ ] Fix layout shifting and hidden elements
+- [ ] Resolve overlapping UI components
+- [ ] Fix script load order issues
+- [ ] Remove console warnings
+
+### 6. Workflow Verification & Testing
+- [ ] Test all dashboards end-to-end
+- [ ] Test all forms and button flows
+- [ ] Test add-on selection and pricing
+- [ ] Verify mobile responsiveness (iPhone Safari, Android Chrome)
+- [ ] Verify desktop compatibility (Chrome, Edge, Safari)
+- [ ] Check for console errors across all pages
+- [ ] Test at common breakpoints (mobile, tablet, desktop)
+
+### 7. Performance & Cleanup
+- [ ] Clean unused assets and deprecated code
+- [ ] Optimize bundle size
+- [ ] Improve load performance
+- [ ] Commit all changes with descriptive message
+
+
+## System-Wide Diagnostic & Repair (January 2, 2025)
+
+### Phase 1: Debugging Infrastructure ✅ COMPLETE
+- [x] Implement JavaScript error logging system (errorLogger.ts)
+- [x] Add console logging for critical actions
+- [x] Create error categorization (error, warning, info, click, navigation)
+- [x] Add try/catch blocks around unstable operations
+- [x] Create debug flag for verbose logging (?debug URL parameter)
+- [x] Implement debug panel UI component (DebugPanel.tsx)
+- [x] Add error export functionality (JSON export)
+- [x] Integrate debug panel into App.tsx
+- [x] Test debug panel functionality
+- [x] Create comprehensive diagnostic report (SYSTEM_DIAGNOSTIC_REPORT.md)
+
+### Phase 2: Data Quality Audit ✅ COMPLETE
+- [x] Audit database for test/duplicate services (22 found)
+- [x] Identify foreign key constraints preventing deletion
+- [x] Document safe cleanup procedures
+- [ ] Implement service visibility toggle (recommended solution)
+- [ ] Remove test services safely after implementing visibility toggle
+
+### Phase 3: Button Functionality Testing ⏳ IN PROGRESS
+- [x] Create button inventory (118 buttons across 22 pages)
+- [x] Set up debug panel for tracking button clicks
+- [ ] Test all navigation buttons systematically
+- [ ] Test all CTA buttons (Book Now, WhatsApp, View Services)
+- [ ] Test all form submission buttons
+- [ ] Document broken buttons in diagnostic report
+- [ ] Fix broken event handlers
+
+### Phase 4: Dashboard Logic Review ⏳ PENDING
+- [ ] Test dashboard access with different user roles
+- [ ] Verify role-based routing logic
+- [ ] Check for conflicting CSS or layout components
+- [ ] Consolidate duplicate code if found
+- [ ] Add role-based navigation guards
+
+### Phase 5: Add-On System Audit ⏳ PENDING
+- [ ] Query all add-ons and their service associations
+- [ ] Test add-on selection in booking flow
+- [ ] Verify pricing calculations include add-ons
+- [ ] Check for orphaned add-ons
+- [ ] Test add-on removal functionality
+- [ ] Verify add-on display on service detail pages
+
+### Phase 6: Cross-Device Testing ⏳ PENDING
+- [ ] Test on iPhone Safari
+- [ ] Test on Android Chrome
+- [ ] Test on Desktop Chrome/Edge/Safari
+- [ ] Verify responsive layout at all breakpoints
+- [ ] Check for touch/click issues on mobile
+- [ ] Verify no horizontal scrolling
+- [ ] Test RTL (Arabic) layout on all devices
+
+### Phase 7: Performance Optimization ⏳ PENDING
+- [ ] Measure bundle size
+- [ ] Implement lazy loading for images
+- [ ] Add code splitting for admin routes
+- [ ] Optimize service list rendering
+- [ ] Cache tRPC queries
+- [ ] Test production build performance
+
+### Phase 8: Final Commit & Documentation ⏳ PENDING
+- [ ] Clean unused assets and deprecated logic
+- [ ] Update all documentation
+- [ ] Create git commit with descriptive message
+- [ ] Update README with debug panel usage
+- [ ] Create user guide for debugging tools
