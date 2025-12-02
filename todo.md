@@ -1416,3 +1416,36 @@
 - [x] Add bilingual translations for receipt UI (English/Arabic)
 - [x] Dynamic filename with booking ID and date
 - [x] Print receipt feature fully functional
+
+## Fix Website Loading Issue (January 2, 2025)
+- [x] Check dev server logs for errors
+- [x] Identify TypeScript compilation errors (pushNotifications.ts)
+- [x] Fix pushNotifications.ts errors by deleting unused file
+- [x] Verify all imports and dependencies
+- [x] Test website loads correctly - All TypeScript errors cleared
+
+## Email/WhatsApp Booking Reminders (January 2, 2025)
+- [ ] Create automated email reminder system using Resend API
+- [ ] Implement 24-hour before service email reminders
+- [ ] Add WhatsApp reminder integration
+- [ ] Create reminder templates (booking confirmation, 24h reminder, completion)
+- [ ] Add bilingual templates (English/Arabic)
+- [ ] Test email and WhatsApp reminder delivery
+
+## Customer Portal (January 2, 2025)
+- [ ] Create customer dashboard page
+- [ ] Display booking history with status
+- [ ] Add download receipt button for each booking
+- [ ] Add reschedule booking functionality
+- [ ] Display loyalty points balance
+- [ ] Add profile editing capability
+- [ ] Test customer portal features
+
+## Staff Management Module (January 2, 2025)
+- [ ] Create staff table in database schema
+- [ ] Add staff CRUD operations
+- [ ] Create staff management page in admin
+- [ ] Add staff assignment to bookings
+- [ ] Display staff schedule in calendar view
+- [ ] Add staff performance metrics
+- [ ] Test staff assignment workflow
