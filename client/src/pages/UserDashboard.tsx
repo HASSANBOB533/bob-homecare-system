@@ -170,7 +170,7 @@ export default function UserDashboard() {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-lg">{booking.serviceName || "Service"}</CardTitle>
+                      <CardTitle className="text-lg">{booking.service?.name || "Service"}</CardTitle>
                       <CardDescription className="mt-1">
                         <span
                           className={`inline-block px-2 py-1 text-xs rounded-full ${
@@ -228,7 +228,7 @@ export default function UserDashboard() {
                             setSelectedBooking({
                               id: booking.id,
                               serviceId: booking.serviceId,
-                              serviceName: booking.serviceName || "Service",
+                              serviceName: booking.service?.name || "Service",
                             });
                             setReviewDialogOpen(true);
                           }

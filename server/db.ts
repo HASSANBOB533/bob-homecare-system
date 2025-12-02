@@ -1795,3 +1795,221 @@ export async function isFavoriteService(userId: number, serviceId: number) {
 
   return { isFavorite: !!favorite };
 }
+
+/**
+ * Generate unique referral code (8 characters: BOB + 5 random alphanumeric)
+ */
+function generateReferralCode(): string {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Exclude similar looking characters
+  let code = "BOB";
+  for (let i = 0; i < 5; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+/**
+ * Get or create user's referral code
+ */
+export async function getUserReferralCode(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals, users } = await import("../drizzle/schema");
+
+  // Check if user already has a referral code
+  const [existing] = await db
+    .select()
+    .from(referrals)
+    .where(eq(referrals.referrerId, userId))
+    .limit(1);
+
+  if (existing) {
+    return { referralCode: existing.referralCode };
+  }
+
+  // Generate new unique code
+  let code = generateReferralCode();
+  let attempts = 0;
+  while (attempts < 10) {
+    const [duplicate] = await db
+      .select()
+      .from(referrals)
+      .where(eq(referrals.referralCode, code))
+      .limit(1);
+    
+    if (!duplicate) break;
+    code = generateReferralCode();
+    attempts++;
+  }
+
+  // Create referral entry
+  await db.insert(referrals).values({
+    referrerId: userId,
+    referralCode: code,
+  });
+
+  return { referralCode: code };
+}
+
+/**
+ * Get referral statistics for user
+ */
+export async function getReferralStats(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals } = await import("../drizzle/schema");
+
+  // Get all referrals for this user
+  const userReferrals = await db
+    .select()
+    .from(referrals)
+    .where(eq(referrals.referrerId, userId));
+
+  const totalSent = userReferrals.length;
+  const completed = userReferrals.filter(r => r.status === "completed").length;
+  const pending = userReferrals.filter(r => r.status === "pending" && r.referredUserId !== null).length;
+  const totalRewards = userReferrals
+    .filter(r => r.status === "completed")
+    .reduce((sum, r) => sum + (r.rewardAmount || 0), 0);
+
+  return {
+    totalSent,
+    completed,
+    pending,
+    totalRewards, // in cents
+  };
+}
+
+/**
+ * Get referral history for user
+ */
+export async function getReferralHistory(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals, users, bookings } = await import("../drizzle/schema");
+
+  const history = await db
+    .select({
+      id: referrals.id,
+      referralCode: referrals.referralCode,
+      status: referrals.status,
+      discountAmount: referrals.discountAmount,
+      rewardAmount: referrals.rewardAmount,
+      createdAt: referrals.createdAt,
+      usedAt: referrals.usedAt,
+      completedAt: referrals.completedAt,
+      referredUser: {
+        id: users.id,
+        name: users.name,
+        email: users.email,
+      },
+      booking: {
+        id: bookings.id,
+        dateTime: bookings.dateTime,
+        status: bookings.status,
+      },
+    })
+    .from(referrals)
+    .leftJoin(users, eq(referrals.referredUserId, users.id))
+    .leftJoin(bookings, eq(referrals.bookingId, bookings.id))
+    .where(eq(referrals.referrerId, userId))
+    .orderBy(desc(referrals.createdAt));
+
+  return history;
+}
+
+/**
+ * Validate referral code
+ */
+export async function validateReferralCode(code: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals } = await import("../drizzle/schema");
+
+  const [referral] = await db
+    .select()
+    .from(referrals)
+    .where(and(
+      eq(referrals.referralCode, code),
+      eq(referrals.status, "pending"),
+      isNull(referrals.referredUserId)
+    ))
+    .limit(1);
+
+  if (!referral) {
+    return { valid: false, message: "Invalid or already used referral code" };
+  }
+
+  return { valid: true, referralId: referral.id, referrerId: referral.referrerId };
+}
+
+/**
+ * Apply referral code to booking
+ */
+export async function applyReferralCode(code: string, referredUserId: number, bookingId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals, specialOffers } = await import("../drizzle/schema");
+
+  // Validate code
+  const validation = await validateReferralCode(code);
+  if (!validation.valid || !validation.referralId) {
+    throw new Error("Invalid referral code");
+  }
+
+  // Get referral discount from special offers
+  const [referralOffer] = await db
+    .select()
+    .from(specialOffers)
+    .where(and(
+      eq(specialOffers.offerType, "REFERRAL"),
+      eq(specialOffers.active, true)
+    ))
+    .limit(1);
+
+  if (!referralOffer) {
+    throw new Error("Referral program not active");
+  }
+
+  const discountAmount = referralOffer.discountValue; // in cents
+  const rewardAmount = Math.floor(discountAmount * 0.5); // Referrer gets 50% of discount as reward
+
+  // Update referral
+  await db
+    .update(referrals)
+    .set({
+      referredUserId,
+      bookingId,
+      usedAt: new Date(),
+      discountAmount,
+      rewardAmount,
+    })
+    .where(eq(referrals.id, validation.referralId));
+
+  return { discountAmount, rewardAmount };
+}
+
+/**
+ * Mark referral as completed (when booking is completed)
+ */
+export async function completeReferral(bookingId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals } = await import("../drizzle/schema");
+
+  await db
+    .update(referrals)
+    .set({
+      status: "completed",
+      completedAt: new Date(),
+    })
+    .where(eq(referrals.bookingId, bookingId));
+
+  return { success: true };
+}

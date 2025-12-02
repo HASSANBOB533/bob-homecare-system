@@ -325,3 +325,23 @@ export const favoriteServices = mysqlTable("favoriteServices", {
 
 export type FavoriteService = typeof favoriteServices.$inferSelect;
 export type InsertFavoriteService = typeof favoriteServices.$inferInsert;
+
+/**
+ * Referrals table - Track referral codes and conversions
+ */
+export const referrals = mysqlTable("referrals", {
+  id: int("id").autoincrement().primaryKey(),
+  referrerId: int("referrerId").references(() => users.id, { onDelete: "cascade" }).notNull(), // User who owns the referral code
+  referralCode: varchar("referralCode", { length: 8 }).notNull().unique(), // Unique 8-character code (e.g., "BOB12345")
+  referredUserId: int("referredUserId").references(() => users.id, { onDelete: "set null" }), // User who used the code (null until used)
+  bookingId: int("bookingId").references(() => bookings.id, { onDelete: "set null" }), // Booking where code was used
+  status: mysqlEnum("status", ["pending", "completed", "expired"]).default("pending").notNull(),
+  discountAmount: int("discountAmount"), // Discount given in cents (e.g., 50000 for 500 EGP)
+  rewardAmount: int("rewardAmount"), // Reward given to referrer in cents
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  usedAt: timestamp("usedAt"), // When the code was used
+  completedAt: timestamp("completedAt"), // When the referred booking was completed
+});
+
+export type Referral = typeof referrals.$inferSelect;
+export type InsertReferral = typeof referrals.$inferInsert;

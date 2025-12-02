@@ -289,6 +289,34 @@ const resources = {
         "cancelled": "Cancelled"
       },
       
+      "referrals": {
+        "title": "Referral Program",
+        "description": "Share your unique referral code with friends and earn rewards when they book their first service!",
+        "yourCode": "Your Referral Code",
+        "codeDescription": "Share this code with friends to give them a discount and earn rewards for yourself.",
+        "codeCopied": "Referral code copied to clipboard!",
+        "linkCopied": "Referral link copied to clipboard!",
+        "shareWhatsApp": "Share on WhatsApp",
+        "shareEmail": "Share via Email",
+        "whatsappMessage": "🎁 Get a discount on your first cleaning service with BOB Home Care!\n\nUse my referral code: {code}\n\nOr book directly here: {link}\n\nEnjoy professional cleaning services! 🌟",
+        "emailSubject": "Get a discount on BOB Home Care cleaning services!",
+        "emailBody": "Hi!\n\nI wanted to share this great cleaning service with you. Use my referral code {code} to get a discount on your first booking!\n\nYou can book here: {link}\n\nBOB Home Care offers professional cleaning services with great quality. Highly recommended!\n\nBest regards",
+        "totalSent": "Total Referrals",
+        "pending": "Pending",
+        "completed": "Completed",
+        "totalRewards": "Total Rewards",
+        "history": "Referral History",
+        "historyDescription": "Track your referrals and see when you earn rewards.",
+        "noHistory": "No referrals yet. Start sharing your code to earn rewards!",
+        "referredUser": "Referred",
+        "bookingDate": "Booking Date",
+        "status": {
+          "pending": "Pending",
+          "completed": "Completed",
+          "expired": "Expired"
+        }
+      },
+      
       "Payment Failed": "Payment Failed",
       "We could not process your payment": "We could not process your payment",
       "Your booking is saved but payment is pending": "Your booking is saved but payment is pending",
@@ -573,6 +601,34 @@ const resources = {
         "confirmed": "مؤكد",
         "completed": "مكتمل",
         "cancelled": "ملغي"
+      },
+      
+      "referrals": {
+        "title": "برنامج الإحالة",
+        "description": "شارك رمز الإحالة الخاص بك مع الأصدقاء واكسب مكافآت عندما يحجزون خدمتهم الأولى!",
+        "yourCode": "رمز الإحالة الخاص بك",
+        "codeDescription": "شارك هذا الرمز مع الأصدقاء لمنحهم خصماً وكسب مكافآت لنفسك.",
+        "codeCopied": "تم نسخ رمز الإحالة!",
+        "linkCopied": "تم نسخ رابط الإحالة!",
+        "shareWhatsApp": "مشاركة عبر واتساب",
+        "shareEmail": "مشاركة عبر البريد الإلكتروني",
+        "whatsappMessage": "🎁 احصل على خصم على خدمة التنظيف الأولى مع BOB Home Care!\n\nاستخدم رمز الإحالة الخاص بي: {code}\n\nأو احجز مباشرة هنا: {link}\n\nاستمتع بخدمات تنظيف احترافية! 🌟",
+        "emailSubject": "احصل على خصم على خدمات التنظيف من BOB Home Care!",
+        "emailBody": "مرحباً!\n\nأردت مشاركة خدمة التنظيف الرائعة هذه معك. استخدم رمز الإحالة الخاص بي {code} للحصول على خصم على حجزك الأول!\n\nيمكنك الحجز هنا: {link}\n\nتقدم BOB Home Care خدمات تنظيف احترافية بجودة عالية. أنصح بها بشدة!\n\nمع أطيب التحيات",
+        "totalSent": "إجمالي الإحالات",
+        "pending": "قيد الانتظار",
+        "completed": "مكتمل",
+        "totalRewards": "إجمالي المكافآت",
+        "history": "سجل الإحالات",
+        "historyDescription": "تتبع إحالاتك وشاهد متى تكسب المكافآت.",
+        "noHistory": "لا توجد إحالات بعد. ابدأ بمشاركة رمزك لكسب المكافآت!",
+        "referredUser": "المُحال",
+        "bookingDate": "تاريخ الحجز",
+        "status": {
+          "pending": "قيد الانتظار",
+          "completed": "مكتمل",
+          "expired": "منتهي الصلاحية"
+        }
       },
       
       "Payment Failed": {

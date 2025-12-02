@@ -23,6 +23,7 @@ import QuoteViewer from "./pages/QuoteViewer";
 import ServiceDetail from "./pages/ServiceDetail";
 import AdminBookings from "./pages/AdminBookings";
 import AdminServiceGallery from "./pages/AdminServiceGallery";
+import Referrals from "./pages/Referrals";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -50,6 +51,7 @@ function Router() {
     <Switch>          <Route path="/" component={Home} />
           <Route path="/verify-email" component={VerifyEmail} />      <Route path={"/book"} component={BookService} />
       <Route path={"/my-bookings"} component={MyBookings} />
+      <Route path={"/referrals"} component={Referrals} />
       <Route path={"/check-booking"} component={CheckBooking} />
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/payment-failed"} component={PaymentFailed} />

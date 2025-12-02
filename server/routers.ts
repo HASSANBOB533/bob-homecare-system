@@ -1183,6 +1183,35 @@ export const appRouter = router({
         return isFavoriteService(ctx.user.id, input.serviceId);
       }),
   }),
+
+  // Referrals router
+  referrals: router({
+    // Get or create user's referral code
+    getMyCode: protectedProcedure.query(async ({ ctx }) => {
+      const { getUserReferralCode } = await import("./db");
+      return getUserReferralCode(ctx.user.id);
+    }),
+
+    // Get referral statistics
+    getStats: protectedProcedure.query(async ({ ctx }) => {
+      const { getReferralStats } = await import("./db");
+      return getReferralStats(ctx.user.id);
+    }),
+
+    // Get referral history
+    getHistory: protectedProcedure.query(async ({ ctx }) => {
+      const { getReferralHistory } = await import("./db");
+      return getReferralHistory(ctx.user.id);
+    }),
+
+    // Validate referral code
+    validate: publicProcedure
+      .input(z.object({ code: z.string() }))
+      .query(async ({ input }) => {
+        const { validateReferralCode } = await import("./db");
+        return validateReferralCode(input.code);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -95,7 +95,7 @@ export default function MyBookings() {
     );
   };
 
-  const formatPrice = (amount?: number) => {
+  const formatPrice = (amount?: number | null) => {
     if (!amount) return t("myBookings.notAvailable");
     return `${(amount / 100).toFixed(2)} ${t("common.egp")}`;
   };
