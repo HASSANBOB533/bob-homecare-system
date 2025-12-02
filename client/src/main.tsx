@@ -62,6 +62,10 @@ createRoot(document.getElementById("root")!).render(
   </trpc.Provider>
 );
 
-// Register PWA Service Worker
-registerServiceWorker();
-setupInstallPrompt();
+// Register PWA Service Worker (only in production)
+if (import.meta.env.PROD) {
+  registerServiceWorker();
+  setupInstallPrompt();
+} else {
+  console.log('[DEV] Service Worker disabled in development mode');
+}
