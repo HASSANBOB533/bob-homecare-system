@@ -24,6 +24,33 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          // Split vendor code into separate chunks
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('wouter')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@trpc')) {
+              return 'trpc-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'ui-vendor';
+            }
+            if (id.includes('chart.js') || id.includes('recharts')) {
+              return 'chart-vendor';
+            }
+            if (id.includes('i18next') || id.includes('date-fns') || id.includes('zod')) {
+              return 'utils-vendor';
+            }
+            return 'vendor';
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+    minify: 'esbuild',
   },
   server: {
     host: true,

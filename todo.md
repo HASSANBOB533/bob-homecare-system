@@ -1449,3 +1449,20 @@
 - [ ] Display staff schedule in calendar view
 - [ ] Add staff performance metrics
 - [ ] Test staff assignment workflow
+
+## Performance Optimization and Stabilization
+- [x] Implement code splitting to reduce main bundle size from 2.6MB to <500KB
+- [x] Add lazy loading for route components
+- [x] Create LazyImage component for image lazy loading
+- [x] Implement API response caching utility
+- [x] Add performance monitoring and logging
+- [x] Optimize Vite build configuration with manual chunks
+- [x] Service worker disabled in development mode
+- [ ] Optimize images and convert to WebP format (deferred - can be done as needed)
+- [ ] Add bundle analyzer to identify large dependencies (optional)
+- [ ] Remove unused dependencies and code (optional)
+- [ ] Run Lighthouse audit and fix performance issues (deferred)
+- [ ] Test page load times and improve FCP/LCP metrics (deferred)
+- [ ] Add compression for API responses (optional)
+- [ ] Implement virtual scrolling for long lists (optional)
+- [ ] Optimize re-renders with React.memo and useMemo (optional)

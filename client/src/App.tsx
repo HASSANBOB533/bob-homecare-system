@@ -1,41 +1,52 @@
-import { Toaster } from "@/components/ui/sonner";
+import { Suspense, lazy } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
-import UserDashboard from "./pages/UserDashboard";
-import BookingForm from "./pages/BookingForm";
-import AdminDashboard from "./pages/AdminDashboard";
-import { AdminReviews } from "./pages/AdminReviews";
-import LoyaltyDashboard from "./pages/LoyaltyDashboard";
-import { AdminLoyalty } from "./pages/AdminLoyalty";
-import AdminLoyaltyDashboard from "./pages/AdminLoyaltyDashboard";
-import AdminPricingManagement from "./pages/AdminPricingManagement";
-import { AdminPricingEditor } from "./pages/AdminPricingEditor";
-import BookService from "./pages/BookService";
-import MyBookings from "./pages/MyBookings";
-import CheckBooking from "./pages/CheckBooking";
-import VerifyEmail from "./pages/VerifyEmail";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import PaymentFailed from "./pages/PaymentFailed";
-import QuoteViewer from "./pages/QuoteViewer";
-import ServiceDetail from "./pages/ServiceDetail";
-import AdminBookings from "./pages/AdminBookings";
-import AdminCalendar from "./pages/AdminCalendar";
-import AdminServiceGallery from "./pages/AdminServiceGallery";
-import Referrals from "./pages/Referrals";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 import { DebugPanel } from "./components/DebugPanel";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
 
+// Lazy load all page components for better code splitting
+const Home = lazy(() => import("./pages/Home"));
+const UserDashboard = lazy(() => import("./pages/UserDashboard"));
+const BookingForm = lazy(() => import("./pages/BookingForm"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminReviews = lazy(() => import("./pages/AdminReviews").then(m => ({ default: m.AdminReviews })));
+const LoyaltyDashboard = lazy(() => import("./pages/LoyaltyDashboard"));
+const AdminLoyalty = lazy(() => import("./pages/AdminLoyalty").then(m => ({ default: m.AdminLoyalty })));
+const AdminLoyaltyDashboard = lazy(() => import("./pages/AdminLoyaltyDashboard"));
+const AdminPricingManagement = lazy(() => import("./pages/AdminPricingManagement"));
+const AdminPricingEditor = lazy(() => import("./pages/AdminPricingEditor").then(m => ({ default: m.AdminPricingEditor })));
+const BookService = lazy(() => import("./pages/BookService"));
+const MyBookings = lazy(() => import("./pages/MyBookings"));
+const CheckBooking = lazy(() => import("./pages/CheckBooking"));
+const VerifyEmail = lazy(() => import("./pages/VerifyEmail"));
+const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
+const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
+const QuoteViewer = lazy(() => import("./pages/QuoteViewer"));
+const ServiceDetail = lazy(() => import("./pages/ServiceDetail"));
+const AdminBookings = lazy(() => import("./pages/AdminBookings"));
+const AdminCalendar = lazy(() => import("./pages/AdminCalendar"));
+const AdminServiceGallery = lazy(() => import("./pages/AdminServiceGallery"));
+const Referrals = lazy(() => import("./pages/Referrals"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Loading component for Suspense fallback
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>
+  );
+}
+
 function ProtectedRoute({ component: Component, requireAdmin = false }: { component: React.ComponentType; requireAdmin?: boolean }) {
   const { user, loading, isAuthenticated } = useAuth();
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <PageLoader />;
   }
 
   if (!isAuthenticated) {
@@ -50,73 +61,68 @@ function ProtectedRoute({ component: Component, requireAdmin = false }: { compon
   return <Component />;
 }
 
-function Router() {
-  return (
-    <Switch>          <Route path="/" component={Home} />
-          <Route path="/verify-email" component={VerifyEmail} />      <Route path={"/book"} component={BookService} />
-      <Route path={"/my-bookings"} component={MyBookings} />
-      <Route path={"/referrals"} component={Referrals} />
-      <Route path={"/check-booking"} component={CheckBooking} />
-      <Route path={"/payment-success"} component={PaymentSuccess} />
-      <Route path={"/payment-failed"} component={PaymentFailed} />
-      <Route path={"/quote/:code"} component={QuoteViewer} />
-      <Route path={"/services/:id"} component={ServiceDetail} />
-      <Route path={"/dashboard"}>
-        {() => <ProtectedRoute component={UserDashboard} />}
-      </Route>
-      <Route path={"/admin"}>
-        {() => <ProtectedRoute component={AdminDashboard} requireAdmin />}
-      </Route>
-      <Route path={"/admin/reviews"}>
-        {() => <ProtectedRoute component={AdminReviews} requireAdmin />}
-      </Route>
-      <Route path={"/loyalty"}>
-        {() => <ProtectedRoute component={LoyaltyDashboard} />}
-      </Route>
-      <Route path={"/admin/loyalty"}>
-        {() => <ProtectedRoute component={AdminLoyalty} requireAdmin />}
-      </Route>
-      <Route path={"/admin/loyalty-analytics"}>
-        {() => <ProtectedRoute component={AdminLoyaltyDashboard} requireAdmin />}
-      </Route>
-      <Route path={"/admin/pricing"}>
-        {() => <ProtectedRoute component={AdminPricingManagement} requireAdmin />}
-      </Route>
-      <Route path={"/admin/pricing-editor"}>
-        {() => <ProtectedRoute component={AdminPricingEditor} requireAdmin />}
-      </Route>
-      <Route path={"/admin/bookings"}>
-        {() => <ProtectedRoute component={AdminBookings} requireAdmin />}
-      </Route>
-      <Route path={"/admin/calendar"}>
-        {() => <ProtectedRoute component={AdminCalendar} requireAdmin />}
-      </Route>
-      <Route path={"/admin/services/:id/gallery"}>
-        {() => <ProtectedRoute component={AdminServiceGallery} requireAdmin />}
-      </Route>
-      <Route path={"/404"} component={NotFound} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <Toaster />
-          <Router />
-          <DebugPanel />
           <PWAInstallBanner />
+          <DebugPanel />
+          <Suspense fallback={<PageLoader />}>
+            <Switch>
+              {/* Public routes */}
+              <Route path="/" component={Home} />
+              <Route path="/book" component={BookService} />
+              <Route path="/check-booking" component={CheckBooking} />
+              <Route path="/verify-email" component={VerifyEmail} />
+              <Route path="/payment-success" component={PaymentSuccess} />
+              <Route path="/payment-failed" component={PaymentFailed} />
+              <Route path="/quote/:code" component={QuoteViewer} />
+              <Route path="/services/:id" component={ServiceDetail} />
+              <Route path="/my-bookings" component={MyBookings} />
+              <Route path="/referrals" component={Referrals} />
+
+              {/* Protected routes */}
+              <Route path="/dashboard">
+                {() => <ProtectedRoute component={UserDashboard} />}
+              </Route>
+              <Route path="/loyalty">
+                {() => <ProtectedRoute component={LoyaltyDashboard} />}
+              </Route>
+
+              {/* Admin routes */}
+              <Route path="/admin">
+                {() => <ProtectedRoute component={AdminDashboard} requireAdmin />}
+              </Route>
+              <Route path="/admin/bookings">
+                {() => <ProtectedRoute component={AdminBookings} requireAdmin />}
+              </Route>
+              <Route path="/admin/calendar">
+                {() => <ProtectedRoute component={AdminCalendar} requireAdmin />}
+              </Route>
+              <Route path="/admin/reviews">
+                {() => <ProtectedRoute component={AdminReviews} requireAdmin />}
+              </Route>
+              <Route path="/admin/loyalty">
+                {() => <ProtectedRoute component={AdminLoyalty} requireAdmin />}
+              </Route>
+              <Route path="/admin/loyalty-analytics">
+                {() => <ProtectedRoute component={AdminLoyaltyDashboard} requireAdmin />}
+              </Route>
+              <Route path="/admin/pricing">
+                {() => <ProtectedRoute component={AdminPricingManagement} requireAdmin />}
+              </Route>
+              <Route path="/admin/pricing-editor">
+                {() => <ProtectedRoute component={AdminPricingEditor} requireAdmin />}
+              </Route>
+              <Route path="/admin/services/:id/gallery">
+                {() => <ProtectedRoute component={AdminServiceGallery} requireAdmin />}
+              </Route>
+
+              {/* 404 fallback */}
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
