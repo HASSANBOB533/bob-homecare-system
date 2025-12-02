@@ -439,7 +439,7 @@
 ### Integration (IN PROGRESS ⚠️)
 - [x] Update BookService.tsx with dynamic pricing UI structure
 - [ ] Debug pricing components rendering issue (components not showing when service is selected)
-- [ ] Fix form state integration with shadcn Select component
+-- [x] Fix form state management with shadcn Select component
 - [ ] Test dynamic pricing in booking form
 - [ ] Verify real-time price calculation
 
@@ -449,7 +449,7 @@
 - Pricing components are created and styled
 - **Issue**: Components not rendering when service is selected in booking form
 - **Root Cause**: Likely related to how shadcn Select component updates form state
-- **Next Steps**: Debug form state updates and ensure `pricingData` query is triggered correctly
+- **Next Steps**: Debug form state updates an- [x] Ensure `pricingData` query triggers correctly
 
 ### Admin Pricing Management (COMPLETED ✅)
 - [x] Create AdminPricingManagement page
@@ -490,3 +490,43 @@
 - [ ] Test CRUD operations for all pricing types
 - [ ] Verify pricing updates reflect in booking form
 - [ ] Test edge cases (delete last tier, update to negative price, etc.)
+
+## Fix Booking Form & Finalize Project
+
+### Pricing Display Fixes
+- [x] Fix price formatting (divide by 100 to show correct EGP amounts instead of cents)
+- [x] Update BedroomSelector component to display prices correctly
+- [x] Update SquareMeterInput component pricing display
+- [x] Update UpholsteryItemSelector component pricing display
+- [x] Fix AddOnsSelector pricing display
+
+### Simplify Add-Ons
+- [ ] Remove overly detailed add-on tiers
+- [ ] Create simple fixed-price add-ons (Laundry, Garden, Kitchen)
+- [ ] Update add-ons seed data with simplified pricing
+- [ ] Make add-on selection straightforward for customers
+
+### Booking Form Integration
+- [x] Debug why pricing components don't render when service is selected
+- [ ] Fix form state management issue
+- [ ] Verify tRPC queries trigger on service change
+- [ ] Test all 5 service types show correct pricing
+
+### Complete Booking Flow Testing
+- [ ] Test Service Apartments booking end-to-end
+- [ ] Test Periodical Cleaning booking
+- [ ] Test Deep Cleaning booking
+- [ ] Test Move-In/Move-Out booking
+- [ ] Test Upholstery booking
+- [ ] Verify price calculations are accurate
+- [ ] Confirm payment integration works
+
+### Service Detail Pages
+- [ ] Create Service Apartments detail page
+- [ ] Create Periodical Cleaning detail page
+- [ ] Create Deep Cleaning detail page
+- [ ] Create Move-In/Move-Out detail page
+- [ ] Create Upholstery detail page
+- [ ] Add service descriptions and pricing calculators
+- [ ] Add professional photos and checklist displays
+- [ ] Link pages from homepage navigation

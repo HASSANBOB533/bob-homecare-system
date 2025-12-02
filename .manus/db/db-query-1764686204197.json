@@ -1,0 +1,130 @@
+{
+  "query": "\nSELECT \n  s.id, \n  s.name, \n  s.pricingType,\n  COUNT(DISTINCT pt.id) as bedroom_tiers,\n  COUNT(DISTINCT ps.id) as sqm_pricing,\n  COUNT(DISTINCT pi.id) as items\nFROM services s\nLEFT JOIN pricingTiers pt ON s.id = pt.serviceId\nLEFT JOIN pricingSqm ps ON s.id = ps.serviceId\nLEFT JOIN pricingItems pi ON s.id = pi.serviceId\nGROUP BY s.id, s.name, s.pricingType\nORDER BY s.id;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute \nSELECT \n  s.id, \n  s.name, \n  s.pricingType,\n  COUNT(DISTINCT pt.id) as bedroom_tiers,\n  COUNT(DISTINCT ps.id) as sqm_pricing,\n  COUNT(DISTINCT pi.id) as items\nFROM services s\nLEFT JOIN pricingTiers pt ON s.id = pt.serviceId\nLEFT JOIN pricingSqm ps ON s.id = ps.serviceId\nLEFT JOIN pricingItems pi ON s.id = pi.serviceId\nGROUP BY s.id, s.name, s.pricingType\nORDER BY s.id;\n",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "pricingType": "BEDROOM_BASED",
+      "bedroom_tiers": "6",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "pricingType": "BEDROOM_BASED",
+      "bedroom_tiers": "6",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "pricingType": "SQM_BASED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "6",
+      "items": "0"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "pricingType": "SQM_BASED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "12",
+      "items": "0"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات",
+      "pricingType": "ITEM_BASED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "54"
+    },
+    {
+      "id": "60001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "90001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "120001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "150001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "180001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "210001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "300001",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "300002",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    },
+    {
+      "id": "300003",
+      "name": "Test Service",
+      "pricingType": "FIXED",
+      "bedroom_tiers": "0",
+      "sqm_pricing": "0",
+      "items": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tpricingType\tbedroom_tiers\tsqm_pricing\titems\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tBEDROOM_BASED\t6\t0\t0\n30002\tخدمة التنظيف الدورية\tBEDROOM_BASED\t6\t0\t0\n30003\tخدمة التنظيف العميق\tSQM_BASED\t0\t6\t0\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tSQM_BASED\t0\t12\t0\n30005\tالتبخير والتعقيم\tFIXED\t0\t0\t0\n30006\tتنظيف المفروشات\tITEM_BASED\t0\t0\t54\n60001\tTest Service\tFIXED\t0\t0\t0\n90001\tTest Service\tFIXED\t0\t0\t0\n120001\tTest Service\tFIXED\t0\t0\t0\n150001\tTest Service\tFIXED\t0\t0\t0\n180001\tTest Service\tFIXED\t0\t0\t0\n210001\tTest Service\tFIXED\t0\t0\t0\n300001\tTest Service\tFIXED\t0\t0\t0\n300002\tTest Service\tFIXED\t0\t0\t0\n300003\tTest Service\tFIXED\t0\t0\t0\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

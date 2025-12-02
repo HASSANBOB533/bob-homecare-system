@@ -1,0 +1,118 @@
+{
+  "query": "\nSELECT pt.*, s.name as service_name \nFROM pricingTiers pt\nJOIN services s ON pt.serviceId = s.id\nORDER BY pt.serviceId, pt.bedrooms;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute \nSELECT pt.*, s.name as service_name \nFROM pricingTiers pt\nJOIN services s ON pt.serviceId = s.id\nORDER BY pt.serviceId, pt.bedrooms;\n",
+  "rows": [
+    {
+      "id": "1",
+      "serviceId": "30001",
+      "bedrooms": "1",
+      "price": "150000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "2",
+      "serviceId": "30001",
+      "bedrooms": "2",
+      "price": "200000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "3",
+      "serviceId": "30001",
+      "bedrooms": "3",
+      "price": "250000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "4",
+      "serviceId": "30001",
+      "bedrooms": "4",
+      "price": "300000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "5",
+      "serviceId": "30001",
+      "bedrooms": "5",
+      "price": "400000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "6",
+      "serviceId": "30001",
+      "bedrooms": "6",
+      "price": "500000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "تنظيف شقق Airbnb والشقق الفندقية"
+    },
+    {
+      "id": "7",
+      "serviceId": "30002",
+      "bedrooms": "1",
+      "price": "80000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "8",
+      "serviceId": "30002",
+      "bedrooms": "2",
+      "price": "120000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "9",
+      "serviceId": "30002",
+      "bedrooms": "3",
+      "price": "150000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "10",
+      "serviceId": "30002",
+      "bedrooms": "4",
+      "price": "200000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "11",
+      "serviceId": "30002",
+      "bedrooms": "5",
+      "price": "250000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    },
+    {
+      "id": "12",
+      "serviceId": "30002",
+      "bedrooms": "6",
+      "price": "300000",
+      "createdAt": "2025-12-02 14:13:22",
+      "updatedAt": "2025-12-02 14:13:22",
+      "service_name": "خدمة التنظيف الدورية"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tserviceId\tbedrooms\tprice\tcreatedAt\tupdatedAt\tservice_name\n1\t30001\t1\t150000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n2\t30001\t2\t200000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n3\t30001\t3\t250000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n4\t30001\t4\t300000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n5\t30001\t5\t400000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n6\t30001\t6\t500000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tتنظيف شقق Airbnb والشقق الفندقية\n7\t30002\t1\t80000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n8\t30002\t2\t120000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n9\t30002\t3\t150000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n10\t30002\t4\t200000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n11\t30002\t5\t250000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n12\t30002\t6\t300000\t2025-12-02 14:13:22\t2025-12-02 14:13:22\tخدمة التنظيف الدورية\n",
+  "stderr": "",
+  "execution_time_ms": 58
+}

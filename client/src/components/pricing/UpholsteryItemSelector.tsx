@@ -61,10 +61,10 @@ export function UpholsteryItemSelector({
   };
 
   const totalPrice = selectedItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+    (sum, item) => sum + (item.price / 100) * item.quantity,
     0
   );
-  const finalPrice = Math.max(totalPrice, minimumCharge);
+  const finalPrice = Math.max(totalPrice, minimumCharge / 100);
 
   return (
     <div className="space-y-4">
@@ -101,7 +101,7 @@ export function UpholsteryItemSelector({
                       {item.itemName}
                     </label>
                     <div className="text-sm text-primary font-bold">
-                      {item.price.toLocaleString()} {t("booking.egp")}
+                      {(item.price / 100).toLocaleString()} {t("booking.egp")}
                     </div>
 
                     {isSelected && selectedItem && (
@@ -147,7 +147,7 @@ export function UpholsteryItemSelector({
                           <Plus className="h-4 w-4" />
                         </Button>
                         <span className="text-sm text-muted-foreground ml-2">
-                          {(selectedItem.price * selectedItem.quantity).toLocaleString()}{" "}
+                          {((selectedItem.price / 100) * selectedItem.quantity).toLocaleString()}{" "}
                           {t("booking.egp")}
                         </span>
                       </div>

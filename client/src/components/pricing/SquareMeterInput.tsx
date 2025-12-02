@@ -34,8 +34,8 @@ export function SquareMeterInput({
   const selectedPricing = sqmPricing.find((p) => p.variant === selectedVariant) || sqmPricing[0];
 
   const calculatedPrice = Math.max(
-    squareMeters * selectedPricing.pricePerSqm,
-    selectedPricing.minimumCharge
+    squareMeters * (selectedPricing.pricePerSqm / 100),
+    selectedPricing.minimumCharge / 100
   );
 
   return (
@@ -80,11 +80,11 @@ export function SquareMeterInput({
                       <div className="flex-1">
                         <div className="font-semibold">{pricing.variant}</div>
                         <div className="text-sm text-muted-foreground">
-                          {pricing.pricePerSqm} {t("booking.egp")}/
+                          {(pricing.pricePerSqm / 100).toFixed(2)} {t("booking.egp")}/
                           {t("booking.sqm")}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {t("booking.minimum")}: {pricing.minimumCharge.toLocaleString()}{" "}
+                          {t("booking.minimum")}: {(pricing.minimumCharge / 100).toLocaleString()}{" "}
                           {t("booking.egp")}
                         </div>
                       </div>
@@ -115,7 +115,7 @@ export function SquareMeterInput({
             />
           </div>
           <div className="text-sm text-muted-foreground whitespace-nowrap">
-            {selectedPricing.pricePerSqm} {t("booking.egp")}/{t("booking.sqm")}
+            {(selectedPricing.pricePerSqm / 100).toFixed(2)} {t("booking.egp")}/{t("booking.sqm")}
           </div>
         </div>
         {squareMeters > 0 && (

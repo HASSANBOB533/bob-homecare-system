@@ -140,7 +140,7 @@ export function AddOnsSelector({
                     {/* Fixed price */}
                     {addOn.pricingType === "FIXED" && addOn.price && (
                       <div className="text-sm text-primary font-bold mt-2">
-                        {addOn.price.toLocaleString()} {t("booking.egp")}
+                        {(addOn.price / 100).toLocaleString()} {t("booking.egp")}
                       </div>
                     )}
 
@@ -174,7 +174,7 @@ export function AddOnsSelector({
                                   </span>
                                 )}
                                 <span className="font-semibold text-primary">
-                                  {tier.price.toLocaleString()}{" "}
+                                  {(tier.price / 100).toLocaleString()}{" "}
                                   {t("booking.egp")}
                                 </span>
                               </label>
@@ -188,7 +188,7 @@ export function AddOnsSelector({
                       addOn.pricingType === "TIERED" &&
                       addOn.tiers.length === 1 && (
                         <div className="text-sm text-primary font-bold mt-2">
-                          {addOn.tiers[0].price.toLocaleString()}{" "}
+                          {(addOn.tiers[0].price / 100).toLocaleString()}{" "}
                           {t("booking.egp")}
                         </div>
                       )}
@@ -211,7 +211,7 @@ export function AddOnsSelector({
                 >
                   <span className="text-muted-foreground">{addOn.name}:</span>
                   <span className="font-semibold">
-                    {addOn.price.toLocaleString()} {t("booking.egp")}
+                    {(addOn.price / 100).toLocaleString()} {t("booking.egp")}
                   </span>
                 </div>
               ))}
@@ -219,7 +219,7 @@ export function AddOnsSelector({
                 <span className="font-semibold">{t("booking.addOnsTotal")}:</span>
                 <span className="text-lg font-bold text-primary">
                   {selectedAddOns
-                    .reduce((sum, a) => sum + a.price, 0)
+                    .reduce((sum, a) => sum + (a.price / 100), 0)
                     .toLocaleString()}{" "}
                   {t("booking.egp")}
                 </span>

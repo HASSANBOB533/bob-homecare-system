@@ -56,7 +56,7 @@ export function BedroomSelector({ tiers, selectedBedrooms, onSelect }: BedroomSe
                       {tier.bedrooms} {t("booking.bedrooms")}
                     </div>
                     <div className="text-sm text-primary font-bold">
-                      {tier.price.toLocaleString()} {t("booking.egp")}
+                      {(tier.price / 100).toLocaleString()} {t("booking.egp")}
                     </div>
                   </div>
                 </div>
