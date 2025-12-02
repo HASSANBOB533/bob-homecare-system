@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
 import { ArrowLeft, Save } from "lucide-react";
 import { toast } from "sonner";
+import AdminLayout from "../components/AdminLayout";
 
 export default function AdminServiceGallery() {
   const { id } = useParams<{ id: string }>();
@@ -61,15 +62,15 @@ export default function AdminServiceGallery() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8">
+      <AdminLayout>
         <div className="text-center">Loading...</div>
-      </div>
+      </AdminLayout>
     );
   }
 
   if (!service) {
     return (
-      <div className="container mx-auto py-8">
+      <AdminLayout>
         <Card>
           <CardContent className="pt-6">
             <p className="text-center text-muted-foreground">Service not found</p>
@@ -81,12 +82,13 @@ export default function AdminServiceGallery() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
+    <AdminLayout>
+      <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -135,6 +137,7 @@ export default function AdminServiceGallery() {
           {updateGalleryMutation.isPending ? "Saving..." : "Save Changes"}
         </Button>
       </div>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

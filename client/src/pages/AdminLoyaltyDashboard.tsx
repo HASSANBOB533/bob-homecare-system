@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import Chart from "chart.js/auto";
 import { Users, TrendingUp, TrendingDown, Percent } from "lucide-react";
+import AdminLayout from "@/components/AdminLayout";
 
 export default function AdminLoyaltyDashboard() {
   const { t } = useTranslation();
@@ -168,7 +169,8 @@ export default function AdminLoyaltyDashboard() {
   }
 
   return (
-    <div className="container py-8 space-y-6">
+    <AdminLayout>
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">{t("admin.loyalty.title") || "Loyalty Program Analytics"}</h1>
         <p className="text-muted-foreground mt-2">
@@ -354,6 +356,7 @@ export default function AdminLoyaltyDashboard() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
