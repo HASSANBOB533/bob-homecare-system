@@ -1473,3 +1473,50 @@
 - [x] Run security audit and assess vulnerabilities
 - [x] Verify all pages load correctly after optimization
 - [x] Test lazy loading performance
+
+## Ultimate Stabilization, SEO & Security Overhaul
+
+### 1. Crash-Proofing & Stability
+- [ ] Scan for JavaScript runtime errors and console errors
+- [ ] Fix broken imports, missing files, and circular dependencies
+- [ ] Add error boundaries to all major components
+- [ ] Add null checks and fallback UIs for risky components
+- [ ] Fix memory leaks and remove unused event listeners
+- [ ] Ensure service worker stability (already disabled in dev)
+- [ ] Verify all critical files load correctly
+
+### 2. SEO & Core Web Vitals Optimization
+- [ ] Add comprehensive SEO metadata (titles, descriptions, canonical URLs)
+- [ ] Implement OpenGraph and Twitter card meta tags
+- [ ] Add JSON-LD structured data schema
+- [ ] Optimize LCP by compressing hero images and preloading critical assets
+- [ ] Fix CLS by stabilizing layout elements
+- [ ] Optimize FCP/TTI by removing render-blocking scripts
+- [ ] Generate sitemap.xml automatically
+- [ ] Create/verify robots.txt
+- [ ] Add alt tags to all images
+- [ ] Ensure semantic heading structure (H1 → H2 → H3)
+- [ ] Improve accessibility with ARIA roles and labels
+
+### 3. Security Hardening
+- [ ] Verify protected routes enforce user roles (Admin, Customer, Staff)
+- [ ] Add input validation and sanitization (server and client side)
+- [ ] Implement XSS, SQL injection, and command injection prevention
+- [ ] Add authentication guards on all API routes
+- [ ] Implement rate limiting for login, booking, and major API endpoints
+- [ ] Validate file uploads (type/size restrictions)
+- [ ] Add error logging for suspicious actions and failed logins
+- [ ] Hide server internal errors from users (friendly error messages)
+- [ ] Verify environment variables are not exposed
+
+### 4. Full-System Testing
+- [ ] Test homepage, booking flow, customer dashboard, admin dashboard
+- [ ] Test navigation on mobile and desktop
+- [ ] Verify no console errors across all pages
+- [ ] Test on slow network connections
+- [ ] Verify no blank screens or infinite loops
+
+### 5. Final Cleanup
+- [ ] Remove unused scripts, legacy code, and abandoned components
+- [ ] Clean file structure for maintainability
+- [ ] Document critical fixes and system protections
