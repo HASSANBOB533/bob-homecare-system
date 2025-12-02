@@ -1,0 +1,178 @@
+{
+  "query": "SELECT id, nameEn, name, pricingType, active FROM addOns;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, nameEn, name, pricingType, active FROM addOns;",
+  "rows": [
+    {
+      "id": "1",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "2",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "3",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "4",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "5",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "6",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "7",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "8",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "9",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "10",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "11",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "12",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30001",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "30002",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "30003",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30004",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30005",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "30006",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "30007",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30008",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30009",
+      "nameEn": "Laundry Service",
+      "name": "خدمة الغسيل",
+      "pricingType": "PER_BEDROOM",
+      "active": "1"
+    },
+    {
+      "id": "30010",
+      "nameEn": "Garden/Terrace Cleaning",
+      "name": "تنظيف الحديقة/الشرفة",
+      "pricingType": "SIZE_TIERED",
+      "active": "1"
+    },
+    {
+      "id": "30011",
+      "nameEn": "Kitchen Deep Clean",
+      "name": "تنظيف المطبخ العميق",
+      "pricingType": "FIXED",
+      "active": "1"
+    },
+    {
+      "id": "30012",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "name": "تنظيف أدوات المطبخ والفرن",
+      "pricingType": "FIXED",
+      "active": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnameEn\tname\tpricingType\tactive\n1\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n2\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n3\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n4\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n5\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n6\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n7\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n8\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n9\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n10\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n11\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n12\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n30001\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n30002\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n30003\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n30004\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n30005\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n30006\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n30007\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n30008\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n30009\tLaundry Service\tخدمة الغسيل\tPER_BEDROOM\t1\n30010\tGarden/Terrace Cleaning\tتنظيف الحديقة/الشرفة\tSIZE_TIERED\t1\n30011\tKitchen Deep Clean\tتنظيف المطبخ العميق\tFIXED\t1\n30012\tKitchen Tools & Oven Cleaning\tتنظيف أدوات المطبخ والفرن\tFIXED\t1\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

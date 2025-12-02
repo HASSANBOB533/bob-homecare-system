@@ -86,13 +86,13 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
     finalPrice = Math.max(0, Math.round(finalPrice));
 
     return {
-      basePrice,
-      addOnsTotal,
-      subtotal,
-      packageDiscount: Math.round(packageDiscount),
-      subtotalAfterPackage: Math.round(subtotalAfterPackage),
-      specialOfferAdjustment: Math.round(specialOfferAdjustment),
-      finalPrice,
+      basePrice: Math.round(basePrice / 100),
+      addOnsTotal: Math.round(addOnsTotal / 100),
+      subtotal: Math.round(subtotal / 100),
+      packageDiscount: Math.round(packageDiscount / 100),
+      subtotalAfterPackage: Math.round(subtotalAfterPackage / 100),
+      specialOfferAdjustment: Math.round(specialOfferAdjustment / 100),
+      finalPrice: Math.round(finalPrice / 100),
     };
   }, [input.basePrice, input.selectedAddOns, input.packageDiscountPercent, input.specialOffer]);
 }

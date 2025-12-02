@@ -1,0 +1,55 @@
+{
+  "query": "SELECT * FROM specialOffers WHERE name LIKE '%Referral%' OR name LIKE '%إحالة%' LIMIT 3;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT * FROM specialOffers WHERE name LIKE '%Referral%' OR name LIKE '%إحالة%' LIMIT 3;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "برنامج الإحالة",
+      "nameEn": "Referral Program",
+      "description": "احصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%",
+      "descriptionEn": "Get 10% off when you refer a friend, and your friend gets 10% off too",
+      "offerType": "REFERRAL",
+      "discountType": "percentage",
+      "discountValue": "10",
+      "minProperties": "NULL",
+      "maxDiscount": "50000",
+      "active": "1",
+      "createdAt": "2025-12-02 13:39:09",
+      "updatedAt": "2025-12-02 13:39:09"
+    },
+    {
+      "id": "5",
+      "name": "برنامج الإحالة",
+      "nameEn": "Referral Program",
+      "description": "احصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%",
+      "descriptionEn": "Get 10% off when you refer a friend, and your friend gets 10% off too",
+      "offerType": "REFERRAL",
+      "discountType": "percentage",
+      "discountValue": "10",
+      "minProperties": "NULL",
+      "maxDiscount": "50000",
+      "active": "1",
+      "createdAt": "2025-12-02 13:39:16",
+      "updatedAt": "2025-12-02 13:39:16"
+    },
+    {
+      "id": "9",
+      "name": "برنامج الإحالة",
+      "nameEn": "Referral Program",
+      "description": "احصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%",
+      "descriptionEn": "Get 10% off when you refer a friend, and your friend gets 10% off too",
+      "offerType": "REFERRAL",
+      "discountType": "percentage",
+      "discountValue": "10",
+      "minProperties": "NULL",
+      "maxDiscount": "50000",
+      "active": "1",
+      "createdAt": "2025-12-02 13:44:15",
+      "updatedAt": "2025-12-02 13:44:15"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameEn\tdescription\tdescriptionEn\tofferType\tdiscountType\tdiscountValue\tminProperties\tmaxDiscount\tactive\tcreatedAt\tupdatedAt\n1\tبرنامج الإحالة\tReferral Program\tاحصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%\tGet 10% off when you refer a friend, and your friend gets 10% off too\tREFERRAL\tpercentage\t10\tNULL\t50000\t1\t2025-12-02 13:39:09\t2025-12-02 13:39:09\n5\tبرنامج الإحالة\tReferral Program\tاحصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%\tGet 10% off when you refer a friend, and your friend gets 10% off too\tREFERRAL\tpercentage\t10\tNULL\t50000\t1\t2025-12-02 13:39:16\t2025-12-02 13:39:16\n9\tبرنامج الإحالة\tReferral Program\tاحصل على خصم 10% عند إحالة صديق، وسيحصل صديقك أيضًا على خصم 10%\tGet 10% off when you refer a friend, and your friend gets 10% off too\tREFERRAL\tpercentage\t10\tNULL\t50000\t1\t2025-12-02 13:44:15\t2025-12-02 13:44:15\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

@@ -26,8 +26,11 @@ export function AdminPricingEditor() {
     { enabled: !!selectedServiceId }
   );
   
-  // Fetch add-ons
-  const { data: addOns } = trpc.pricing.getAddOns.useQuery();
+  // Fetch add-ons for selected service
+  const { data: addOns } = trpc.pricing.getAddOns.useQuery(
+    { serviceId: selectedServiceId! },
+    { enabled: !!selectedServiceId }
+  );
   
   // Fetch package discounts
   const { data: packageDiscounts } = trpc.pricing.getPackageDiscounts.useQuery(

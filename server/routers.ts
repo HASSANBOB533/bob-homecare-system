@@ -562,11 +562,12 @@ export const appRouter = router({
         return getServicePricingData(input.serviceId);
       }),
     
-    // Get all add-ons
+    // Get add-ons for a specific service
     getAddOns: publicProcedure
-      .query(async () => {
-        const { getAllAddOns } = await import("./db");
-        return getAllAddOns();
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getAddOnsByService } = await import("./db");
+        return getAddOnsByService(input.serviceId);
       }),
     
     // Get package discounts for a service

@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq, sql, and, or, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, reviews, services, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -949,9 +949,63 @@ export async function getAllAddOns() {
   
   const addOnsList = await db.select().from(addOns).where(eq(addOns.active, true));
   
+  // Deduplicate add-ons by nameEn (in case same add-on exists for multiple services)
+  const uniqueAddOns = addOnsList.reduce((acc, addOn) => {
+    if (!acc.find(a => a.nameEn === addOn.nameEn)) {
+      acc.push(addOn);
+    }
+    return acc;
+  }, [] as typeof addOnsList);
+  
   // Get tiers for each add-on
   const addOnsWithTiers = await Promise.all(
-    addOnsList.map(async (addOn) => {
+    uniqueAddOns.map(async (addOn) => {
+      const tiers = await db.select().from(addOnTiers)
+        .where(eq(addOnTiers.addOnId, addOn.id))
+        .orderBy(addOnTiers.bedrooms);
+      
+      return {
+        ...addOn,
+        tiers,
+      };
+    })
+  );
+  
+  return addOnsWithTiers;
+}
+
+/**
+ * Get add-ons for a specific service with their tiers
+ */
+export async function getAddOnsByService(serviceId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  
+  const { addOns, addOnTiers } = await import("../drizzle/schema");
+  
+  // Get add-ons that are either linked to this service or are global (serviceId = null)
+  const addOnsList = await db.select().from(addOns)
+    .where(
+      and(
+        eq(addOns.active, true),
+        or(
+          eq(addOns.serviceId, serviceId),
+          isNull(addOns.serviceId)
+        )
+      )
+    );
+  
+  // Deduplicate add-ons by nameEn (in case same add-on exists for multiple services)
+  const uniqueAddOns = addOnsList.reduce((acc, addOn) => {
+    if (!acc.find(a => a.nameEn === addOn.nameEn)) {
+      acc.push(addOn);
+    }
+    return acc;
+  }, [] as typeof addOnsList);
+  
+  // Get tiers for each add-on
+  const addOnsWithTiers = await Promise.all(
+    uniqueAddOns.map(async (addOn) => {
       const tiers = await db.select().from(addOnTiers)
         .where(eq(addOnTiers.addOnId, addOn.id))
         .orderBy(addOnTiers.bedrooms);
@@ -989,9 +1043,19 @@ export async function getAllSpecialOffers() {
   
   const { specialOffers } = await import("../drizzle/schema");
   
-  return db.select().from(specialOffers)
+  const offers = await db.select().from(specialOffers)
     .where(eq(specialOffers.active, true))
     .orderBy(specialOffers.name);
+  
+  // Deduplicate by name (in case same offer exists multiple times)
+  const uniqueOffers = offers.reduce((acc, offer) => {
+    if (!acc.find(o => o.name === offer.name)) {
+      acc.push(offer);
+    }
+    return acc;
+  }, [] as typeof offers);
+  
+  return uniqueOffers;
 }
 
 // ===== PRICING CRUD HELPERS =====

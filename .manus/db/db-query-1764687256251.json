@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, name, discountType, discountValue FROM specialOffers LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, discountType, discountValue FROM specialOffers LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "برنامج الإحالة",
+      "discountType": "percentage",
+      "discountValue": "10"
+    },
+    {
+      "id": "2",
+      "name": "خصم مدير العقارات (5-10 عقارات)",
+      "discountType": "percentage",
+      "discountValue": "5"
+    },
+    {
+      "id": "3",
+      "name": "خصم مدير العقارات (11+ عقار)",
+      "discountType": "percentage",
+      "discountValue": "10"
+    },
+    {
+      "id": "4",
+      "name": "خدمة الطوارئ في نفس اليوم",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "id": "5",
+      "name": "برنامج الإحالة",
+      "discountType": "percentage",
+      "discountValue": "10"
+    },
+    {
+      "id": "6",
+      "name": "خصم مدير العقارات (5-10 عقارات)",
+      "discountType": "percentage",
+      "discountValue": "5"
+    },
+    {
+      "id": "7",
+      "name": "خصم مدير العقارات (11+ عقار)",
+      "discountType": "percentage",
+      "discountValue": "10"
+    },
+    {
+      "id": "8",
+      "name": "خدمة الطوارئ في نفس اليوم",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "id": "9",
+      "name": "برنامج الإحالة",
+      "discountType": "percentage",
+      "discountValue": "10"
+    },
+    {
+      "id": "10",
+      "name": "خصم مدير العقارات (5-10 عقارات)",
+      "discountType": "percentage",
+      "discountValue": "5"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tdiscountType\tdiscountValue\n1\tبرنامج الإحالة\tpercentage\t10\n2\tخصم مدير العقارات (5-10 عقارات)\tpercentage\t5\n3\tخصم مدير العقارات (11+ عقار)\tpercentage\t10\n4\tخدمة الطوارئ في نفس اليوم\tpercentage\t50\n5\tبرنامج الإحالة\tpercentage\t10\n6\tخصم مدير العقارات (5-10 عقارات)\tpercentage\t5\n7\tخصم مدير العقارات (11+ عقار)\tpercentage\t10\n8\tخدمة الطوارئ في نفس اليوم\tpercentage\t50\n9\tبرنامج الإحالة\tpercentage\t10\n10\tخصم مدير العقارات (5-10 عقارات)\tpercentage\t5\n",
+  "stderr": "",
+  "execution_time_ms": 61
+}

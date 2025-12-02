@@ -102,7 +102,10 @@ export default function BookService() {
       console.log('Pricing Type:', pricingData.service?.pricingType);
     }
   }, [pricingData]);
-  const { data: addOns = [] } = trpc.pricing.getAddOns.useQuery();
+  const { data: addOns = [] } = trpc.pricing.getAddOns.useQuery(
+    { serviceId: selectedServiceId! },
+    { enabled: !!selectedServiceId }
+  );
   const { data: packageDiscounts = [] } = trpc.pricing.getPackageDiscounts.useQuery(
     { serviceId: selectedServiceId! },
     { enabled: !!selectedServiceId }

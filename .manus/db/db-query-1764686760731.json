@@ -1,0 +1,154 @@
+{
+  "query": "SELECT id, nameEn, serviceId, pricingType FROM addOns;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, nameEn, serviceId, pricingType FROM addOns;",
+  "rows": [
+    {
+      "id": "1",
+      "nameEn": "Laundry Service",
+      "serviceId": "NULL",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "2",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "3",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "4",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "5",
+      "nameEn": "Laundry Service",
+      "serviceId": "NULL",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "6",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "7",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "8",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "9",
+      "nameEn": "Laundry Service",
+      "serviceId": "NULL",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "10",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "11",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "12",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30001",
+      "nameEn": "Laundry Service",
+      "serviceId": "NULL",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "30002",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "30003",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30004",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30005",
+      "nameEn": "Laundry Service",
+      "serviceId": "NULL",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "30006",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "30007",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30008",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "NULL",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30009",
+      "nameEn": "Laundry Service",
+      "serviceId": "30001",
+      "pricingType": "PER_BEDROOM"
+    },
+    {
+      "id": "30010",
+      "nameEn": "Garden/Terrace Cleaning",
+      "serviceId": "30001",
+      "pricingType": "SIZE_TIERED"
+    },
+    {
+      "id": "30011",
+      "nameEn": "Kitchen Deep Clean",
+      "serviceId": "30003",
+      "pricingType": "FIXED"
+    },
+    {
+      "id": "30012",
+      "nameEn": "Kitchen Tools & Oven Cleaning",
+      "serviceId": "30002",
+      "pricingType": "FIXED"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnameEn\tserviceId\tpricingType\n1\tLaundry Service\tNULL\tPER_BEDROOM\n2\tGarden/Terrace Cleaning\tNULL\tSIZE_TIERED\n3\tKitchen Deep Clean\t30003\tFIXED\n4\tKitchen Tools & Oven Cleaning\tNULL\tFIXED\n5\tLaundry Service\tNULL\tPER_BEDROOM\n6\tGarden/Terrace Cleaning\tNULL\tSIZE_TIERED\n7\tKitchen Deep Clean\t30003\tFIXED\n8\tKitchen Tools & Oven Cleaning\tNULL\tFIXED\n9\tLaundry Service\tNULL\tPER_BEDROOM\n10\tGarden/Terrace Cleaning\tNULL\tSIZE_TIERED\n11\tKitchen Deep Clean\t30003\tFIXED\n12\tKitchen Tools & Oven Cleaning\tNULL\tFIXED\n30001\tLaundry Service\tNULL\tPER_BEDROOM\n30002\tGarden/Terrace Cleaning\tNULL\tSIZE_TIERED\n30003\tKitchen Deep Clean\t30003\tFIXED\n30004\tKitchen Tools & Oven Cleaning\tNULL\tFIXED\n30005\tLaundry Service\tNULL\tPER_BEDROOM\n30006\tGarden/Terrace Cleaning\tNULL\tSIZE_TIERED\n30007\tKitchen Deep Clean\t30003\tFIXED\n30008\tKitchen Tools & Oven Cleaning\tNULL\tFIXED\n30009\tLaundry Service\t30001\tPER_BEDROOM\n30010\tGarden/Terrace Cleaning\t30001\tSIZE_TIERED\n30011\tKitchen Deep Clean\t30003\tFIXED\n30012\tKitchen Tools & Oven Cleaning\t30002\tFIXED\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

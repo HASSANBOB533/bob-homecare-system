@@ -530,3 +530,21 @@
 - [ ] Add service descriptions and pricing calculators
 - [ ] Add professional photos and checklist displays
 - [ ] Link pages from homepage navigation
+
+## Critical Fixes for Booking Form
+
+### Add-On Service Linking
+- [x] Fix add-on filtering to show only relevant add-ons per service type
+- [x] Remove add-ons that don't apply to selected service
+- [ ] Update add-on seed data to link add-ons to specific services
+
+### Price Calculation Fixes
+- [x] Fix total price calculation (still showing cents: 260,000 instead of 2,600)
+- [x] Update usePriceCalculation hook to divide all prices by 100
+- [x] Fix PriceBreakdownCard to display correct final price
+- [x] Ensure all price displays are consistent (divide by 100)
+
+### Duplicate Add-Ons
+- [ ] Remove duplicate add-on entries (showing 6 times each)
+- [ ] Show only one entry per add-on with automatic tier selection
+- [ ] Simplify add-on display for better UX
