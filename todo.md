@@ -775,3 +775,37 @@
 - [x] Send email after successful booking creation
 - [x] Support both Arabic and English email templates
 - [x] Test email delivery with real bookings - All 8 tests passing (3 PDF + 5 Email)
+
+## Phase 7: Customer Booking History Page
+
+### MyBookings Page Component
+- [ ] Create /my-bookings route and page component
+- [ ] Display list of user's past bookings with status badges
+- [ ] Show pricing breakdown for each booking
+- [ ] Add filter by status (all, pending, confirmed, completed, cancelled)
+- [ ] Add sort by date (newest/oldest)
+- [ ] Show booking reference number and service details
+
+### Invoice Download
+- [ ] Create invoice PDF generator with pricing breakdown
+- [ ] Add "Download Invoice" button for completed bookings
+- [ ] Include company branding and booking details in invoice
+- [ ] Support both Arabic and English invoice templates
+
+### Rebook Functionality
+- [ ] Add "Book Again" button for each booking
+- [ ] Pre-fill booking form with previous booking details
+- [ ] Allow user to modify date/time before submitting
+- [ ] Maintain same service and add-ons selection
+
+### Review Integration
+- [ ] Add "Leave Review" button for completed bookings
+- [ ] Show existing review if already submitted
+- [ ] Allow editing reviews within 7 days of submission
+- [ ] Display review status (pending, approved, rejected)
+
+### Tests
+- [ ] Write comprehensive tests for booking history features
+- [ ] Test invoice generation
+- [ ] Test rebook functionality
+- [ ] Test review submission from booking history

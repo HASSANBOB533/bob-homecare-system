@@ -14,6 +14,7 @@ import { AdminLoyalty } from "./pages/AdminLoyalty";
 import AdminPricingManagement from "./pages/AdminPricingManagement";
 import { AdminPricingEditor } from "./pages/AdminPricingEditor";
 import BookService from "./pages/BookService";
+import MyBookings from "./pages/MyBookings";
 import CheckBooking from "./pages/CheckBooking";
 import VerifyEmail from "./pages/VerifyEmail";
 import PaymentSuccess from "./pages/PaymentSuccess";
@@ -48,6 +49,7 @@ function Router() {
   return (
     <Switch>          <Route path="/" component={Home} />
           <Route path="/verify-email" component={VerifyEmail} />      <Route path={"/book"} component={BookService} />
+      <Route path={"/my-bookings"} component={MyBookings} />
       <Route path={"/check-booking"} component={CheckBooking} />
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/payment-failed"} component={PaymentFailed} />

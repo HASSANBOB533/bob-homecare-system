@@ -247,6 +247,40 @@ const resources = {
         "quoteLink": "Quote Link",
         "validUntil": "Valid until"
       },
+
+      // My Bookings
+      "myBookings": {
+        "title": "My Bookings",
+        "bookNewService": "Book New Service",
+        "filterByStatus": "Filter by Status",
+        "sortBy": "Sort By",
+        "allBookings": "All Bookings",
+        "newestFirst": "Newest First",
+        "oldestFirst": "Oldest First",
+        "noBookings": "You don't have any bookings yet.",
+        "bookFirstService": "Book Your First Service",
+        "reference": "Reference",
+        "dateTime": "Date & Time",
+        "address": "Address",
+        "notes": "Notes",
+        "pricingDetails": "Pricing Details",
+        "basePrice": "Base Price",
+        "packageDiscount": "Package Discount",
+        "total": "Total",
+        "notAvailable": "N/A",
+        "downloadInvoice": "Download Invoice",
+        "downloading": "Downloading...",
+        "leaveReview": "Leave Review",
+        "bookAgain": "Book Again",
+        "invoiceDownloaded": "Invoice downloaded successfully!",
+        "invoiceDownloadFailed": "Failed to download invoice. Please try again.",
+        "status": {
+          "pending": "Pending",
+          "confirmed": "Confirmed",
+          "completed": "Completed",
+          "cancelled": "Cancelled"
+        }
+      },
       
       "Payment Failed": "Payment Failed",
       "We could not process your payment": "We could not process your payment",
@@ -491,6 +525,40 @@ const resources = {
         "shareYourQuote": "شارك عرض السعر الخاص بك",
         "quoteLink": "رابط عرض السعر",
         "validUntil": "صالح حتى"
+      },
+
+      // My Bookings
+      "myBookings": {
+        "title": "حجوزاتي",
+        "bookNewService": "احجز خدمة جديدة",
+        "filterByStatus": "تصفية حسب الحالة",
+        "sortBy": "ترتيب حسب",
+        "allBookings": "جميع الحجوزات",
+        "newestFirst": "الأحدث أولاً",
+        "oldestFirst": "الأقدم أولاً",
+        "noBookings": "ليس لديك أي حجوزات بعد.",
+        "bookFirstService": "احجز خدمتك الأولى",
+        "reference": "المرجع",
+        "dateTime": "التاريخ والوقت",
+        "address": "العنوان",
+        "notes": "ملاحظات",
+        "pricingDetails": "تفاصيل السعر",
+        "basePrice": "السعر الأساسي",
+        "packageDiscount": "خصم الباقة",
+        "total": "المجموع",
+        "notAvailable": "غير متوفر",
+        "downloadInvoice": "تحميل الفاتورة",
+        "downloading": "جاري التحميل...",
+        "leaveReview": "اترك تقييماً",
+        "bookAgain": "احجز مرة أخرى",
+        "invoiceDownloaded": "تم تحميل الفاتورة بنجاح!",
+        "invoiceDownloadFailed": "فشل تحميل الفاتورة. يرجى المحاولة مرة أخرى.",
+        "status": {
+          "pending": "قيد الانتظار",
+          "confirmed": "مؤكد",
+          "completed": "مكتمل",
+          "cancelled": "ملغي"
+        }
       },
       
       "booking": {

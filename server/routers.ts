@@ -275,6 +275,62 @@ export const appRouter = router({
         const { updateBooking } = await import("./db");
         return updateBooking(input.id, { status: input.status });
       }),
+    downloadInvoice: protectedProcedure
+      .input(z.object({
+        bookingId: z.number(),
+        language: z.enum(["ar", "en"]).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { getDb } = await import("./db");
+        const db = await getDb();
+        if (!db) throw new Error("Database not available");
+        
+        const { bookings, services } = await import("../drizzle/schema");
+        const { eq } = await import("drizzle-orm");
+        
+        // Get booking with service details
+        const result = await db.select({
+          booking: bookings,
+          service: services,
+        }).from(bookings)
+          .leftJoin(services, eq(bookings.serviceId, services.id))
+          .where(eq(bookings.id, input.bookingId))
+          .limit(1);
+        
+        if (!result[0]) {
+          throw new Error("Booking not found");
+        }
+        
+        const { booking, service } = result[0];
+        
+        // Verify user owns this booking
+        if (booking.userId !== ctx.user.id && ctx.user.role !== "admin") {
+          throw new Error("Unauthorized");
+        }
+        
+        const { generateInvoicePDF } = await import("./invoiceGenerator");
+        
+        const pricingBreakdown = typeof booking.pricingBreakdown === 'string' 
+          ? JSON.parse(booking.pricingBreakdown) 
+          : booking.pricingBreakdown;
+        
+        const pdf = await generateInvoicePDF({
+          bookingReference: `BOB-${booking.id}`,
+          customerName: booking.customerName,
+          serviceName: input.language === "ar" ? (service?.name || "N/A") : (service?.nameEn || service?.name || "N/A"),
+          date: booking.dateTime.toLocaleDateString(input.language === "ar" ? "ar-EG" : "en-US"),
+          time: booking.dateTime.toLocaleTimeString(input.language === "ar" ? "ar-EG" : "en-US", { hour: '2-digit', minute: '2-digit' }),
+          address: booking.address,
+          pricingBreakdown,
+          totalAmount: booking.amount || 0,
+          language: input.language || "en",
+        });
+        
+        return {
+          pdf: pdf.toString("base64"),
+          filename: `BOB-Invoice-${booking.id}.pdf`,
+        };
+      }),
     create: protectedProcedure
       .input(z.object({
         serviceId: z.number().optional(),
