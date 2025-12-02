@@ -1158,6 +1158,31 @@ export const appRouter = router({
         return markQuoteConverted(input.id);
       }),
   }),
+
+  // Favorites router
+  favorites: router({
+    // Toggle favorite (add or remove)
+    toggle: protectedProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        const { toggleFavorite } = await import("./db");
+        return toggleFavorite(ctx.user.id, input.serviceId);
+      }),
+
+    // Get user's favorite services
+    list: protectedProcedure.query(async ({ ctx }) => {
+      const { getUserFavorites } = await import("./db");
+      return getUserFavorites(ctx.user.id);
+    }),
+
+    // Check if service is favorited
+    isFavorite: protectedProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ ctx, input }) => {
+        const { isFavoriteService } = await import("./db");
+        return isFavoriteService(ctx.user.id, input.serviceId);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

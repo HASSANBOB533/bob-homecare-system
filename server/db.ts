@@ -1712,3 +1712,86 @@ export async function markQuoteConverted(id: number) {
 
   return { success: true };
 }
+
+/**
+ * Toggle favorite service (add or remove)
+ */
+export async function toggleFavorite(userId: number, serviceId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { favoriteServices } = await import("../drizzle/schema");
+
+  // Check if already favorited
+  const [existing] = await db
+    .select()
+    .from(favoriteServices)
+    .where(and(eq(favoriteServices.userId, userId), eq(favoriteServices.serviceId, serviceId)))
+    .limit(1);
+
+  if (existing) {
+    // Remove favorite
+    await db
+      .delete(favoriteServices)
+      .where(and(eq(favoriteServices.userId, userId), eq(favoriteServices.serviceId, serviceId)));
+    return { isFavorite: false };
+  } else {
+    // Add favorite
+    await db.insert(favoriteServices).values({
+      userId,
+      serviceId,
+    });
+    return { isFavorite: true };
+  }
+}
+
+/**
+ * Get user's favorite services with full service details
+ */
+export async function getUserFavorites(userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { favoriteServices, services } = await import("../drizzle/schema");
+
+  const favorites = await db
+    .select({
+      id: favoriteServices.id,
+      serviceId: favoriteServices.serviceId,
+      createdAt: favoriteServices.createdAt,
+      service: {
+        id: services.id,
+        name: services.name,
+        nameEn: services.nameEn,
+        description: services.description,
+        descriptionEn: services.descriptionEn,
+        pricingType: services.pricingType,
+        price: services.price,
+        galleryImages: services.galleryImages,
+      },
+    })
+    .from(favoriteServices)
+    .innerJoin(services, eq(favoriteServices.serviceId, services.id))
+    .where(eq(favoriteServices.userId, userId))
+    .orderBy(desc(favoriteServices.createdAt));
+
+  return favorites;
+}
+
+/**
+ * Check if a service is favorited by user
+ */
+export async function isFavoriteService(userId: number, serviceId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { favoriteServices } = await import("../drizzle/schema");
+
+  const [favorite] = await db
+    .select()
+    .from(favoriteServices)
+    .where(and(eq(favoriteServices.userId, userId), eq(favoriteServices.serviceId, serviceId)))
+    .limit(1);
+
+  return { isFavorite: !!favorite };
+}

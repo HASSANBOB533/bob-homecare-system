@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, Download, RefreshCw, Star, Clock, MapPin, DollarSign } from "lucide-react";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
+import { StatusTimeline } from "@/components/StatusTimeline";
 
 type BookingStatus = "all" | "pending" | "confirmed" | "completed" | "cancelled";
 
@@ -178,6 +179,11 @@ export default function MyBookings() {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {/* Status Timeline */}
+                  <div className="mb-6">
+                    <StatusTimeline currentStatus={booking.status} />
+                  </div>
+                  
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Booking Details */}
                     <div className="space-y-3">

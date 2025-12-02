@@ -312,3 +312,16 @@ export const quotes = mysqlTable("quotes", {
 
 export type Quote = typeof quotes.$inferSelect;
 export type InsertQuote = typeof quotes.$inferInsert;
+
+/**
+ * Favorite services table - Track user's favorite services for quick rebooking
+ */
+export const favoriteServices = mysqlTable("favoriteServices", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").references(() => users.id, { onDelete: "cascade" }).notNull(),
+  serviceId: int("serviceId").references(() => services.id, { onDelete: "cascade" }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type FavoriteService = typeof favoriteServices.$inferSelect;
+export type InsertFavoriteService = typeof favoriteServices.$inferInsert;

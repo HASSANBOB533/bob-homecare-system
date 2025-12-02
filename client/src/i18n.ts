@@ -282,6 +282,13 @@ const resources = {
         }
       },
       
+      "statusTimeline": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      
       "Payment Failed": "Payment Failed",
       "We could not process your payment": "We could not process your payment",
       "Your booking is saved but payment is pending": "Your booking is saved but payment is pending",
@@ -561,7 +568,14 @@ const resources = {
         }
       },
       
-      "booking": {
+      "statusTimeline": {
+        "pending": "قيد الانتظار",
+        "confirmed": "مؤكد",
+        "completed": "مكتمل",
+        "cancelled": "ملغي"
+      },
+      
+      "Payment Failed": {
         "selectBedrooms": "اختر عدد الغرف",
         "bedrooms": "غرف",
         "egp": "جنيه",

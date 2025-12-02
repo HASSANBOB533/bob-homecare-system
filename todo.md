@@ -809,3 +809,45 @@
 - [ ] Test invoice generation
 - [ ] Test rebook functionality
 - [ ] Test review submission from booking history
+
+
+## Phase 8: Enhanced Customer Experience Features (IN PROGRESS)
+
+### Visual Booking Status Timeline
+- [x] Create StatusTimeline component with progress indicators
+- [x] Add status stages: Pending → Confirmed → Completed (+ Cancelled)
+- [x] Add visual checkmarks for completed stages
+- [x] Add current stage highlighting with ring effect
+- [x] Integrate timeline into MyBookings page
+- [x] Add Arabic/English translations for timeline stages
+- [x] Test timeline display for all booking statuses
+
+### Favorite Services Feature
+- [ ] Create favoriteServices table in database schema
+- [ ] Add user_id and service_id foreign keys
+- [ ] Create API endpoint to add service to favorites
+- [ ] Create API endpoint to remove service from favorites
+- [ ] Create API endpoint to get user's favorite services
+- [ ] Add heart icon to service cards (filled/unfilled based on favorite status)
+- [ ] Add heart icon to service detail pages
+- [ ] Create "My Favorites" section in user dashboard
+- [ ] Add quick rebook button for favorite services
+- [ ] Add Arabic/English translations for favorites feature
+- [ ] Write vitest tests for favorites functionality
+
+### Customer Referral Dashboard
+- [ ] Add referralCode field to users table (unique, auto-generated)
+- [ ] Create referrals table to track referrals (referrer_id, referred_user_id, status, discount_earned)
+- [ ] Create API endpoint to generate unique referral code
+- [ ] Create API endpoint to get user's referral statistics
+- [ ] Create API endpoint to validate and apply referral codes
+- [ ] Create ReferralDashboard page at /referrals
+- [ ] Display user's unique referral code with copy button
+- [ ] Show referral statistics (total referrals, pending, successful, total discounts earned)
+- [ ] Add referral code sharing buttons (WhatsApp, Email, Copy Link)
+- [ ] Show list of referrals with status and earned discounts
+- [ ] Add referral code input to booking form
+- [ ] Apply referral discount when valid code is used
+- [ ] Update referral status when referred user completes first booking
+- [ ] Add Arabic/English translations for referral dashboard
+- [ ] Write vitest tests for referral system
