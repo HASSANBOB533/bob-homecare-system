@@ -1173,3 +1173,60 @@
 - [ ] Create git commit with descriptive message
 - [ ] Update README with debug panel usage
 - [ ] Create user guide for debugging tools
+
+
+## Comprehensive Button Testing (Phase 2)
+
+### Homepage Buttons
+- [ ] Test "Book Now" CTA button
+- [ ] Test "Book via WhatsApp" button
+- [ ] Test "View Services" button
+- [ ] Test language toggle (English/Arabic)
+- [ ] Test "Services" navigation link
+- [ ] Test "Why Us" navigation link
+- [ ] Test user profile dropdown (if logged in)
+
+### Service Pages
+- [ ] Test "Book This Service" buttons on service cards
+- [ ] Test "View Details" links
+- [ ] Test service image gallery navigation
+- [ ] Test add-to-favorites heart icons
+
+### Booking Flow
+- [ ] Test service selection dropdown
+- [ ] Test date picker
+- [ ] Test time slot selection
+- [ ] Test add-on checkboxes
+- [ ] Test package discount selection
+- [ ] Test special offers dropdown
+- [ ] Test referral code input validation
+- [ ] Test loyalty points checkbox
+- [ ] Test property count input (property manager)
+- [ ] Test "Submit Booking" button
+- [ ] Test "Cancel" button
+
+### Admin Dashboard
+- [ ] Test admin sidebar navigation links
+- [ ] Test "All Bookings" link
+- [ ] Test "Services Management" link
+- [ ] Test "Review Management" link
+- [ ] Test "Loyalty Management" link
+- [ ] Test "Loyalty Analytics" link
+- [ ] Test "Pricing Management" link
+- [ ] Test booking status update buttons
+- [ ] Test service edit buttons
+- [ ] Test service delete buttons
+
+### User Dashboard
+- [ ] Test "My Bookings" navigation
+- [ ] Test "My Favorites" link
+- [ ] Test "Referrals" link
+- [ ] Test booking cancellation buttons
+- [ ] Test "Book Again" buttons
+
+### Fixes Required
+- [ ] Document all broken buttons
+- [ ] Fix missing event handlers
+- [ ] Fix incorrect navigation targets
+- [ ] Fix form validation issues
+- [ ] Test all fixes with debug panel
