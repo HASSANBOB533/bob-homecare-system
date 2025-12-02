@@ -313,6 +313,7 @@ export async function deleteBooking(id: number) {
   if (!db) throw new Error("Database not available");
   const { bookings } = await import("../drizzle/schema");
   await db.delete(bookings).where(eq(bookings.id, id));
+  return { success: true };
 }
 
 export async function updateBookingPayment(id: number, data: {

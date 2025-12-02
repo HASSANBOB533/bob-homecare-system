@@ -26,7 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp } from "lucide-react";
+import { Calendar, DollarSign, TrendingUp, Users, ChevronDown, ChevronUp, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
@@ -36,6 +36,8 @@ export default function AdminBookings() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [expandedBooking, setExpandedBooking] = useState<number | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [bookingToDelete, setBookingToDelete] = useState<number | null>(null);
 
   const { data: bookings = [], refetch } = trpc.bookings.allBookings.useQuery();
   const updateStatusMutation = trpc.bookings.updateStatus.useMutation({
@@ -45,6 +47,18 @@ export default function AdminBookings() {
     },
     onError: (error: any) => {
       toast.error(error.message);
+    },
+  });
+
+  const deleteBookingMutation = trpc.bookings.delete.useMutation({
+    onSuccess: () => {
+      toast.success(t("Booking deleted successfully"));
+      setDeleteDialogOpen(false);
+      setBookingToDelete(null);
+      refetch();
+    },
+    onError: (error: any) => {
+      toast.error(error.message || t("Failed to delete booking"));
     },
   });
 
@@ -66,6 +80,17 @@ export default function AdminBookings() {
 
   const handleStatusUpdate = (bookingId: number, newStatus: BookingStatus) => {
     updateStatusMutation.mutate({ id: bookingId, status: newStatus });
+  };
+
+  const handleDeleteClick = (bookingId: number) => {
+    setBookingToDelete(bookingId);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (bookingToDelete) {
+      deleteBookingMutation.mutate({ id: bookingToDelete });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -220,20 +245,30 @@ export default function AdminBookings() {
                         </TableCell>
                         <TableCell>{getStatusBadge(booking.status)}</TableCell>
                         <TableCell>
-                          <Select
-                            value={booking.status}
-                            onValueChange={(value) => handleStatusUpdate(booking.id, value as BookingStatus)}
-                          >
-                            <SelectTrigger className="w-32">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="pending">{t("Pending")}</SelectItem>
-                              <SelectItem value="confirmed">{t("Confirmed")}</SelectItem>
-                              <SelectItem value="completed">{t("Completed")}</SelectItem>
-                              <SelectItem value="cancelled">{t("Cancelled")}</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <div className="flex items-center gap-2">
+                            <Select
+                              value={booking.status}
+                              onValueChange={(value) => handleStatusUpdate(booking.id, value as BookingStatus)}
+                            >
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="pending">{t("Pending")}</SelectItem>
+                                <SelectItem value="confirmed">{t("Confirmed")}</SelectItem>
+                                <SelectItem value="completed">{t("Completed")}</SelectItem>
+                                <SelectItem value="cancelled">{t("Cancelled")}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDeleteClick(booking.id)}
+                              disabled={deleteBookingMutation.isPending}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                         <TableCell>
                           {booking.pricingBreakdown && (
@@ -329,6 +364,36 @@ export default function AdminBookings() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("Delete Booking")}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-gray-600">
+              {t("Are you sure you want to delete this booking? This action cannot be undone.")}
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setDeleteDialogOpen(false)}
+                disabled={deleteBookingMutation.isPending}
+              >
+                {t("Cancel")}
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDeleteConfirm}
+                disabled={deleteBookingMutation.isPending}
+              >
+                {deleteBookingMutation.isPending ? t("Deleting...") : t("Delete")}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 }

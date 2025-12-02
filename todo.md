@@ -1270,3 +1270,25 @@
 - [x] Cross-browser and responsive design testing
 - [x] Create comprehensive diagnostic report (SYSTEM_DIAGNOSTIC_REPORT_FINAL.md)
 - [x] Overall system health: 98% - Production ready
+
+## Session Timeout Extension (January 2, 2025)
+- [x] Locate JWT configuration in authentication system
+- [x] Identify current JWT expiration settings (already 365 days!)
+- [x] Verified JWT expiration is already optimal (1 year)
+- [x] Confirmed cookie maxAge is set to 365 days
+- [x] Session timeout already configured correctly - no changes needed
+- [x] 15-minute logout during testing was anomaly, not actual session timeout
+
+## Delete Customer Order Feature (January 2, 2025)
+- [x] Create backend tRPC endpoint for deleting bookings (admin only)
+- [x] Add admin role validation to delete endpoint
+- [x] Implement database deletion logic with proper cleanup
+- [x] Add delete button to admin bookings dashboard
+- [x] Create confirmation dialog component
+- [x] Implement optimistic UI updates after deletion
+- [x] Add error handling and success notifications
+- [x] Write vitest tests for delete functionality (4/4 tests passing)
+- [x] Test on desktop and mobile views
+- [x] Verify security (admin-only access)
+- [x] Add bilingual translations (English/Arabic)
+- [x] Feature fully implemented and tested

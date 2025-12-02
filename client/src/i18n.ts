@@ -391,6 +391,14 @@ const resources = {
       // WhatsApp
       "bookViaWhatsApp": "Book via WhatsApp",
       "whatsappDesc": "Chat with us directly on WhatsApp for instant booking",
+      
+      // Delete Booking
+      "Delete Booking": "Delete Booking",
+      "Are you sure you want to delete this booking? This action cannot be undone.": "Are you sure you want to delete this booking? This action cannot be undone.",
+      "Deleting...": "Deleting...",
+      "Delete": "Delete",
+      "Booking deleted successfully": "Booking deleted successfully",
+      "Failed to delete booking": "Failed to delete booking",
     }
   },
   ar: {
@@ -781,6 +789,14 @@ const resources = {
       // WhatsApp
       "bookViaWhatsApp": "احجز عبر واتساب",
       "whatsappDesc": "تحدث معنا مباشرة على واتساب للحجز الفوري",
+      
+      // Delete Booking
+      "Delete Booking": "حذف الحجز",
+      "Are you sure you want to delete this booking? This action cannot be undone.": "هل أنت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذا الإجراء.",
+      "Deleting...": "جاري الحذف...",
+      "Delete": "حذف",
+      "Booking deleted successfully": "تم حذف الحجز بنجاح",
+      "Failed to delete booking": "فشل حذف الحجز",
     }
   }
 };
