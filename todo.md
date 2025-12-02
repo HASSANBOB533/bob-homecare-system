@@ -456,3 +456,37 @@
 - [x] Add "Seed All Pricing Data" button
 - [x] Add pricing management to admin menu
 - [x] Fix admin role access
+
+## Admin Pricing Editor Interface
+
+### Backend CRUD Operations
+- [x] Create tRPC procedures for bedroom tier CRUD (create, update, delete, list by service)
+- [x] Create tRPC procedures for square meter pricing CRUD
+- [x] Create tRPC procedures for upholstery item CRUD
+- [x] Create tRPC procedures for add-on CRUD (including tiers)
+- [x] Create tRPC procedures for package discount CRUD
+- [x] Create tRPC procedures for special offer CRUD
+- [x] Add database helper functions for all pricing CRUD operations
+
+### Frontend Editor Components
+- [ ] Create BedroomTierEditor component with add/edit/delete dialogs
+- [ ] Create SqmPricingEditor component
+- [ ] Create UpholsteryItemEditor component
+- [ ] Create AddOnEditor component with tier management
+- [ ] Create PackageDiscountEditor component
+- [ ] Create SpecialOfferEditor component
+- [ ] Add form validation for all pricing inputs
+
+### Admin Pricing Management Page
+- [ ] Create tabbed interface for different pricing types
+- [ ] Add service selector for bedroom/sqm/item pricing
+- [ ] Display pricing records in tables with edit/delete actions
+- [ ] Add "Add New" buttons for each pricing type
+- [ ] Add confirmation dialogs for delete operations
+- [ ] Add success/error toast notifications
+- [ ] Add Arabic/English translations for pricing editor
+
+### Testing
+- [ ] Test CRUD operations for all pricing types
+- [ ] Verify pricing updates reflect in booking form
+- [ ] Test edge cases (delete last tier, update to negative price, etc.)

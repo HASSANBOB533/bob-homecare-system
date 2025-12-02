@@ -583,6 +583,313 @@ export const appRouter = router({
         const { getAllSpecialOffers } = await import("./db");
         return getAllSpecialOffers();
       }),
+    
+    // ===== BEDROOM TIER CRUD =====
+    createBedroomTier: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        bedrooms: z.number().min(1),
+        price: z.number().min(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create pricing");
+        }
+        const { createBedroomTier } = await import("./db");
+        return createBedroomTier(input);
+      }),
+    
+    updateBedroomTier: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        bedrooms: z.number().min(1).optional(),
+        price: z.number().min(0).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update pricing");
+        }
+        const { updateBedroomTier } = await import("./db");
+        return updateBedroomTier(input.id, input);
+      }),
+    
+    deleteBedroomTier: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete pricing");
+        }
+        const { deleteBedroomTier } = await import("./db");
+        return deleteBedroomTier(input.id);
+      }),
+    
+    // ===== SQUARE METER PRICING CRUD =====
+    createSqmPricing: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        variant: z.string().optional(),
+        pricePerSqm: z.number().min(0),
+        minimumCharge: z.number().min(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create pricing");
+        }
+        const { createSqmPricing } = await import("./db");
+        return createSqmPricing(input);
+      }),
+    
+    updateSqmPricing: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        variant: z.string().optional(),
+        pricePerSqm: z.number().min(0).optional(),
+        minimumCharge: z.number().min(0).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update pricing");
+        }
+        const { updateSqmPricing } = await import("./db");
+        return updateSqmPricing(input.id, input);
+      }),
+    
+    deleteSqmPricing: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete pricing");
+        }
+        const { deleteSqmPricing } = await import("./db");
+        return deleteSqmPricing(input.id);
+      }),
+    
+    // ===== UPHOLSTERY ITEM CRUD =====
+    createUpholsteryItem: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        itemName: z.string(),
+        itemNameEn: z.string(),
+        price: z.number().min(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create pricing");
+        }
+        const { createUpholsteryItem } = await import("./db");
+        return createUpholsteryItem(input);
+      }),
+    
+    updateUpholsteryItem: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        itemName: z.string().optional(),
+        itemNameEn: z.string().optional(),
+        price: z.number().min(0).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update pricing");
+        }
+        const { updateUpholsteryItem } = await import("./db");
+        return updateUpholsteryItem(input.id, input);
+      }),
+    
+    deleteUpholsteryItem: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete pricing");
+        }
+        const { deleteUpholsteryItem } = await import("./db");
+        return deleteUpholsteryItem(input.id);
+      }),
+    
+    // ===== ADD-ON CRUD =====
+    createAddOn: protectedProcedure
+      .input(z.object({
+        serviceId: z.number().optional(),
+        name: z.string(),
+        nameEn: z.string(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        price: z.number().min(0),
+        pricingType: z.enum(["FIXED", "PER_BEDROOM", "SIZE_TIERED"]).optional(),
+        sizeTierThreshold: z.number().optional(),
+        sizeTierMultiplier: z.number().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create add-ons");
+        }
+        const { createAddOn } = await import("./db");
+        return createAddOn(input);
+      }),
+    
+    updateAddOn: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        serviceId: z.number().optional(),
+        name: z.string().optional(),
+        nameEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        price: z.number().min(0).optional(),
+        pricingType: z.enum(["FIXED", "PER_BEDROOM", "SIZE_TIERED"]).optional(),
+        sizeTierThreshold: z.number().optional(),
+        sizeTierMultiplier: z.number().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update add-ons");
+        }
+        const { updateAddOn } = await import("./db");
+        return updateAddOn(input.id, input);
+      }),
+    
+    deleteAddOn: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete add-ons");
+        }
+        const { deleteAddOn } = await import("./db");
+        return deleteAddOn(input.id);
+      }),
+    
+    // ===== ADD-ON TIER CRUD =====
+    createAddOnTier: protectedProcedure
+      .input(z.object({
+        addOnId: z.number(),
+        bedrooms: z.number().min(1),
+        price: z.number().min(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create add-on tiers");
+        }
+        const { createAddOnTier } = await import("./db");
+        return createAddOnTier(input);
+      }),
+    
+    updateAddOnTier: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        bedrooms: z.number().min(1).optional(),
+        price: z.number().min(0).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update add-on tiers");
+        }
+        const { updateAddOnTier } = await import("./db");
+        return updateAddOnTier(input.id, input);
+      }),
+    
+    deleteAddOnTier: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete add-on tiers");
+        }
+        const { deleteAddOnTier } = await import("./db");
+        return deleteAddOnTier(input.id);
+      }),
+    
+    // ===== PACKAGE DISCOUNT CRUD =====
+    createPackageDiscount: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        visits: z.number().min(1),
+        discountPercentage: z.number().min(0).max(100),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create discounts");
+        }
+        const { createPackageDiscount } = await import("./db");
+        return createPackageDiscount(input);
+      }),
+    
+    updatePackageDiscount: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        visits: z.number().min(1).optional(),
+        discountPercentage: z.number().min(0).max(100).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update discounts");
+        }
+        const { updatePackageDiscount } = await import("./db");
+        return updatePackageDiscount(input.id, input);
+      }),
+    
+    deletePackageDiscount: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete discounts");
+        }
+        const { deletePackageDiscount } = await import("./db");
+        return deletePackageDiscount(input.id);
+      }),
+    
+    // ===== SPECIAL OFFER CRUD =====
+    createSpecialOffer: protectedProcedure
+      .input(z.object({
+        name: z.string(),
+        nameEn: z.string(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        offerType: z.enum(["REFERRAL", "PROPERTY_MANAGER", "EMERGENCY_SAME_DAY"]),
+        discountType: z.enum(["percentage", "fixed"]),
+        discountValue: z.number(),
+        minProperties: z.number().optional(),
+        maxDiscount: z.number().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can create offers");
+        }
+        const { createSpecialOffer } = await import("./db");
+        return createSpecialOffer(input);
+      }),
+    
+    updateSpecialOffer: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        nameEn: z.string().optional(),
+        description: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        offerType: z.enum(["REFERRAL", "PROPERTY_MANAGER", "EMERGENCY_SAME_DAY"]).optional(),
+        discountType: z.enum(["percentage", "fixed"]).optional(),
+        discountValue: z.number().optional(),
+        minProperties: z.number().optional(),
+        maxDiscount: z.number().optional(),
+        active: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update offers");
+        }
+        const { updateSpecialOffer } = await import("./db");
+        return updateSpecialOffer(input.id, input);
+      }),
+    
+    deleteSpecialOffer: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can delete offers");
+        }
+        const { deleteSpecialOffer } = await import("./db");
+        return deleteSpecialOffer(input.id);
+      }),
   }),
 });
 

@@ -993,3 +993,435 @@ export async function getAllSpecialOffers() {
     .where(eq(specialOffers.active, true))
     .orderBy(specialOffers.name);
 }
+
+// ===== PRICING CRUD HELPERS =====
+
+/**
+ * Bedroom Tier CRUD
+ */
+export async function createBedroomTier(data: { 
+  serviceId: number; 
+  bedrooms: number; 
+  price: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingTiers } = await import("../drizzle/schema");
+  
+  await db.insert(pricingTiers).values(data);
+  
+  // Fetch the created tier
+  const [tier] = await db.select().from(pricingTiers)
+    .where(eq(pricingTiers.serviceId, data.serviceId))
+    .orderBy(desc(pricingTiers.id))
+    .limit(1);
+  return tier;
+}
+
+export async function updateBedroomTier(id: number, data: { 
+  bedrooms?: number; 
+  price?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingTiers } = await import("../drizzle/schema");
+  
+  await db.update(pricingTiers)
+    .set(data)
+    .where(eq(pricingTiers.id, id));
+  
+  // Fetch the updated tier
+  const [tier] = await db.select().from(pricingTiers).where(eq(pricingTiers.id, id));
+  return tier;
+}
+
+export async function deleteBedroomTier(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingTiers } = await import("../drizzle/schema");
+  
+  await db.delete(pricingTiers).where(eq(pricingTiers.id, id));
+  return { success: true };
+}
+
+/**
+ * Square Meter Pricing CRUD
+ */
+export async function createSqmPricing(data: { 
+  serviceId: number; 
+  variant?: string; 
+  pricePerSqm: number;
+  minimumCharge: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingSqm } = await import("../drizzle/schema");
+  
+  await db.insert(pricingSqm).values(data);
+  
+  // Fetch the created pricing
+  const [pricing] = await db.select().from(pricingSqm)
+    .where(eq(pricingSqm.serviceId, data.serviceId))
+    .orderBy(desc(pricingSqm.id))
+    .limit(1);
+  return pricing;
+}
+
+export async function updateSqmPricing(id: number, data: { 
+  variant?: string; 
+  pricePerSqm?: number;
+  minimumCharge?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingSqm } = await import("../drizzle/schema");
+  
+  await db.update(pricingSqm)
+    .set(data)
+    .where(eq(pricingSqm.id, id));
+  
+  // Fetch the updated pricing
+  const [pricing] = await db.select().from(pricingSqm).where(eq(pricingSqm.id, id));
+  return pricing;
+}
+
+export async function deleteSqmPricing(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingSqm } = await import("../drizzle/schema");
+  
+  await db.delete(pricingSqm).where(eq(pricingSqm.id, id));
+  return { success: true };
+}
+
+/**
+ * Upholstery Item CRUD
+ */
+export async function createUpholsteryItem(data: { 
+  serviceId: number; 
+  itemName: string; 
+  itemNameEn: string; 
+  price: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingItems } = await import("../drizzle/schema");
+  
+  await db.insert(pricingItems).values(data);
+  
+  // Fetch the created item
+  const [item] = await db.select().from(pricingItems)
+    .where(eq(pricingItems.serviceId, data.serviceId))
+    .orderBy(desc(pricingItems.id))
+    .limit(1);
+  return item;
+}
+
+export async function updateUpholsteryItem(id: number, data: { 
+  itemName?: string; 
+  itemNameEn?: string; 
+  price?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingItems } = await import("../drizzle/schema");
+  
+  await db.update(pricingItems)
+    .set(data)
+    .where(eq(pricingItems.id, id));
+  
+  // Fetch the updated item
+  const [item] = await db.select().from(pricingItems).where(eq(pricingItems.id, id));
+  return item;
+}
+
+export async function deleteUpholsteryItem(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { pricingItems } = await import("../drizzle/schema");
+  
+  await db.delete(pricingItems).where(eq(pricingItems.id, id));
+  return { success: true };
+}
+
+/**
+ * Add-On CRUD
+ */
+export async function createAddOn(data: { 
+  serviceId?: number;
+  name: string; 
+  nameEn: string; 
+  description?: string;
+  descriptionEn?: string;
+  price: number;
+  pricingType?: "FIXED" | "PER_BEDROOM" | "SIZE_TIERED";
+  sizeTierThreshold?: number;
+  sizeTierMultiplier?: number;
+  active?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOns } = await import("../drizzle/schema");
+  
+  await db.insert(addOns).values({
+    serviceId: data.serviceId,
+    name: data.name,
+    nameEn: data.nameEn,
+    description: data.description,
+    descriptionEn: data.descriptionEn,
+    price: data.price,
+    pricingType: data.pricingType || "FIXED",
+    sizeTierThreshold: data.sizeTierThreshold,
+    sizeTierMultiplier: data.sizeTierMultiplier,
+    active: data.active ?? true,
+  });
+  
+  // Fetch the created add-on
+  const [addOn] = await db.select().from(addOns)
+    .orderBy(desc(addOns.id))
+    .limit(1);
+  return addOn;
+}
+
+export async function updateAddOn(id: number, data: { 
+  serviceId?: number;
+  name?: string; 
+  nameEn?: string; 
+  description?: string;
+  descriptionEn?: string;
+  price?: number;
+  pricingType?: "FIXED" | "PER_BEDROOM" | "SIZE_TIERED";
+  sizeTierThreshold?: number;
+  sizeTierMultiplier?: number;
+  active?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOns } = await import("../drizzle/schema");
+  
+  const updateData: any = {};
+  if (data.serviceId !== undefined) updateData.serviceId = data.serviceId;
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.nameEn !== undefined) updateData.nameEn = data.nameEn;
+  if (data.description !== undefined) updateData.description = data.description;
+  if (data.descriptionEn !== undefined) updateData.descriptionEn = data.descriptionEn;
+  if (data.price !== undefined) updateData.price = data.price;
+  if (data.pricingType !== undefined) updateData.pricingType = data.pricingType;
+  if (data.sizeTierThreshold !== undefined) updateData.sizeTierThreshold = data.sizeTierThreshold;
+  if (data.sizeTierMultiplier !== undefined) updateData.sizeTierMultiplier = data.sizeTierMultiplier;
+  if (data.active !== undefined) updateData.active = data.active;
+  
+  await db.update(addOns)
+    .set(updateData)
+    .where(eq(addOns.id, id));
+  
+  // Fetch the updated add-on
+  const [addOn] = await db.select().from(addOns).where(eq(addOns.id, id));
+  return addOn;
+}
+
+export async function deleteAddOn(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOns } = await import("../drizzle/schema");
+  
+  await db.delete(addOns).where(eq(addOns.id, id));
+  return { success: true };
+}
+
+/**
+ * Add-On Tier CRUD
+ */
+export async function createAddOnTier(data: { 
+  addOnId: number; 
+  bedrooms: number; 
+  price: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOnTiers } = await import("../drizzle/schema");
+  
+  await db.insert(addOnTiers).values(data);
+  
+  // Fetch the created tier
+  const [tier] = await db.select().from(addOnTiers)
+    .where(eq(addOnTiers.addOnId, data.addOnId))
+    .orderBy(desc(addOnTiers.id))
+    .limit(1);
+  return tier;
+}
+
+export async function updateAddOnTier(id: number, data: { 
+  bedrooms?: number; 
+  price?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOnTiers } = await import("../drizzle/schema");
+  
+  await db.update(addOnTiers)
+    .set(data)
+    .where(eq(addOnTiers.id, id));
+  
+  // Fetch the updated tier
+  const [tier] = await db.select().from(addOnTiers).where(eq(addOnTiers.id, id));
+  return tier;
+}
+
+export async function deleteAddOnTier(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { addOnTiers } = await import("../drizzle/schema");
+  
+  await db.delete(addOnTiers).where(eq(addOnTiers.id, id));
+  return { success: true };
+}
+
+/**
+ * Package Discount CRUD
+ */
+export async function createPackageDiscount(data: { 
+  serviceId: number; 
+  visits: number; 
+  discountPercentage: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { packageDiscounts } = await import("../drizzle/schema");
+  
+  await db.insert(packageDiscounts).values(data);
+  
+  // Fetch the created discount
+  const [discount] = await db.select().from(packageDiscounts)
+    .where(eq(packageDiscounts.serviceId, data.serviceId))
+    .orderBy(desc(packageDiscounts.id))
+    .limit(1);
+  return discount;
+}
+
+export async function updatePackageDiscount(id: number, data: { 
+  visits?: number; 
+  discountPercentage?: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { packageDiscounts } = await import("../drizzle/schema");
+  
+  await db.update(packageDiscounts)
+    .set(data)
+    .where(eq(packageDiscounts.id, id));
+  
+  // Fetch the updated discount
+  const [discount] = await db.select().from(packageDiscounts).where(eq(packageDiscounts.id, id));
+  return discount;
+}
+
+export async function deletePackageDiscount(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { packageDiscounts } = await import("../drizzle/schema");
+  
+  await db.delete(packageDiscounts).where(eq(packageDiscounts.id, id));
+  return { success: true };
+}
+
+/**
+ * Special Offer CRUD
+ */
+export async function createSpecialOffer(data: { 
+  name: string; 
+  nameEn: string; 
+  description?: string;
+  descriptionEn?: string;
+  offerType: "REFERRAL" | "PROPERTY_MANAGER" | "EMERGENCY_SAME_DAY";
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  minProperties?: number;
+  maxDiscount?: number;
+  active?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { specialOffers } = await import("../drizzle/schema");
+  
+  const [offer] = await db.insert(specialOffers).values({
+    name: data.name,
+    nameEn: data.nameEn,
+    description: data.description,
+    descriptionEn: data.descriptionEn,
+    offerType: data.offerType,
+    discountType: data.discountType,
+    discountValue: data.discountValue,
+    minProperties: data.minProperties,
+    maxDiscount: data.maxDiscount,
+    active: data.active ?? true,
+  });
+  return offer;
+}
+
+export async function updateSpecialOffer(id: number, data: { 
+  name?: string; 
+  nameEn?: string; 
+  description?: string;
+  descriptionEn?: string;
+  offerType?: "REFERRAL" | "PROPERTY_MANAGER" | "EMERGENCY_SAME_DAY";
+  discountType?: "percentage" | "fixed";
+  discountValue?: number;
+  minProperties?: number;
+  maxDiscount?: number;
+  active?: boolean;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { specialOffers } = await import("../drizzle/schema");
+  
+  const updateData: any = {};
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.nameEn !== undefined) updateData.nameEn = data.nameEn;
+  if (data.description !== undefined) updateData.description = data.description;
+  if (data.descriptionEn !== undefined) updateData.descriptionEn = data.descriptionEn;
+  if (data.offerType !== undefined) updateData.offerType = data.offerType;
+  if (data.discountType !== undefined) updateData.discountType = data.discountType;
+  if (data.discountValue !== undefined) updateData.discountValue = data.discountValue;
+  if (data.minProperties !== undefined) updateData.minProperties = data.minProperties;
+  if (data.maxDiscount !== undefined) updateData.maxDiscount = data.maxDiscount;
+  if (data.active !== undefined) updateData.active = data.active;
+  
+  await db.update(specialOffers)
+    .set(updateData)
+    .where(eq(specialOffers.id, id));
+  
+  // Fetch and return the updated offer
+  const [offer] = await db.select().from(specialOffers).where(eq(specialOffers.id, id));
+  return offer;
+}
+
+export async function deleteSpecialOffer(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  
+  const { specialOffers } = await import("../drizzle/schema");
+  
+  await db.delete(specialOffers).where(eq(specialOffers.id, id));
+  return { success: true };
+}

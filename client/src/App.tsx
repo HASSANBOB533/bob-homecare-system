@@ -12,6 +12,7 @@ import { AdminReviews } from "./pages/AdminReviews";
 import LoyaltyDashboard from "./pages/LoyaltyDashboard";
 import { AdminLoyalty } from "./pages/AdminLoyalty";
 import AdminPricingManagement from "./pages/AdminPricingManagement";
+import { AdminPricingEditor } from "./pages/AdminPricingEditor";
 import BookService from "./pages/BookService";
 import CheckBooking from "./pages/CheckBooking";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -63,6 +64,9 @@ function Router() {
       </Route>
       <Route path={"/admin/pricing"}>
         {() => <ProtectedRoute component={AdminPricingManagement} requireAdmin />}
+      </Route>
+      <Route path={"/admin/pricing-editor"}>
+        {() => <ProtectedRoute component={AdminPricingEditor} requireAdmin />}
       </Route>
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
