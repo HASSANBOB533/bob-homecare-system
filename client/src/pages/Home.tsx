@@ -51,6 +51,7 @@ export default function Home() {
     enabled: isAuthenticated,
   });
   const [editProfileOpen, setEditProfileOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess: () => {
@@ -93,14 +94,19 @@ export default function Home() {
             </a>
             <LanguageSwitcher />
             {isAuthenticated ? (
-              <DropdownMenu>
+              <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="flex items-center gap-2 relative z-50"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
                     <User className="h-4 w-4" />
                     <span>{user?.name}</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 z-50">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">{user?.name}</p>

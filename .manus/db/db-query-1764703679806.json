@@ -1,0 +1,82 @@
+{
+  "query": "SELECT id, name, nameEn, isVisible FROM services ORDER BY isVisible DESC, id ASC",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, nameEn, isVisible FROM services ORDER BY isVisible DESC, id ASC",
+  "rows": [
+    {
+      "id": "30001",
+      "name": "تنظيف شقق Airbnb والشقق الفندقية",
+      "nameEn": "Airbnb and Hotel Apartments Cleaning",
+      "isVisible": "1"
+    },
+    {
+      "id": "30002",
+      "name": "خدمة التنظيف الدورية",
+      "nameEn": "Regular Cleaning Service",
+      "isVisible": "1"
+    },
+    {
+      "id": "30003",
+      "name": "خدمة التنظيف العميق",
+      "nameEn": "Deep Cleaning Service",
+      "isVisible": "1"
+    },
+    {
+      "id": "30004",
+      "name": "تنظيف الانتقال، والفتح او الاغلاق",
+      "nameEn": "Move-in/Move-out Cleaning",
+      "isVisible": "1"
+    },
+    {
+      "id": "30005",
+      "name": "التبخير والتعقيم",
+      "nameEn": "Fumigation and Sterilization",
+      "isVisible": "1"
+    },
+    {
+      "id": "30006",
+      "name": "تنظيف المفروشات",
+      "nameEn": "Upholstery Cleaning",
+      "isVisible": "1"
+    },
+    {
+      "id": "330001",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service",
+      "isVisible": "0"
+    },
+    {
+      "id": "330002",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service",
+      "isVisible": "0"
+    },
+    {
+      "id": "330003",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service",
+      "isVisible": "0"
+    },
+    {
+      "id": "330004",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service",
+      "isVisible": "0"
+    },
+    {
+      "id": "330005",
+      "name": "خدمة اختبار",
+      "nameEn": "Test Service",
+      "isVisible": "0"
+    },
+    {
+      "id": "360003",
+      "name": "Test Pricing Service",
+      "nameEn": "Test Pricing Service",
+      "isVisible": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\tnameEn\tisVisible\n30001\tتنظيف شقق Airbnb والشقق الفندقية\tAirbnb and Hotel Apartments Cleaning\t1\n30002\tخدمة التنظيف الدورية\tRegular Cleaning Service\t1\n30003\tخدمة التنظيف العميق\tDeep Cleaning Service\t1\n30004\tتنظيف الانتقال، والفتح او الاغلاق\tMove-in/Move-out Cleaning\t1\n30005\tالتبخير والتعقيم\tFumigation and Sterilization\t1\n30006\tتنظيف المفروشات\tUpholstery Cleaning\t1\n330001\tخدمة اختبار\tTest Service\t0\n330002\tخدمة اختبار\tTest Service\t0\n330003\tخدمة اختبار\tTest Service\t0\n330004\tخدمة اختبار\tTest Service\t0\n330005\tخدمة اختبار\tTest Service\t0\n360003\tTest Pricing Service\tTest Pricing Service\t0\n",
+  "stderr": "",
+  "execution_time_ms": 95
+}
