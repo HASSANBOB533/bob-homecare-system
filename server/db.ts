@@ -1489,3 +1489,177 @@ export async function deleteSpecialOffer(id: number) {
   await db.delete(specialOffers).where(eq(specialOffers.id, id));
   return { success: true };
 }
+
+
+// ============================================================================
+// Quote Management Functions
+// ============================================================================
+
+/**
+ * Generate a unique quote code (12 characters, alphanumeric)
+ */
+function generateQuoteCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Exclude similar characters (I, O, 0, 1)
+  let code = 'Q'; // Start with Q for "Quote"
+  for (let i = 0; i < 11; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+/**
+ * Create a new quote
+ */
+export async function createQuote(data: {
+  serviceId: number;
+  selections: any;
+  totalPrice: number;
+  userId?: number;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { quotes } = await import("../drizzle/schema");
+
+  // Generate unique quote code
+  let quoteCode = generateQuoteCode();
+  let attempts = 0;
+  const maxAttempts = 10;
+
+  // Ensure code is unique
+  while (attempts < maxAttempts) {
+    const existing = await db.select().from(quotes).where(eq(quotes.quoteCode, quoteCode)).limit(1);
+    if (existing.length === 0) break;
+    quoteCode = generateQuoteCode();
+    attempts++;
+  }
+
+  if (attempts >= maxAttempts) {
+    throw new Error("Failed to generate unique quote code");
+  }
+
+  // Set expiration to 30 days from now
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 30);
+
+  // Insert quote
+  await db.insert(quotes).values({
+    quoteCode,
+    serviceId: data.serviceId,
+    selections: data.selections,
+    totalPrice: data.totalPrice,
+    userId: data.userId,
+    customerName: data.customerName,
+    customerEmail: data.customerEmail,
+    customerPhone: data.customerPhone,
+    expiresAt,
+  });
+
+  // Fetch the created quote
+  const [quote] = await db
+    .select()
+    .from(quotes)
+    .where(eq(quotes.quoteCode, quoteCode))
+    .limit(1);
+
+  return quote;
+}
+
+/**
+ * Get quote by code
+ */
+export async function getQuoteByCode(code: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { quotes, services } = await import("../drizzle/schema");
+
+  // Increment view count
+  await db
+    .update(quotes)
+    .set({ viewCount: sql`${quotes.viewCount} + 1` })
+    .where(eq(quotes.quoteCode, code));
+
+  // Fetch quote with service details
+  const [quote] = await db
+    .select({
+      id: quotes.id,
+      quoteCode: quotes.quoteCode,
+      serviceId: quotes.serviceId,
+      serviceName: services.name,
+      serviceNameEn: services.nameEn,
+      serviceDuration: services.duration,
+      selections: quotes.selections,
+      totalPrice: quotes.totalPrice,
+      userId: quotes.userId,
+      customerName: quotes.customerName,
+      customerEmail: quotes.customerEmail,
+      customerPhone: quotes.customerPhone,
+      createdAt: quotes.createdAt,
+      expiresAt: quotes.expiresAt,
+      viewCount: quotes.viewCount,
+      convertedToBooking: quotes.convertedToBooking,
+    })
+    .from(quotes)
+    .leftJoin(services, eq(quotes.serviceId, services.id))
+    .where(eq(quotes.quoteCode, code))
+    .limit(1);
+
+  if (!quote) {
+    throw new Error("Quote not found");
+  }
+
+  // Check if quote has expired
+  if (new Date() > new Date(quote.expiresAt)) {
+    throw new Error("Quote has expired");
+  }
+
+  return quote;
+}
+
+/**
+ * Update an existing quote
+ */
+export async function updateQuote(
+  id: number,
+  data: {
+    selections: any;
+    totalPrice: number;
+  }
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { quotes } = await import("../drizzle/schema");
+
+  await db
+    .update(quotes)
+    .set({
+      selections: data.selections,
+      totalPrice: data.totalPrice,
+    })
+    .where(eq(quotes.id, id));
+
+  const [updated] = await db.select().from(quotes).where(eq(quotes.id, id)).limit(1);
+  return updated;
+}
+
+/**
+ * Mark quote as converted to booking
+ */
+export async function markQuoteConverted(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { quotes } = await import("../drizzle/schema");
+
+  await db
+    .update(quotes)
+    .set({ convertedToBooking: true })
+    .where(eq(quotes.id, id));
+
+  return { success: true };
+}

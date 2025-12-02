@@ -1,4 +1,4 @@
-import { boolean, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -263,3 +263,49 @@ export const specialOffers = mysqlTable("specialOffers", {
 
 export type SpecialOffer = typeof specialOffers.$inferSelect;
 export type InsertSpecialOffer = typeof specialOffers.$inferInsert;
+/**
+ * Quotes table - Save and share booking selections
+ */
+export const quotes = mysqlTable("quotes", {
+  id: int("id").autoincrement().primaryKey(),
+  quoteCode: varchar("quoteCode", { length: 12 }).notNull().unique(), // Unique shareable code (e.g., "Q7X9K2M4P1L5")
+  serviceId: int("serviceId").notNull().references(() => services.id),
+  
+  // Booking selections stored as JSON
+  selections: json("selections").notNull().$type<{
+    // Service-specific pricing
+    bedrooms?: number; // For bedroom-based services
+    squareMeters?: number; // For sqm-based services
+    selectedItems?: Array<{ itemId: number; quantity: number }>; // For item-based services
+    
+    // Add-ons
+    addOns?: Array<{ addOnId: number; quantity?: number }>;
+    
+    // Discounts
+    packageDiscountId?: number;
+    specialOfferId?: number;
+    
+    // Booking details
+    date?: string;
+    time?: string;
+    address?: string;
+    notes?: string;
+  }>(),
+  
+  totalPrice: int("totalPrice").notNull(), // Total price in cents
+  
+  // Optional user association
+  userId: int("userId").references(() => users.id),
+  customerName: varchar("customerName", { length: 255 }),
+  customerEmail: varchar("customerEmail", { length: 255 }),
+  customerPhone: varchar("customerPhone", { length: 50 }),
+  
+  // Metadata
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  expiresAt: timestamp("expiresAt").notNull(), // Quote expires after 30 days
+  viewCount: int("viewCount").default(0).notNull(), // Track how many times quote was viewed
+  convertedToBooking: boolean("convertedToBooking").default(false).notNull(),
+});
+
+export type Quote = typeof quotes.$inferSelect;
+export type InsertQuote = typeof quotes.$inferInsert;

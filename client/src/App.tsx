@@ -18,6 +18,7 @@ import CheckBooking from "./pages/CheckBooking";
 import VerifyEmail from "./pages/VerifyEmail";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import QuoteViewer from "./pages/QuoteViewer";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -47,6 +48,7 @@ function Router() {
       <Route path={"/check-booking"} component={CheckBooking} />
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/payment-failed"} component={PaymentFailed} />
+      <Route path={"/quote/:code"} component={QuoteViewer} />
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}
       </Route>

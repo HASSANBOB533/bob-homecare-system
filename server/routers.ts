@@ -892,6 +892,84 @@ export const appRouter = router({
         return deleteSpecialOffer(input.id);
       }),
   }),
+
+  // Quote management
+  quote: router({
+    // Create a new quote
+    create: publicProcedure
+      .input(
+        z.object({
+          serviceId: z.number(),
+          selections: z.object({
+            bedrooms: z.number().optional(),
+            squareMeters: z.number().optional(),
+            selectedItems: z.array(z.object({ itemId: z.number(), quantity: z.number() })).optional(),
+            addOns: z.array(z.object({ addOnId: z.number(), quantity: z.number().optional() })).optional(),
+            packageDiscountId: z.number().optional(),
+            specialOfferId: z.number().optional(),
+            date: z.string().optional(),
+            time: z.string().optional(),
+            address: z.string().optional(),
+            notes: z.string().optional(),
+          }),
+          totalPrice: z.number(),
+          customerName: z.string().optional(),
+          customerEmail: z.string().optional(),
+          customerPhone: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input, ctx }) => {
+        const { createQuote } = await import("./db");
+        return createQuote({
+          ...input,
+          userId: ctx.user?.id,
+        });
+      }),
+
+    // Get quote by code
+    getByCode: publicProcedure
+      .input(z.object({ code: z.string() }))
+      .query(async ({ input }) => {
+        const { getQuoteByCode } = await import("./db");
+        return getQuoteByCode(input.code);
+      }),
+
+    // Update quote
+    update: publicProcedure
+      .input(
+        z.object({
+          id: z.number(),
+          selections: z.object({
+            bedrooms: z.number().optional(),
+            squareMeters: z.number().optional(),
+            selectedItems: z.array(z.object({ itemId: z.number(), quantity: z.number() })).optional(),
+            addOns: z.array(z.object({ addOnId: z.number(), quantity: z.number().optional() })).optional(),
+            packageDiscountId: z.number().optional(),
+            specialOfferId: z.number().optional(),
+            date: z.string().optional(),
+            time: z.string().optional(),
+            address: z.string().optional(),
+            notes: z.string().optional(),
+          }),
+          totalPrice: z.number(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        const { updateQuote } = await import("./db");
+        return updateQuote(input.id, {
+          selections: input.selections,
+          totalPrice: input.totalPrice,
+        });
+      }),
+
+    // Mark quote as converted to booking
+    markConverted: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ input }) => {
+        const { markQuoteConverted } = await import("./db");
+        return markQuoteConverted(input.id);
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

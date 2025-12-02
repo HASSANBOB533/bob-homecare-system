@@ -223,6 +223,29 @@ const resources = {
         "priceBreakdown": "Price Breakdown"
       },
       
+      // Quote Management
+      "quote": {
+        "saveQuote": "Save as Quote",
+        "shareQuote": "Share Quote",
+        "quoteSaved": "Quote saved successfully!",
+        "quoteFailed": "Failed to save quote. Please try again.",
+        "quoteCode": "Quote Code",
+        "copyLink": "Copy Link",
+        "linkCopied": "Link copied to clipboard!",
+        "shareViaWhatsApp": "Share via WhatsApp",
+        "shareViaEmail": "Share via Email",
+        "quoteExpires": "Quote expires on",
+        "quoteExpired": "This quote has expired",
+        "viewQuote": "View Quote",
+        "loadingQuote": "Loading quote...",
+        "quoteNotFound": "Quote not found",
+        "convertToBooking": "Convert to Booking",
+        "quoteDetails": "Quote Details",
+        "shareYourQuote": "Share Your Quote",
+        "quoteLink": "Quote Link",
+        "validUntil": "Valid until"
+      },
+      
       "Payment Failed": "Payment Failed",
       "We could not process your payment": "We could not process your payment",
       "Your booking is saved but payment is pending": "Your booking is saved but payment is pending",
@@ -443,6 +466,29 @@ const resources = {
       "Check Booking Status": "التحقق من حالة الحجز",
       
       // Pricing
+      // Quote Management
+      "quote": {
+        "saveQuote": "حفظ كعرض سعر",
+        "shareQuote": "مشاركة عرض السعر",
+        "quoteSaved": "تم حفظ عرض السعر بنجاح!",
+        "quoteFailed": "فشل حفظ عرض السعر. يرجى المحاولة مرة أخرى.",
+        "quoteCode": "رمز عرض السعر",
+        "copyLink": "نسخ الرابط",
+        "linkCopied": "تم نسخ الرابط!",
+        "shareViaWhatsApp": "مشاركة عبر واتساب",
+        "shareViaEmail": "مشاركة عبر البريد الإلكتروني",
+        "quoteExpires": "ينتهي عرض السعر في",
+        "quoteExpired": "انتهت صلاحية عرض السعر",
+        "viewQuote": "عرض السعر",
+        "loadingQuote": "جاري تحميل عرض السعر...",
+        "quoteNotFound": "لم يتم العثور على عرض السعر",
+        "convertToBooking": "تحويل إلى حجز",
+        "quoteDetails": "تفاصيل عرض السعر",
+        "shareYourQuote": "شارك عرض السعر الخاص بك",
+        "quoteLink": "رابط عرض السعر",
+        "validUntil": "صالح حتى"
+      },
+      
       "booking": {
         "selectBedrooms": "اختر عدد الغرف",
         "bedrooms": "غرف",

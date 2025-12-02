@@ -21,6 +21,7 @@ import { PackageDiscountSelector, SpecialOffersSelector } from "@/components/pri
 import { PriceBreakdownCard } from "@/components/pricing/PriceBreakdownCard";
 import { usePriceCalculation } from "@/hooks/usePriceCalculation";
 import { Separator } from "@/components/ui/separator";
+import { SaveQuoteButton } from "@/components/quote/SaveQuoteButton";
 
 interface SelectedItem {
   itemId: number;
@@ -476,11 +477,42 @@ export default function BookService() {
                     </div>
 
                     {/* Submit Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                      <Button type="submit" size="lg" className="flex-1" disabled={basePrice === 0}>
-                        {t('submit')}
-                      </Button>
-                      <WhatsAppButton size="lg" variant="outline" className="flex-1" />
+                    <div className="space-y-3 pt-4">
+                      <div className="flex flex-col sm:flex-row gap-4">
+                        <Button type="submit" size="lg" className="flex-1" disabled={basePrice === 0}>
+                          {t('submit')}
+                        </Button>
+                        <WhatsAppButton size="lg" variant="outline" className="flex-1" />
+                      </div>
+                      
+                      {/* Save Quote Button */}
+                      {basePrice > 0 && (
+                        <SaveQuoteButton
+                          serviceId={parseInt(formData.serviceId)}
+                          selections={{
+                            bedrooms: selectedBedrooms || undefined,
+                            squareMeters: squareMeters || undefined,
+                            selectedItems: selectedItems.map(item => ({
+                              itemId: item.itemId,
+                              quantity: item.quantity,
+                            })),
+                            addOns: selectedAddOns.map(addon => ({
+                              addOnId: addon.addOnId,
+                              quantity: 1,
+                            })),
+                            packageDiscountId: selectedPackage || undefined,
+                            specialOfferId: selectedOffer || undefined,
+                            date: formData.date || undefined,
+                            time: formData.time || undefined,
+                            address: formData.address || undefined,
+                            notes: formData.notes || undefined,
+                          }}
+                          totalPrice={priceBreakdown.finalPrice}
+                          customerName={formData.name || undefined}
+                          customerEmail={formData.email || undefined}
+                          customerPhone={formData.phone || undefined}
+                        />
+                      )}
                     </div>
 
                     <p className="text-sm text-muted-foreground text-center">

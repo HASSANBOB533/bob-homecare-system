@@ -572,3 +572,31 @@
 - [ ] Add service descriptions and photos
 - [ ] Add embedded pricing calculator for each service
 - [ ] Link from homepage and navigation
+
+
+## Quote Saving and Sharing Feature
+
+### Database Schema
+- [x] Create quotes table with fields: id, serviceId, selections (JSON), totalPrice, quoteCode, userId (optional), createdAt, expiresAt
+- [x] Add indexes for quoteCode lookup
+- [x] Run database migration
+
+### Backend API
+- [ ] Create tRPC procedure: createQuote (saves selections, returns quote code)
+- [ ] Create tRPC procedure: getQuoteByCode (retrieves quote by code)
+- [ ] Create tRPC procedure: updateQuote (updates existing quote)
+- [ ] Add quote expiration logic (30 days default)
+
+### Frontend UI
+- [ ] Add "Save as Quote" button to booking form
+- [ ] Create QuoteSaveDialog component with quote code display
+- [ ] Add share buttons (WhatsApp, Email, Copy Link)
+- [ ] Implement quote loading from URL (?quote=CODE)
+- [ ] Show quote banner when loaded from URL
+- [ ] Add "Edit Quote" and "Book Now" actions
+
+### Integration
+- [ ] Pre-fill form fields when quote is loaded
+- [ ] Update URL when quote is saved
+- [ ] Add quote code to booking submission
+- [ ] Test complete quote flow (save → share → load → book)
