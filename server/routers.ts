@@ -2,6 +2,7 @@ import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { bookingRateLimit, apiRateLimit, getRateLimitIdentifier } from "./_core/rateLimit";
 import { z } from "zod";
 
 export const appRouter = router({
@@ -183,7 +184,10 @@ export const appRouter = router({
         amount: z.number().optional(), // Total price in cents
         pricingBreakdown: z.any().optional(), // Detailed pricing breakdown
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
+        // Apply rate limiting (10 bookings per hour per IP/user)
+        const identifier = getRateLimitIdentifier(ctx);
+        bookingRateLimit(identifier);
         const { createPublicBooking, getServiceById, getUserByEmail } = await import("./db");
         const { sendBookingConfirmation } = await import("./_core/whatsapp");
         

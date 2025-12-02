@@ -82,7 +82,7 @@ export const strictRateLimit = rateLimit({
 });
 
 // Get identifier from context (IP or user ID)
-export function getRateLimitIdentifier(ctx: { user?: { id: string }; req?: { ip?: string; headers?: { 'x-forwarded-for'?: string } } }): string {
+export function getRateLimitIdentifier(ctx: any): string {
   // Use user ID if authenticated
   if (ctx.user?.id) {
     return `user:${ctx.user.id}`;

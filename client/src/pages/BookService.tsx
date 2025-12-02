@@ -12,6 +12,14 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { 
+  isValidEmail, 
+  isValidPhone, 
+  isValidName, 
+  isValidAddress,
+  sanitizeString,
+  isSecureInput 
+} from "@shared/validation";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { BedroomSelector } from "@/components/pricing/BedroomSelector";
 import { SquareMeterInput } from "@/components/pricing/SquareMeterInput";
@@ -308,6 +316,7 @@ export default function BookService() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Basic required field validation
     if (!formData.serviceId || !formData.date || !formData.time || !formData.name || !formData.phone || !formData.address) {
       toast.error(t('Please fill in all required fields'));
       return;
@@ -316,6 +325,55 @@ export default function BookService() {
     if (!formData.email) {
       toast.error(t('Email is required for online payment'));
       return;
+    }
+
+    // Input validation and security checks
+    if (!isValidName(formData.name)) {
+      toast.error(t('Invalid name format. Please use only letters (2-100 characters)'));
+      return;
+    }
+
+    if (!isValidEmail(formData.email)) {
+      toast.error(t('Invalid email format. Please enter a valid email address'));
+      return;
+    }
+
+    if (!isValidPhone(formData.phone)) {
+      toast.error(t('Invalid phone number format. Please enter a valid phone number'));
+      return;
+    }
+
+    if (!isValidAddress(formData.address)) {
+      toast.error(t('Invalid address. Please enter an address between 10-500 characters'));
+      return;
+    }
+
+    // Security check for malicious input
+    const nameCheck = isSecureInput(formData.name);
+    if (!nameCheck.secure) {
+      toast.error(t('Invalid input detected. Please remove special characters'));
+      console.warn('Security check failed:', nameCheck.reason);
+      return;
+    }
+
+    const addressCheck = isSecureInput(formData.address);
+    if (!addressCheck.secure) {
+      toast.error(t('Invalid input detected in address. Please remove special characters'));
+      console.warn('Security check failed:', addressCheck.reason);
+      return;
+    }
+
+    if (formData.notes) {
+      const notesCheck = isSecureInput(formData.notes);
+      if (!notesCheck.secure) {
+        toast.error(t('Invalid input detected in notes. Please remove special characters'));
+        console.warn('Security check failed:', notesCheck.reason);
+        return;
+      }
+      if (formData.notes.length > 1000) {
+        toast.error(t('Notes too long. Maximum 1000 characters allowed'));
+        return;
+      }
     }
 
     if (basePrice === 0) {

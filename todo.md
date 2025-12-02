@@ -1520,3 +1520,11 @@
 - [ ] Remove unused scripts, legacy code, and abandoned components
 - [ ] Clean file structure for maintainability
 - [ ] Document critical fixes and system protections
+
+## Security & SEO Integration Tasks
+- [x] Integrate input validation into BookService.tsx booking form
+- [x] Apply rate limiting to booking creation tRPC procedure
+- [x] Add page-specific SEO to Home page with structured data
+- [ ] Test booking form validation with invalid inputs
+- [ ] Test rate limiting functionality
+- [ ] Verify SEO metadata displays correctly
