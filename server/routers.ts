@@ -194,6 +194,18 @@ export const appRouter = router({
       const { getAllBookings } = await import("./db");
       return getAllBookings();
     }),
+    updateStatus: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["pending", "confirmed", "completed", "cancelled"]),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update booking status");
+        }
+        const { updateBooking } = await import("./db");
+        return updateBooking(input.id, { status: input.status });
+      }),
     create: protectedProcedure
       .input(z.object({
         serviceId: z.number().optional(),
@@ -556,6 +568,22 @@ export const appRouter = router({
         }
         const { seedPricingData } = await import("./pricing-seed");
         return seedPricingData();
+      }),
+    
+    // Get service by ID
+    getServiceById: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getServiceById } = await import("./db");
+        return getServiceById(input.serviceId);
+      }),
+    
+    // Get complete pricing data for a service (tiers, sqm, items, add-ons)
+    getPricingData: publicProcedure
+      .input(z.object({ serviceId: z.number() }))
+      .query(async ({ input }) => {
+        const { getServicePricingData } = await import("./db");
+        return getServicePricingData(input.serviceId);
       }),
     
     // Get pricing data for a specific service

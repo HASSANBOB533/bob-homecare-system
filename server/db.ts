@@ -149,7 +149,7 @@ export async function getAllBookings() {
   const db = await getDb();
   if (!db) return [];
   const { bookings, services, users } = await import("../drizzle/schema");
-  return db.select({
+  const results = await db.select({
     id: bookings.id,
     customerName: bookings.customerName,
     address: bookings.address,
@@ -158,13 +158,33 @@ export async function getAllBookings() {
     status: bookings.status,
     notes: bookings.notes,
     serviceId: bookings.serviceId,
+    amount: bookings.amount,
+    pricingBreakdownRaw: bookings.pricingBreakdown,
     serviceName: services.name,
+    serviceNameEn: services.nameEn,
+    serviceDescription: services.description,
+    serviceDescriptionEn: services.descriptionEn,
     userName: users.name,
     userEmail: users.email,
     createdAt: bookings.createdAt,
   }).from(bookings)
     .leftJoin(services, eq(bookings.serviceId, services.id))
     .leftJoin(users, eq(bookings.userId, users.id));
+  
+  // Parse pricing breakdown JSON and format service object
+  return results.map((booking: any) => ({
+    ...booking,
+    pricingBreakdown: booking.pricingBreakdownRaw ? 
+      (typeof booking.pricingBreakdownRaw === 'string' ? JSON.parse(booking.pricingBreakdownRaw) : booking.pricingBreakdownRaw) 
+      : null,
+    service: booking.serviceId ? {
+      id: booking.serviceId,
+      name: booking.serviceName,
+      nameEn: booking.serviceNameEn,
+      description: booking.serviceDescription,
+      descriptionEn: booking.serviceDescriptionEn,
+    } : null,
+  }));
 }
 
 export async function getBookingById(id: number) {

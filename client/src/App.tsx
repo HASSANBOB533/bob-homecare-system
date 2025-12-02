@@ -19,6 +19,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 import QuoteViewer from "./pages/QuoteViewer";
+import ServiceDetail from "./pages/ServiceDetail";
+import AdminBookings from "./pages/AdminBookings";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -49,6 +51,7 @@ function Router() {
       <Route path={"/payment-success"} component={PaymentSuccess} />
       <Route path={"/payment-failed"} component={PaymentFailed} />
       <Route path={"/quote/:code"} component={QuoteViewer} />
+      <Route path={"/services/:id"} component={ServiceDetail} />
       <Route path={"/dashboard"}>
         {() => <ProtectedRoute component={UserDashboard} />}
       </Route>
@@ -69,6 +72,9 @@ function Router() {
       </Route>
       <Route path={"/admin/pricing-editor"}>
         {() => <ProtectedRoute component={AdminPricingEditor} requireAdmin />}
+      </Route>
+      <Route path={"/admin/bookings"}>
+        {() => <ProtectedRoute component={AdminBookings} requireAdmin />}
       </Route>
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
