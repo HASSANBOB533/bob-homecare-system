@@ -184,12 +184,12 @@ export function SpecialOffersSelector({
                         <Badge
                           variant="secondary"
                           className={
-                            offer.discountType === "PERCENTAGE"
+                            offer.discountType === "percentage"
                               ? "bg-green-100 text-green-800"
                               : "bg-red-100 text-red-800"
                           }
                         >
-                          {offer.discountType === "PERCENTAGE" ? (
+                          {offer.discountType === "percentage" ? (
                             <>
                               {offer.discountValue}% {t("booking.off")}
                             </>
@@ -207,7 +207,7 @@ export function SpecialOffersSelector({
                       )}
                       {offer.maxDiscount && (
                         <p className="text-xs text-muted-foreground">
-                          {t("booking.maxDiscount")}: {offer.maxDiscount.toLocaleString()}{" "}
+                          {t("booking.maxDiscount")}: {(offer.maxDiscount / 100).toLocaleString()}{" "}
                           {t("booking.egp")}
                         </p>
                       )}

@@ -1,0 +1,40 @@
+{
+  "query": "SELECT nameEn, discountType, discountValue FROM specialOffers WHERE nameEn LIKE '%Emergency%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT nameEn, discountType, discountValue FROM specialOffers WHERE nameEn LIKE '%Emergency%';",
+  "rows": [
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    },
+    {
+      "nameEn": "Emergency Same-Day Service",
+      "discountType": "percentage",
+      "discountValue": "50"
+    }
+  ],
+  "messages": [],
+  "stdout": "nameEn\tdiscountType\tdiscountValue\nEmergency Same-Day Service\tpercentage\t50\nEmergency Same-Day Service\tpercentage\t50\nEmergency Same-Day Service\tpercentage\t50\nEmergency Same-Day Service\tpercentage\t50\nEmergency Same-Day Service\tpercentage\t50\nEmergency Same-Day Service\tpercentage\t50\n",
+  "stderr": "",
+  "execution_time_ms": 52
+}

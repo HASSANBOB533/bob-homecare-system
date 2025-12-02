@@ -548,3 +548,27 @@
 - [ ] Remove duplicate add-on entries (showing 6 times each)
 - [ ] Show only one entry per add-on with automatic tier selection
 - [ ] Simplify add-on display for better UX
+
+## Final Fixes for Dynamic Pricing System
+
+### Fix Special Offer Display Text
+- [x] Update special offers discountType to "percentage" for discounts (Referral, Property Manager)
+- [x] Update Emergency service discountType to "fixed" for additions
+- [x] Verify special offers display correctly with "-10% خصم" instead of "+10% إضافة"
+
+### Add Live Price Breakdown Card
+- [ ] Add PriceBreakdownCard component to BookService.tsx
+- [ ] Connect price calculation hook to display real-time totals
+- [ ] Show base price, add-ons, discounts, and final total
+- [ ] Update as customer makes selections
+
+### Clean Up Test Data
+- [ ] Delete "Test Service" entries from services table
+- [ ] Verify service dropdown shows only real services
+
+### Create Service Detail Pages
+- [ ] Create ServiceDetail.tsx page component
+- [ ] Add routes for each service (/services/airbnb, /services/periodical, etc.)
+- [ ] Add service descriptions and photos
+- [ ] Add embedded pricing calculator for each service
+- [ ] Link from homepage and navigation

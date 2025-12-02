@@ -1,0 +1,8 @@
+{
+  "query": "UPDATE specialOffers SET discountType = 'PERCENTAGE' WHERE nameEn LIKE '%Referral%';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute UPDATE specialOffers SET discountType = 'PERCENTAGE' WHERE nameEn LIKE '%Referral%';",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1265 (01000) at line 1: Data truncated for column '%s' at row %d"
+  ]
+}

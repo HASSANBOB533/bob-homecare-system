@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, nameEn, discountValue, discountType FROM specialOffers LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, nameEn, discountValue, discountType FROM specialOffers LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "nameEn": "Referral Program",
+      "discountValue": "10",
+      "discountType": "percentage"
+    },
+    {
+      "id": "2",
+      "nameEn": "Property Manager Discount (5-10 properties)",
+      "discountValue": "5",
+      "discountType": "percentage"
+    },
+    {
+      "id": "3",
+      "nameEn": "Property Manager Discount (11+ properties)",
+      "discountValue": "10",
+      "discountType": "percentage"
+    },
+    {
+      "id": "4",
+      "nameEn": "Emergency Same-Day Service",
+      "discountValue": "50",
+      "discountType": "percentage"
+    },
+    {
+      "id": "5",
+      "nameEn": "Referral Program",
+      "discountValue": "10",
+      "discountType": "percentage"
+    },
+    {
+      "id": "6",
+      "nameEn": "Property Manager Discount (5-10 properties)",
+      "discountValue": "5",
+      "discountType": "percentage"
+    },
+    {
+      "id": "7",
+      "nameEn": "Property Manager Discount (11+ properties)",
+      "discountValue": "10",
+      "discountType": "percentage"
+    },
+    {
+      "id": "8",
+      "nameEn": "Emergency Same-Day Service",
+      "discountValue": "50",
+      "discountType": "percentage"
+    },
+    {
+      "id": "9",
+      "nameEn": "Referral Program",
+      "discountValue": "10",
+      "discountType": "percentage"
+    },
+    {
+      "id": "10",
+      "nameEn": "Property Manager Discount (5-10 properties)",
+      "discountValue": "5",
+      "discountType": "percentage"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tnameEn\tdiscountValue\tdiscountType\n1\tReferral Program\t10\tpercentage\n2\tProperty Manager Discount (5-10 properties)\t5\tpercentage\n3\tProperty Manager Discount (11+ properties)\t10\tpercentage\n4\tEmergency Same-Day Service\t50\tpercentage\n5\tReferral Program\t10\tpercentage\n6\tProperty Manager Discount (5-10 properties)\t5\tpercentage\n7\tProperty Manager Discount (11+ properties)\t10\tpercentage\n8\tEmergency Same-Day Service\t50\tpercentage\n9\tReferral Program\t10\tpercentage\n10\tProperty Manager Discount (5-10 properties)\t5\tpercentage\n",
+  "stderr": "",
+  "execution_time_ms": 50
+}
