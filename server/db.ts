@@ -223,6 +223,8 @@ export async function createPublicBooking(data: {
   address: string;
   dateTime: Date;
   notes?: string;
+  amount?: number;
+  pricingBreakdown?: any;
 }) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
@@ -236,6 +238,8 @@ export async function createPublicBooking(data: {
     address: data.address,
     dateTime: data.dateTime,
     notes: data.notes,
+    amount: data.amount,
+    pricingBreakdown: data.pricingBreakdown,
     status: "pending",
   });
   // Return the created booking with ID

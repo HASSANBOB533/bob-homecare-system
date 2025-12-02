@@ -600,3 +600,44 @@
 - [ ] Update URL when quote is saved
 - [ ] Add quote code to booking submission
 - [ ] Test complete quote flow (save → share → load → book)
+
+## Phase 2: Booking Form Enhancement Verification (Current)
+
+### Pricing System Verification (COMPLETED)
+- [x] Verify pricing components render when service is selected
+- [x] Verify bedroom selector displays correct prices (1,500-5,000 EGP)
+- [x] Verify add-ons showing with prices
+- [x] Verify special offers displaying correctly
+- [x] Verify price breakdown card is visible and updating in real-time
+- [x] Verify "Save as Quote" button appears when price > 0
+
+### Connect Pricing to Payment Flow (IN PROGRESS)
+- [ ] Verify calculated total price is passed to Paymob payment
+- [ ] Ensure pricing breakdown is stored in booking record
+- [ ] Test complete booking → payment → confirmation flow
+
+### Cleanup Tasks
+- [ ] Delete test services from database (Test Service entries and خدمة اختبار)
+- [ ] Improve mobile visibility of price breakdown card (if needed)
+
+## Phase 2 Completion Summary (✅ COMPLETED)
+
+### Pricing Integration with Payment Flow
+- [x] Added `pricingBreakdown` JSON field to bookings table
+- [x] Updated backend API to accept `amount` and `pricingBreakdown`
+- [x] Updated frontend to pass calculated price and breakdown to API
+- [x] Verified pricing components render correctly (bedroom selector, add-ons, special offers)
+- [x] Verified price breakdown card displays in real-time
+- [x] Wrote comprehensive vitest tests (5 tests, all passing)
+- [x] Tested bedroom-based pricing storage
+- [x] Tested add-ons pricing storage
+- [x] Tested package discount storage
+- [x] Tested complex pricing with multiple discounts
+- [x] Tested legacy support (bookings without pricing)
+
+### Next Steps (Phase 3 - Customer Experience)
+- [ ] Create service detail pages (/services/[id])
+- [ ] Add service descriptions, photo galleries, pricing calculators
+- [ ] Display checklists on service pages
+- [ ] Create downloadable PDF checklists
+- [ ] Add "Book Now" buttons linking to booking form

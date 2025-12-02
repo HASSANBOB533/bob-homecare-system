@@ -130,6 +130,8 @@ export const appRouter = router({
         phone: z.string().min(1),
         address: z.string().min(1),
         notes: z.string().optional(),
+        amount: z.number().optional(), // Total price in cents
+        pricingBreakdown: z.any().optional(), // Detailed pricing breakdown
       }))
       .mutation(async ({ input }) => {
         const { createPublicBooking, getServiceById, getUserByEmail } = await import("./db");
@@ -144,6 +146,8 @@ export const appRouter = router({
           address: input.address,
           dateTime,
           notes: input.notes,
+          amount: input.amount,
+          pricingBreakdown: input.pricingBreakdown,
         });
         
         // Check notification preferences if user has an account

@@ -221,7 +221,7 @@ export default function BookService() {
       return;
     }
 
-    // Save booking to database
+    // Save booking to database with pricing
     createBookingMutation.mutate({
       serviceId: parseInt(formData.serviceId),
       date: formData.date,
@@ -231,6 +231,22 @@ export default function BookService() {
       phone: formData.phone,
       address: formData.address,
       notes: formData.notes || undefined,
+      amount: Math.round(priceBreakdown.finalPrice * 100), // Convert EGP to cents
+      pricingBreakdown: {
+        basePrice: priceBreakdown.basePrice,
+        addOnsTotal: priceBreakdown.addOnsTotal,
+        packageDiscount: priceBreakdown.packageDiscount,
+        specialOfferAdjustment: priceBreakdown.specialOfferAdjustment,
+        finalPrice: priceBreakdown.finalPrice,
+        selections: {
+          bedrooms: selectedVariant,
+          squareMeters,
+          selectedItems,
+          addOns: selectedAddOns,
+          packageDiscountPercent,
+          specialOfferId: selectedOffer,
+        },
+      },
     });
   };
 

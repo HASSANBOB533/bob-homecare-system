@@ -80,6 +80,7 @@ export const bookings = mysqlTable("bookings", {
   paymentId: varchar("paymentId", { length: 255 }), // Paymob transaction ID
   paymentStatus: mysqlEnum("paymentStatus", ["pending", "success", "failed"]).default("pending"),
   amount: int("amount"), // Amount in cents
+  pricingBreakdown: json("pricingBreakdown"), // Detailed pricing breakdown (selections, add-ons, discounts)
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
