@@ -1230,3 +1230,28 @@
 - [ ] Fix incorrect navigation targets
 - [ ] Fix form validation issues
 - [ ] Test all fixes with debug panel
+
+
+## Admin Service Visibility Toggle UI ✅ COMPLETE
+
+### Backend API
+- [x] Add toggleServiceVisibility mutation to services router
+- [x] Create toggleServiceVisibility function in db.ts
+- [x] Add admin-only protection to the endpoint
+- [x] Fix MySQL compatibility (no returning() support)
+
+### Frontend UI
+- [x] Add visibility toggle switch to AdminDashboard services section
+- [x] Add "Visible" label with Switch component
+- [x] Implement optimistic updates with invalidation
+- [x] Add visual indicators for hidden services ("Hidden" badge)
+- [x] Show confirmation toast on successful toggle
+- [x] Handle errors gracefully with error toast
+- [x] Import Switch component from shadcn/ui
+
+### Testing
+- [x] Test toggling service visibility in admin panel (browser verified)
+- [x] Verify hidden services don't appear on public pages (22 test services hidden)
+- [x] Verify visible services appear on public pages (homepage clean)
+- [x] Write vitest tests for toggle functionality (3 tests passing)
+- [x] Test with multiple services simultaneously

@@ -27,6 +27,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/lib/trpc";
 import { format } from "date-fns";
 import { Calendar, CheckCircle, Plus, Trash2, XCircle, Image as ImageIcon } from "lucide-react";
@@ -48,6 +49,20 @@ export default function AdminDashboard() {
 
   const { data: bookings = [], isLoading: bookingsLoading } = trpc.bookings.allBookings.useQuery();
   const { data: services = [] } = trpc.services.list.useQuery();
+
+  const toggleVisibilityMutation = trpc.services.toggleVisibility.useMutation({
+    onSuccess: () => {
+      utils.services.list.invalidate();
+      toast.success("Service visibility updated");
+    },
+    onError: (error) => {
+      toast.error("Failed to update visibility: " + error.message);
+    },
+  });
+
+  const handleToggleVisibility = (serviceId: number, isVisible: boolean) => {
+    toggleVisibilityMutation.mutate({ serviceId, isVisible });
+  };
 
   const createServiceMutation = trpc.services.create.useMutation({
     onSuccess: () => {
@@ -167,8 +182,13 @@ export default function AdminDashboard() {
             <div className="grid gap-3 md:grid-cols-2">
               {services.map((service) => (
                 <div key={service.id} className="flex justify-between items-start p-3 border rounded-lg">
-                  <div>
-                    <h4 className="font-semibold">{service.name}</h4>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-semibold">{service.name}</h4>
+                      {!service.isVisible && (
+                        <span className="text-xs bg-muted px-2 py-0.5 rounded">Hidden</span>
+                      )}
+                    </div>
                     {service.description && (
                       <p className="text-sm text-muted-foreground">{service.description}</p>
                     )}
@@ -176,7 +196,14 @@ export default function AdminDashboard() {
                       {service.duration && <span>{service.duration} min</span>}
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-start">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-xs text-muted-foreground">Visible</label>
+                      <Switch
+                        checked={service.isVisible}
+                        onCheckedChange={(checked) => handleToggleVisibility(service.id, checked)}
+                      />
+                    </div>
                     <Button
                       variant="ghost"
                       size="sm"

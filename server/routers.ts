@@ -147,6 +147,18 @@ export const appRouter = router({
         const { updateServiceGallery } = await import("./db");
         return updateServiceGallery(input.serviceId, input.galleryImages);
       }),
+    toggleVisibility: protectedProcedure
+      .input(z.object({
+        serviceId: z.number(),
+        isVisible: z.boolean(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can toggle service visibility");
+        }
+        const { toggleServiceVisibility } = await import("./db");
+        return toggleServiceVisibility(input.serviceId, input.isVisible);
+      }),
   }),
 
   bookings: router({

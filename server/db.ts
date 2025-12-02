@@ -2240,3 +2240,24 @@ export async function getLoyaltyAnalytics() {
     recentTransactions,
   };
 }
+
+
+// Toggle service visibility
+export async function toggleServiceVisibility(serviceId: number, isVisible: boolean) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  await db
+    .update(services)
+    .set({ isVisible })
+    .where(eq(services.id, serviceId));
+
+  // Fetch and return the updated service
+  const [updated] = await db
+    .select()
+    .from(services)
+    .where(eq(services.id, serviceId))
+    .limit(1);
+
+  return updated;
+}
