@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { trpc } from "@/lib/trpc";
-import { Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { Calendar, Clock, MapPin, Sparkles, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -83,6 +83,16 @@ export default function BookService() {
   const [selectedOffer, setSelectedOffer] = useState<number | null>(null);
   const [selectedOfferData, setSelectedOfferData] = useState<SpecialOffer | null>(null);
 
+  // Referral code state
+  const [referralCode, setReferralCode] = useState("");
+  const [referralValidation, setReferralValidation] = useState<{
+    isValid: boolean;
+    message: string;
+    discount: number;
+    referrerUserId?: number;
+  } | null>(null);
+  const [isValidatingReferral, setIsValidatingReferral] = useState(false);
+
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const [currentBookingId, setCurrentBookingId] = useState<number | null>(null);
@@ -113,6 +123,56 @@ export default function BookService() {
   );
   const { data: specialOffers = [] } = trpc.pricing.getSpecialOffers.useQuery();
 
+  // Referral code validation
+  const validateReferralMutation = trpc.referrals.validate.useQuery(
+    { code: referralCode },
+    { 
+      enabled: false, // Manual trigger
+      retry: false,
+    }
+  );
+
+  // Validate referral code with debounce
+  useEffect(() => {
+    if (!referralCode || referralCode.length < 6) {
+      setReferralValidation(null);
+      return;
+    }
+
+    setIsValidatingReferral(true);
+    const timer = setTimeout(async () => {
+      try {
+        const result = await validateReferralMutation.refetch();
+        if (result.data) {
+          if (result.data.valid) {
+            setReferralValidation({
+              isValid: true,
+              message: t("booking.referralValid"),
+              discount: 10, // 10% referral discount
+              referrerUserId: result.data.referrerId,
+            });
+          } else {
+            setReferralValidation({
+              isValid: false,
+              message: result.data.message || t("booking.referralInvalid"),
+              discount: 0,
+            });
+          }
+        }
+      } catch (error) {
+        setReferralValidation({
+          isValid: false,
+          message: t("booking.referralInvalid"),
+          discount: 0,
+        });
+      } finally {
+        setIsValidatingReferral(false);
+      }
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(timer);
+  }, [referralCode]);
+
   // Reset pricing when service changes
   useEffect(() => {
     setSelectedBedrooms(null);
@@ -128,6 +188,8 @@ export default function BookService() {
     setPackageDiscountPercent(0);
     setSelectedOffer(null);
     setSelectedOfferData(null);
+    setReferralCode("");
+    setReferralValidation(null);
   }, [formData.serviceId]);
 
   // Calculate base price based on pricing type
@@ -157,6 +219,7 @@ export default function BookService() {
     selectedAddOns,
     packageDiscountPercent,
     specialOffer: selectedOfferData,
+    referralDiscountPercent: referralValidation?.isValid ? referralValidation.discount : 0,
   });
 
   const initiatePaymentMutation = trpc.bookings.initiatePayment.useMutation({
@@ -237,6 +300,7 @@ export default function BookService() {
         addOnsTotal: priceBreakdown.addOnsTotal,
         packageDiscount: priceBreakdown.packageDiscount,
         specialOfferAdjustment: priceBreakdown.specialOfferAdjustment,
+        referralDiscount: priceBreakdown.referralDiscount,
         finalPrice: priceBreakdown.finalPrice,
         selections: {
           bedrooms: selectedVariant,
@@ -245,6 +309,8 @@ export default function BookService() {
           addOns: selectedAddOns,
           packageDiscountPercent,
           specialOfferId: selectedOffer,
+          referralCode: referralValidation?.isValid ? referralCode : undefined,
+          referrerUserId: referralValidation?.referrerUserId,
         },
       },
     });
@@ -489,6 +555,58 @@ export default function BookService() {
                           placeholder={t('Any special requests or notes')}
                           rows={3}
                         />
+                      </div>
+
+                      {/* Referral Code */}
+                      <div className="space-y-2">
+                        <Label htmlFor="referralCode">
+                          {t('booking.referralCode')} ({t('optional')})
+                        </Label>
+                        <div className="relative">
+                          <Input
+                            id="referralCode"
+                            value={referralCode}
+                            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                            placeholder={t('booking.enterReferralCode')}
+                            maxLength={12}
+                            className={`pr-10 ${
+                              referralValidation?.isValid
+                                ? "border-green-500 focus-visible:ring-green-500"
+                                : referralValidation && !referralValidation.isValid
+                                ? "border-red-500 focus-visible:ring-red-500"
+                                : ""
+                            }`}
+                          />
+                          {isValidatingReferral && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                              <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full"></div>
+                            </div>
+                          )}
+                          {!isValidatingReferral && referralValidation?.isValid && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600">
+                              <CheckCircle2 className="h-4 w-4" />
+                            </div>
+                          )}
+                          {!isValidatingReferral && referralValidation && !referralValidation.isValid && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-red-600">
+                              <span className="text-xl">✕</span>
+                            </div>
+                          )}
+                        </div>
+                        {referralValidation && (
+                          <p
+                            className={`text-sm ${
+                              referralValidation.isValid ? "text-green-600" : "text-red-600"
+                            }`}
+                          >
+                            {referralValidation.message}
+                            {referralValidation.isValid && (
+                              <span className="font-semibold ml-1">
+                                ({referralValidation.discount}% {t('booking.discount')})
+                              </span>
+                            )}
+                          </p>
+                        )}
                       </div>
                     </div>
 

@@ -188,6 +188,17 @@ export const appRouter = router({
           pricingBreakdown: input.pricingBreakdown,
         });
         
+        // Track referral if provided
+        if (input.pricingBreakdown?.selections?.referralCode && input.pricingBreakdown?.selections?.referrerUserId) {
+          const { trackReferralUsage } = await import("./db");
+          await trackReferralUsage({
+            referralCode: input.pricingBreakdown.selections.referralCode,
+            referrerUserId: input.pricingBreakdown.selections.referrerUserId,
+            bookingId: booking.id,
+            referredEmail: input.customerEmail,
+          }).catch(err => console.error("Failed to track referral:", err));
+        }
+        
         // Check notification preferences if user has an account
         let whatsappEnabled = true; // Default to true for public bookings
 

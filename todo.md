@@ -874,3 +874,49 @@
 - [ ] Test complete referral tracking and rewards system
 - [ ] Write vitest tests for referral code generation and validation
 - [ ] Write vitest tests for referral tracking and reward distribution
+
+
+## Phase 4: Marketing Features Implementation (IN PROGRESS)
+
+### Referral Code Validation in Booking Flow
+- [x] Add referral code input field to BookService.tsx
+- [x] Implement real-time validation using referrals.validate API
+- [x] Display validation feedback (valid/invalid code)
+- [x] Calculate and apply referral discount automatically
+- [x] Show referral discount in price breakdown
+- [x] Track referral usage when booking is created
+- [x] Create referral record linking referrer and referred user
+- [x] Add referral code to booking record
+- [x] Add Arabic/English translations for referral input
+- [x] Write vitest tests for referral validation
+
+### Property Manager Discount Validation
+- [ ] Add property count input field for property manager offer
+- [ ] Validate minProperties requirement before applying discount
+- [ ] Show validation error if property count is below minimum
+- [ ] Add Arabic/English translations for property validation
+
+### Loyalty Program Integration with Booking Form
+- [ ] Add "Use Loyalty Points" option in booking form
+- [ ] Display user's available loyalty points balance
+- [ ] Calculate points-to-discount conversion
+- [ ] Apply loyalty points discount to total price
+- [ ] Deduct points from user balance when booking is confirmed
+- [ ] Show loyalty discount in price breakdown
+- [ ] Add Arabic/English translations for loyalty integration
+
+### Bulk Pricing Import/Export
+- [ ] Create CSV template for pricing data
+- [ ] Implement CSV upload endpoint for bulk pricing import
+- [ ] Add CSV download endpoint for pricing export
+- [ ] Add import/export UI in admin pricing management page
+- [ ] Validate CSV data before import
+- [ ] Show import success/error feedback
+
+### Pricing History Tracking
+- [ ] Create pricing_history table for audit trail
+- [ ] Track all pricing changes (create, update, delete)
+- [ ] Store old and new values for comparison
+- [ ] Add timestamp and admin user who made changes
+- [ ] Create API endpoint to view pricing history
+- [ ] Add pricing history view in admin pricing management page

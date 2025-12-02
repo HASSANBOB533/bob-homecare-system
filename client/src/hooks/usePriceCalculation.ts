@@ -34,6 +34,9 @@ interface PriceCalculationInput {
   
   // Special offer
   specialOffer: SpecialOffer | null;
+  
+  // Referral discount (percentage)
+  referralDiscountPercent?: number;
 }
 
 interface PriceBreakdown {
@@ -43,12 +46,13 @@ interface PriceBreakdown {
   packageDiscount: number;
   subtotalAfterPackage: number;
   specialOfferAdjustment: number;
+  referralDiscount: number;
   finalPrice: number;
 }
 
 export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdown {
   return useMemo(() => {
-    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer } = input;
+    const { basePrice, selectedAddOns, packageDiscountPercent, specialOffer, referralDiscountPercent = 0 } = input;
 
     // Calculate add-ons total
     const addOnsTotal = selectedAddOns.reduce((sum, addOn) => sum + addOn.price, 0);
@@ -62,7 +66,7 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
 
     // Apply special offer
     let specialOfferAdjustment = 0;
-    let finalPrice = subtotalAfterPackage;
+    let priceAfterSpecialOffer = subtotalAfterPackage;
 
     if (specialOffer) {
       if (specialOffer.discountType === "PERCENTAGE") {
@@ -74,13 +78,17 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
           specialOfferAdjustment = specialOffer.maxDiscount;
         }
         
-        finalPrice = subtotalAfterPackage - specialOfferAdjustment;
+        priceAfterSpecialOffer = subtotalAfterPackage - specialOfferAdjustment;
       } else if (specialOffer.discountType === "PREMIUM") {
         // Premium (positive adjustment)
         specialOfferAdjustment = (subtotalAfterPackage * specialOffer.discountValue) / 100;
-        finalPrice = subtotalAfterPackage + specialOfferAdjustment;
+        priceAfterSpecialOffer = subtotalAfterPackage + specialOfferAdjustment;
       }
     }
+
+    // Apply referral discount
+    const referralDiscount = (priceAfterSpecialOffer * referralDiscountPercent) / 100;
+    let finalPrice = priceAfterSpecialOffer - referralDiscount;
 
     // Ensure final price is never negative
     finalPrice = Math.max(0, Math.round(finalPrice));
@@ -92,7 +100,8 @@ export function usePriceCalculation(input: PriceCalculationInput): PriceBreakdow
       packageDiscount: Math.round(packageDiscount / 100),
       subtotalAfterPackage: Math.round(subtotalAfterPackage / 100),
       specialOfferAdjustment: Math.round(specialOfferAdjustment / 100),
+      referralDiscount: Math.round(referralDiscount / 100),
       finalPrice: Math.round(finalPrice / 100),
     };
-  }, [input.basePrice, input.selectedAddOns, input.packageDiscountPercent, input.specialOffer]);
+  }, [input.basePrice, input.selectedAddOns, input.packageDiscountPercent, input.specialOffer, input.referralDiscountPercent]);
 }

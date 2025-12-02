@@ -2013,3 +2013,64 @@ export async function completeReferral(bookingId: number) {
 
   return { success: true };
 }
+
+/**
+ * Track referral usage when booking is created
+ */
+export async function trackReferralUsage(params: {
+  referralCode: string;
+  referrerUserId: number;
+  bookingId: number;
+  referredEmail?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not initialized");
+
+  const { referrals, users } = await import("../drizzle/schema");
+
+  // Find the referral record
+  const [referral] = await db
+    .select()
+    .from(referrals)
+    .where(and(
+      eq(referrals.referralCode, params.referralCode),
+      eq(referrals.referrerId, params.referrerUserId),
+      eq(referrals.status, "pending")
+    ))
+    .limit(1);
+
+  if (!referral) {
+    throw new Error("Referral not found or already used");
+  }
+
+  // Find referred user by email if provided
+  let referredUserId: number | null = null;
+  if (params.referredEmail) {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, params.referredEmail))
+      .limit(1);
+    
+    if (user) {
+      referredUserId = user.id;
+    }
+  }
+
+  // Calculate reward amounts (10% discount)
+  const rewardAmount = 1000; // 10 EGP reward for referrer (in cents)
+
+  // Update referral record
+  await db
+    .update(referrals)
+    .set({
+      referredUserId,
+      bookingId: params.bookingId,
+      usedAt: new Date(),
+      rewardAmount,
+      status: "pending", // Will be completed when booking is completed
+    })
+    .where(eq(referrals.id, referral.id));
+
+  return { success: true, rewardAmount };
+}

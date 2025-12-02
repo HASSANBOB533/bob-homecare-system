@@ -220,7 +220,12 @@ const resources = {
         "basePrice": "Base Price",
         "discount": "Discount",
         "finalPrice": "Final Price",
-        "priceBreakdown": "Price Breakdown"
+        "priceBreakdown": "Price Breakdown",
+        "referralCode": "Referral Code",
+        "enterReferralCode": "Enter referral code (optional)",
+        "referralValid": "Valid referral code! Discount applied",
+        "referralInvalid": "Invalid or already used referral code",
+        "referralDiscount": "Referral Discount"
       },
       
       // Quote Management
@@ -659,7 +664,12 @@ const resources = {
         "basePrice": "السعر الأساسي",
         "discount": "الخصم",
         "finalPrice": "السعر النهائي",
-        "priceBreakdown": "تفاصيل السعر"
+        "priceBreakdown": "تفاصيل السعر",
+        "referralCode": "كود الإحالة",
+        "enterReferralCode": "أدخل كود الإحالة (اختياري)",
+        "referralValid": "كود إحالة صالح! تم تطبيق الخصم",
+        "referralInvalid": "كود إحالة غير صالح أو مستخدم بالفعل",
+        "referralDiscount": "خصم الإحالة"
       },
       
       "Payment Failed": "فشل الدفع",
