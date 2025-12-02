@@ -2103,3 +2103,113 @@ export async function trackReferralUsage(params: {
 
   return { success: true, rewardAmount };
 }
+
+
+/**
+ * Get loyalty program analytics for admin dashboard
+ */
+export async function getLoyaltyAnalytics() {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { loyaltyTransactions, users } = await import("../drizzle/schema");
+
+  // Get total points issued (earned)
+  const earnedResult = await db
+    .select({
+      total: sql<number>`SUM(${loyaltyTransactions.points})`,
+    })
+    .from(loyaltyTransactions)
+    .where(eq(loyaltyTransactions.type, "earned"));
+  const totalPointsIssued = earnedResult[0]?.total || 0;
+
+  // Get total points redeemed
+  const redeemedResult = await db
+    .select({
+      total: sql<number>`ABS(SUM(${loyaltyTransactions.points}))`,
+    })
+    .from(loyaltyTransactions)
+    .where(eq(loyaltyTransactions.type, "redeemed"));
+  const totalPointsRedeemed = redeemedResult[0]?.total || 0;
+
+  // Calculate redemption rate
+  const redemptionRate = totalPointsIssued > 0 
+    ? ((totalPointsRedeemed / totalPointsIssued) * 100).toFixed(2)
+    : "0.00";
+
+  // Get total active members (users with points > 0)
+  const activeMembersResult = await db
+    .select({
+      count: sql<number>`COUNT(*)`,
+    })
+    .from(users)
+    .where(sql`${users.loyaltyPoints} > 0`);
+  const totalActiveMembers = activeMembersResult[0]?.count || 0;
+
+  // Calculate average points per user
+  const avgPointsResult = await db
+    .select({
+      avg: sql<number>`AVG(${users.loyaltyPoints})`,
+    })
+    .from(users)
+    .where(sql`${users.loyaltyPoints} > 0`);
+  const averagePointsPerUser = Math.round(avgPointsResult[0]?.avg || 0);
+
+  // Get top 10 users by points balance
+  const topEarners = await db
+    .select({
+      id: users.id,
+      name: users.name,
+      email: users.email,
+      loyaltyPoints: users.loyaltyPoints,
+    })
+    .from(users)
+    .where(sql`${users.loyaltyPoints} > 0`)
+    .orderBy(sql`${users.loyaltyPoints} DESC`)
+    .limit(10);
+
+  // Get monthly trend data (last 6 months)
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+  const monthlyTrend = await db
+    .select({
+      month: sql<string>`DATE_FORMAT(${loyaltyTransactions.createdAt}, '%Y-%m')`,
+      type: loyaltyTransactions.type,
+      total: sql<number>`SUM(ABS(${loyaltyTransactions.points}))`,
+    })
+    .from(loyaltyTransactions)
+    .where(sql`${loyaltyTransactions.createdAt} >= ${sixMonthsAgo}`)
+    .groupBy(sql`DATE_FORMAT(${loyaltyTransactions.createdAt}, '%Y-%m')`, loyaltyTransactions.type)
+    .orderBy(sql`DATE_FORMAT(${loyaltyTransactions.createdAt}, '%Y-%m')`);
+
+  // Get recent transactions (last 20)
+  const recentTransactions = await db
+    .select({
+      id: loyaltyTransactions.id,
+      userId: loyaltyTransactions.userId,
+      userName: users.name,
+      userEmail: users.email,
+      points: loyaltyTransactions.points,
+      type: loyaltyTransactions.type,
+      description: loyaltyTransactions.description,
+      createdAt: loyaltyTransactions.createdAt,
+    })
+    .from(loyaltyTransactions)
+    .leftJoin(users, eq(loyaltyTransactions.userId, users.id))
+    .orderBy(sql`${loyaltyTransactions.createdAt} DESC`)
+    .limit(20);
+
+  return {
+    summary: {
+      totalPointsIssued,
+      totalPointsRedeemed,
+      redemptionRate: parseFloat(redemptionRate),
+      totalActiveMembers,
+      averagePointsPerUser,
+    },
+    topEarners,
+    monthlyTrend,
+    recentTransactions,
+  };
+}

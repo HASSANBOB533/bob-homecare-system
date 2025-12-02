@@ -304,6 +304,36 @@ const resources = {
         "cancelled": "Cancelled"
       },
       
+      "admin": {
+        "loyalty": {
+          "title": "Loyalty Program Analytics",
+          "subtitle": "Track points issued, redeemed, and program performance",
+          "totalIssued": "Total Points Issued",
+          "totalRedeemed": "Total Points Redeemed",
+          "redemptionRate": "Redemption Rate",
+          "activeMembers": "Active Members",
+          "avgPoints": "Avg",
+          "points": "pts",
+          "allTime": "All-time total",
+          "ofTotalIssued": "Of total issued",
+          "monthlyTrend": "Monthly Trend (Last 6 Months)",
+          "pointsIssued": "Points Issued",
+          "pointsRedeemed": "Points Redeemed",
+          "redeemed": "Redeemed",
+          "unredeemed": "Unredeemed",
+          "topEarners": "Top Earners",
+          "rank": "Rank",
+          "name": "Name",
+          "email": "Email",
+          "recentTransactions": "Recent Transactions",
+          "user": "User",
+          "type": "Type",
+          "description": "Description",
+          "date": "Date",
+          "noData": "No analytics data available"
+        }
+      },
+      
       "referrals": {
         "title": "Referral Program",
         "description": "Share your unique referral code with friends and earn rewards when they book their first service!",
@@ -417,6 +447,36 @@ const resources = {
       "preferencesUpdated": "تم تحديث التفضيلات بنجاح!",
       "listView": "عرض القائمة",
       "calendarView": "عرض التقويم",
+      
+      "admin": {
+        "loyalty": {
+          "title": "تحليلات برنامج الولاء",
+          "subtitle": "تتبع النقاط الصادرة والمستبدلة وأداء البرنامج",
+          "totalIssued": "إجمالي النقاط الصادرة",
+          "totalRedeemed": "إجمالي النقاط المستبدلة",
+          "redemptionRate": "معدل الاستبدال",
+          "activeMembers": "الأعضاء النشطون",
+          "avgPoints": "متوسط",
+          "points": "نقطة",
+          "allTime": "الإجمالي الكلي",
+          "ofTotalIssued": "من الإجمالي الصادر",
+          "monthlyTrend": "الاتجاه الشهري (آخر 6 أشهر)",
+          "pointsIssued": "النقاط الصادرة",
+          "pointsRedeemed": "النقاط المستبدلة",
+          "redeemed": "مستبدل",
+          "unredeemed": "غير مستبدل",
+          "topEarners": "أعلى الكاسبين",
+          "rank": "الترتيب",
+          "name": "الاسم",
+          "email": "البريد الإلكتروني",
+          "recentTransactions": "المعاملات الأخيرة",
+          "user": "المستخدم",
+          "type": "النوع",
+          "description": "الوصف",
+          "date": "التاريخ",
+          "noData": "لا توجد بيانات تحليلية متاحة"
+        }
+      },
       // Admin review management
       "reviewManagement": "إدارة التقييمات",
       "allReviews": "جميع التقييمات",

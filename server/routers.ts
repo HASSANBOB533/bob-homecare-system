@@ -703,6 +703,14 @@ export const appRouter = router({
         const { adjustUserPoints } = await import("./db");
         return adjustUserPoints(input.userId, input.points, input.description);
       }),
+    getAnalytics: protectedProcedure
+      .query(async ({ ctx }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can view loyalty analytics");
+        }
+        const { getLoyaltyAnalytics } = await import("./db");
+        return getLoyaltyAnalytics();
+      }),
   }),
   
   // Pricing Management

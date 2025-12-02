@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import { AdminReviews } from "./pages/AdminReviews";
 import LoyaltyDashboard from "./pages/LoyaltyDashboard";
 import { AdminLoyalty } from "./pages/AdminLoyalty";
+import AdminLoyaltyDashboard from "./pages/AdminLoyaltyDashboard";
 import AdminPricingManagement from "./pages/AdminPricingManagement";
 import { AdminPricingEditor } from "./pages/AdminPricingEditor";
 import BookService from "./pages/BookService";
@@ -71,6 +72,9 @@ function Router() {
       </Route>
       <Route path={"/admin/loyalty"}>
         {() => <ProtectedRoute component={AdminLoyalty} requireAdmin />}
+      </Route>
+      <Route path={"/admin/loyalty-analytics"}>
+        {() => <ProtectedRoute component={AdminLoyaltyDashboard} requireAdmin />}
       </Route>
       <Route path={"/admin/pricing"}>
         {() => <ProtectedRoute component={AdminPricingManagement} requireAdmin />}

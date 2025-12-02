@@ -937,3 +937,41 @@
 - [ ] Add timestamp and admin user who made changes
 - [ ] Create API endpoint to view pricing history
 - [ ] Add pricing history view in admin pricing management page
+
+
+## Admin Loyalty Dashboard
+
+### Backend API Endpoints
+- [x] Create getLoyaltyAnalytics endpoint for admin
+- [x] Fetch total points issued (all-time and monthly)
+- [x] Fetch total points redeemed (all-time and monthly)
+- [x] Calculate redemption rate percentage
+- [x] Get top 10 users by loyalty points balance
+- [x] Get monthly points issued/redeemed trend data (last 6 months)
+- [x] Count total active loyalty program members
+- [x] Calculate average points per user
+
+### Dashboard UI
+- [x] Create AdminLoyaltyDashboard.tsx page component
+- [x] Add route to App.tsx for /admin/loyalty-analytics
+- [x] Create statistics cards layout (4 key metrics)
+- [x] Install Chart.js for visualizations
+
+### Analytics Charts
+- [x] Implement points issued vs redeemed chart (Chart.js line chart)
+- [x] Add monthly trend chart for last 6 months
+- [x] Create redemption rate pie chart
+
+### Leaderboard & Tables
+- [x] Create top earners leaderboard table
+- [x] Display user name, email, and points balance
+- [x] Add recent transactions table
+- [x] Show transaction type, points, and date
+
+### Testing & Polish
+- [x] Test admin access control (admin role required)
+- [x] Add loading states for all data fetches
+- [x] Add empty states when no data available
+- [x] Add bilingual support (Arabic/English)
+- [x] Write vitest tests for analytics calculations
+- [x] Test dashboard in browser (requires admin login)
