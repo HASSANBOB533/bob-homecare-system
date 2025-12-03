@@ -1294,7 +1294,39 @@ export const appRouter = router({
         const { validateReferralCode } = await import("./db");
         return validateReferralCode(input.code);
       }),
+   }),
+  // Availability management
+  availability: router({
+    // Get available time slots for a specific date
+    getAvailableSlots: publicProcedure
+      .input(z.object({
+        date: z.string(), // YYYY-MM-DD format
+        serviceId: z.number().optional(),
+      }))
+      .query(async ({ input }) => {
+        const { getAvailableTimeSlots } = await import("./db");
+        return getAvailableTimeSlots(input.date, input.serviceId);
+      }),
+    // Get availability calendar for a date range
+    getCalendar: publicProcedure
+      .input(z.object({
+        startDate: z.string(), // YYYY-MM-DD
+        endDate: z.string(), // YYYY-MM-DD
+      }))
+      .query(async ({ input }) => {
+        const { getAvailabilityCalendar } = await import("./db");
+        return getAvailabilityCalendar(input.startDate, input.endDate);
+      }),
+    // Check if a specific time slot is available
+    checkSlot: publicProcedure
+      .input(z.object({
+        date: z.string(),
+        time: z.string(), // HH:MM format
+      }))
+      .query(async ({ input }) => {
+        const { checkTimeSlotAvailability } = await import("./db");
+        return checkTimeSlotAvailability(input.date, input.time);
+      }),
   }),
 });
-
 export type AppRouter = typeof appRouter;

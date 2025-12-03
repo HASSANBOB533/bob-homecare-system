@@ -1,4 +1,4 @@
-import { boolean, int, json, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, date, int, json, mysqlEnum, mysqlTable, text, time, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 /**
  * Core user table backing auth flow.
@@ -362,3 +362,40 @@ export const pushSubscriptions = mysqlTable("pushSubscriptions", {
 });
 export type PushSubscription = typeof pushSubscriptions.$inferSelect;
 export type InsertPushSubscription = typeof pushSubscriptions.$inferInsert;
+
+/**
+ * Staff availability table - Track when staff are available to work
+ */
+export const staffAvailability = mysqlTable("staffAvailability", {
+  id: int("id").autoincrement().primaryKey(),
+  staffName: varchar("staffName", { length: 100 }).notNull(),
+  date: date("date").notNull(), // Date in YYYY-MM-DD format
+  startTime: time("startTime").notNull(), // Start time (e.g., "09:00:00")
+  endTime: time("endTime").notNull(), // End time (e.g., "17:00:00")
+  isAvailable: boolean("isAvailable").default(true).notNull(),
+  notes: text("notes"), // Optional notes (e.g., "On leave", "Half day")
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type StaffAvailability = typeof staffAvailability.$inferSelect;
+export type InsertStaffAvailability = typeof staffAvailability.$inferInsert;
+
+/**
+ * Time slots table - Track available booking slots per day
+ * This is generated based on staff availability and existing bookings
+ */
+export const timeSlots = mysqlTable("timeSlots", {
+  id: int("id").autoincrement().primaryKey(),
+  date: date("date").notNull(), // Date in YYYY-MM-DD format
+  startTime: time("startTime").notNull(), // Slot start time
+  endTime: time("endTime").notNull(), // Slot end time
+  capacity: int("capacity").default(1).notNull(), // How many bookings can be scheduled in this slot
+  bookedCount: int("bookedCount").default(0).notNull(), // Current number of bookings
+  isAvailable: boolean("isAvailable").default(true).notNull(), // Can be manually disabled
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type TimeSlot = typeof timeSlots.$inferSelect;
+export type InsertTimeSlot = typeof timeSlots.$inferInsert;

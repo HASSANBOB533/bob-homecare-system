@@ -1612,3 +1612,16 @@
 - [x] Removed HelmetProvider and SEO components temporarily
 - [x] Verified all components use hooks correctly
 - [x] Test fix on all pages - all routes return HTTP 200
+
+## Live Availability Calendar Implementation
+- [ ] Design database schema for staff availability and time slots
+- [ ] Create availability table in database
+- [ ] Add tRPC procedures for checking availability
+- [ ] Add tRPC procedures for getting available time slots
+- [ ] Build interactive calendar component
+- [ ] Show booked vs available slots visually
+- [ ] Integrate calendar with booking form
+- [ ] Add real-time availability checking
+- [ ] Prevent double-booking with optimistic locking
+- [ ] Test calendar functionality
+- [ ] Write tests for availability logic

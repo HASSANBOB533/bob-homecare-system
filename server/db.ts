@@ -2272,3 +2272,173 @@ export async function toggleServiceVisibility(serviceId: number, isVisible: bool
 
   return updated;
 }
+
+// ============================================
+// AVAILABILITY MANAGEMENT
+// ============================================
+
+/**
+ * Get available time slots for a specific date
+ * Returns slots that have capacity and are not fully booked
+ */
+export async function getAvailableTimeSlots(date: string, serviceId?: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots, bookings } = await import("../drizzle/schema");
+  const { eq, and, sql } = await import("drizzle-orm");
+
+  // Get all time slots for the date
+  const slots = await db
+    .select()
+    .from(timeSlots)
+    .where(eq(timeSlots.date, date));
+
+  // For each slot, check how many bookings exist
+  const availableSlots = [];
+  for (const slot of slots) {
+    // Count bookings for this time slot
+    const bookingCount = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(bookings)
+      .where(
+        and(
+          sql`DATE(${bookings.dateTime}) = ${date}`,
+          sql`TIME(${bookings.dateTime}) >= ${slot.startTime}`,
+          sql`TIME(${bookings.dateTime}) < ${slot.endTime}`,
+          eq(bookings.status, "confirmed")
+        )
+      );
+
+    const count = Number(bookingCount[0]?.count || 0);
+    const available = slot.isAvailable && count < slot.capacity;
+
+    availableSlots.push({
+      ...slot,
+      bookedCount: count,
+      available,
+    });
+  }
+
+  return availableSlots;
+}
+
+/**
+ * Get availability calendar for a date range
+ * Returns a summary of available slots per day
+ */
+export async function getAvailabilityCalendar(startDate: string, endDate: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots } = await import("../drizzle/schema");
+  const { and, gte, lte, sql } = await import("drizzle-orm");
+
+  // Get all slots in the date range
+  const slots = await db
+    .select({
+      date: timeSlots.date,
+      totalSlots: sql<number>`count(*)`,
+      availableSlots: sql<number>`sum(case when ${timeSlots.isAvailable} = 1 and ${timeSlots.bookedCount} < ${timeSlots.capacity} then 1 else 0 end)`,
+    })
+    .from(timeSlots)
+    .where(
+      and(
+        gte(timeSlots.date, startDate),
+        lte(timeSlots.date, endDate)
+      )
+    )
+    .groupBy(timeSlots.date);
+
+  return slots.map(slot => ({
+    date: slot.date,
+    totalSlots: Number(slot.totalSlots),
+    availableSlots: Number(slot.availableSlots || 0),
+    hasAvailability: Number(slot.availableSlots || 0) > 0,
+  }));
+}
+
+/**
+ * Check if a specific time slot is available
+ */
+export async function checkTimeSlotAvailability(date: string, time: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots, bookings } = await import("../drizzle/schema");
+  const { and, eq, sql } = await import("drizzle-orm");
+
+  // Find the slot that contains this time
+  const [slot] = await db
+    .select()
+    .from(timeSlots)
+    .where(
+      and(
+        eq(timeSlots.date, date),
+        sql`${time} >= ${timeSlots.startTime}`,
+        sql`${time} < ${timeSlots.endTime}`
+      )
+    )
+    .limit(1);
+
+  if (!slot) {
+    return { available: false, reason: "No slot found for this time" };
+  }
+
+  if (!slot.isAvailable) {
+    return { available: false, reason: "Slot is disabled" };
+  }
+
+  // Count existing bookings
+  const bookingCount = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(bookings)
+    .where(
+      and(
+        sql`DATE(${bookings.dateTime}) = ${date}`,
+        sql`TIME(${bookings.dateTime}) = ${time}`,
+        eq(bookings.status, "confirmed")
+      )
+    );
+
+  const count = Number(bookingCount[0]?.count || 0);
+  const available = count < slot.capacity;
+
+  return {
+    available,
+    reason: available ? "Slot is available" : "Slot is fully booked",
+    capacity: slot.capacity,
+    bookedCount: count,
+    remainingSlots: slot.capacity - count,
+  };
+}
+
+/**
+ * Generate default time slots for a date
+ * Creates slots from 9 AM to 5 PM with 2-hour intervals
+ */
+export async function generateDefaultTimeSlots(date: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots } = await import("../drizzle/schema");
+
+  const defaultSlots = [
+    { startTime: "09:00:00", endTime: "11:00:00" },
+    { startTime: "11:00:00", endTime: "13:00:00" },
+    { startTime: "13:00:00", endTime: "15:00:00" },
+    { startTime: "15:00:00", endTime: "17:00:00" },
+  ];
+
+  const insertData = defaultSlots.map(slot => ({
+    date: new Date(date),
+    startTime: slot.startTime,
+    endTime: slot.endTime,
+    capacity: 3, // Allow 3 concurrent bookings per slot
+    bookedCount: 0,
+    isAvailable: true,
+  }));
+
+  await db.insert(timeSlots).values(insertData);
+  return insertData;
+}
