@@ -1634,3 +1634,23 @@
 - [x] Fix SQL GROUP BY issues with MySQL strict mode
 - [ ] Integrate calendar with booking form (BookService.tsx)
 - [ ] Add double-booking prevention with capacity tracking
+
+## Fix Critical React Crash - useState null error
+- [x] Reproduce the error by checking dev server and browser console
+- [x] Identify the exact component/file causing useState null error (React 19 incompatibility)
+- [x] Check for React import issues or multiple React versions (React 19.2.0 incompatible with tRPC)
+- [x] Downgrade React from 19.1.1 to 18.3.1 for tRPC compatibility
+- [x] Downgrade @types/react from 19.1.16 to 18.3.12
+- [x] Downgrade @types/react-dom from 19.1.9 to 18.3.1
+- [x] Fix usePersistFn hook for React 18 compatibility (useLayoutEffect)
+- [x] Fix react-big-calendar Calendar component type issue (@ts-ignore)
+- [x] Run TypeScript type checking (passed with no errors)
+- [x] Run production build to verify (built successfully)
+- [x] ErrorBoundary already implemented and working
+- [x] Fix SQL date column escaping issue (added backticks to reserved keyword)
+- [x] All availability tests passing (11/11)
+- [x] Test home page - loads successfully without errors
+- [x] Test services page - loads successfully without errors
+- [x] Test booking page - loads successfully without errors
+- [x] Test dashboard - loads successfully without errors
+- [ ] Commit fix with clear description

@@ -2337,12 +2337,12 @@ export async function getAvailabilityCalendar(startDate: string, endDate: string
   // Get all slots in the date range using raw SQL to avoid GROUP BY issues
   const result: any = await db.execute(sql`
     SELECT 
-      DATE(date) as date,
+      DATE(\`date\`) as date,
       COUNT(*) as totalSlots,
       SUM(CASE WHEN isAvailable = 1 AND bookedCount < capacity THEN 1 ELSE 0 END) as availableSlots
     FROM timeSlots
-    WHERE DATE(date) >= ${startDate} AND DATE(date) <= ${endDate}
-    GROUP BY DATE(date)
+    WHERE DATE(\`date\`) >= ${startDate} AND DATE(\`date\`) <= ${endDate}
+    GROUP BY DATE(\`date\`)
   `);
   
   const slots = result as any[];

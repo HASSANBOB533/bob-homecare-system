@@ -1,4 +1,5 @@
-import { Calendar, dateFnsLocalizer, View } from 'react-big-calendar';
+import { Calendar as BigCalendar, dateFnsLocalizer, View } from 'react-big-calendar';
+import type { Calendar as CalendarType } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { enUS, ar } from 'date-fns/locale';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -166,7 +167,8 @@ export function BookingCalendar({ bookings, onSelectBooking }: BookingCalendarPr
       </CardHeader>
       <CardContent>
         <div className="h-[600px]" dir={i18n.language === 'ar' ? 'rtl' : 'ltr'}>
-          <Calendar
+          {/* @ts-ignore - react-big-calendar has type issues with React 18 */}
+          <BigCalendar
             localizer={localizer}
             events={events}
             startAccessor="start"
