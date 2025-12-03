@@ -1573,3 +1573,42 @@
 - [ ] Test offline mode functionality
 - [ ] Test with slow network (3G/4G throttling)
 - [ ] Verify no console errors across all pages
+
+## Comprehensive Page Testing & Bug Fixes
+### Public Pages
+- [ ] Test homepage (/) - verify all sections load
+- [ ] Test booking page (/book) - verify form works
+- [ ] Test service detail pages - verify content displays
+- [ ] Test check booking page - verify lookup works
+- [ ] Test payment success page - verify confirmation displays
+- [ ] Test payment failed page - verify error handling
+
+### User Pages
+- [ ] Test user dashboard (/dashboard) - verify data loads
+- [ ] Test my bookings (/my-bookings) - verify list displays
+- [ ] Test loyalty dashboard - verify points display
+- [ ] Test referrals page - verify referral system works
+
+### Admin Pages
+- [ ] Test admin dashboard (/admin) - verify stats load
+- [ ] Test admin bookings (/admin/bookings) - verify table works
+- [ ] Test admin calendar (/admin/calendar) - verify calendar renders
+- [ ] Test admin reviews - verify review management works
+- [ ] Test admin loyalty - verify loyalty management works
+- [ ] Test admin pricing - verify pricing editor works
+- [ ] Test admin service gallery - verify image management works
+- [ ] Test admin debug (/admin/debug) - verify monitoring works
+
+### Error Fixes
+- [ ] Fix any console errors found during testing
+- [ ] Fix any missing imports or broken components
+- [ ] Fix any TypeScript errors
+- [ ] Fix any API call failures
+- [ ] Verify all lazy-loaded components work correctly
+
+## CRITICAL: React useState Error Fix
+- [x] Diagnose "Cannot read properties of null (reading 'useState')" error
+- [x] Identified react-helmet-async v2.0.5 incompatibility with React 19
+- [x] Removed HelmetProvider and SEO components temporarily
+- [x] Verified all components use hooks correctly
+- [x] Test fix on all pages - all routes return HTTP 200

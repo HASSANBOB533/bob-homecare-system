@@ -10,7 +10,8 @@ import { getLoginUrl } from "./const";
 import "./index.css";
 import "./i18n";
 import { registerServiceWorker, setupInstallPrompt } from "./registerSW";
-import { HelmetProvider } from "react-helmet-async";
+// HelmetProvider temporarily disabled due to React 19 compatibility
+// import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -58,13 +59,12 @@ const trpcClient = trpc.createClient({
 
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary>
-    <HelmetProvider>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-      </trpc.Provider>
-    </HelmetProvider>
+    {/* HelmetProvider temporarily disabled due to React 19 compatibility */}
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
   </ErrorBoundary>
 );
 

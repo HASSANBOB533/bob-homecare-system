@@ -18,7 +18,8 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
 import { useState } from "react";
-import { SEO, OrganizationSchema, LocalBusinessSchema } from "@/components/SEO";
+// SEO components temporarily disabled due to React 19 compatibility
+// import { SEO, OrganizationSchema, LocalBusinessSchema } from "@/components/SEO";
 
 // Service Rating Component
 function ServiceRating({ serviceId }: { serviceId: number }) {
@@ -79,14 +80,15 @@ export default function Home() {
 
   return (
     <>
-      <SEO
+      {/* SEO components temporarily disabled due to React 19 compatibility */}
+      {/* <SEO
         title="BOB Home Care - Professional Cleaning Services in Egypt"
         description="BOB Home Care offers professional home cleaning services with international hospitality standards. Airbnb cleaning, deep cleaning, regular maintenance, and more. Licensed, insured, and eco-friendly."
         keywords="home cleaning Egypt, professional cleaning services, Airbnb cleaning, deep cleaning, house cleaning, cleaning company Egypt, eco-friendly cleaning, licensed cleaning service"
         locale={i18n.language as 'en' | 'ar'}
       />
       <OrganizationSchema />
-      <LocalBusinessSchema />
+      <LocalBusinessSchema /> */}
       <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
