@@ -4,10 +4,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { trpc } from "@/lib/trpc";
-import { Calendar, Clock, MapPin, Sparkles, CheckCircle2 } from "lucide-react";
+import { Calendar, Clock, MapPin, Sparkles, CheckCircle2, Menu, Home } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -61,6 +68,7 @@ export default function BookService() {
   const { t, i18n } = useTranslation();
   const [, setLocation] = useLocation();
   const { data: services = [] } = trpc.services.list.useQuery();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const [formData, setFormData] = useState({
     serviceId: "",
@@ -433,11 +441,47 @@ export default function BookService() {
             <Sparkles className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">BOB Home Care</span>
           </div>
-          <div className="flex items-center gap-4">
+          
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-4">
             <LanguageSwitcher />
             <Button variant="ghost" size="sm" onClick={() => setLocation("/")}>
               {t('Back to Home')}
             </Button>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageSwitcher />
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    BOB Home Care
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-4 mt-6">
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start w-full" 
+                    onClick={() => {
+                      setLocation("/");
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Home className="mr-2 h-4 w-4" />
+                    {t('Back to Home')}
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
