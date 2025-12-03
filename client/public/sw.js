@@ -13,10 +13,12 @@ const MAX_CACHE_AGE = 7 * 24 * 60 * 60 * 1000;
 // Maximum cache size (50 MB)
 const MAX_CACHE_SIZE = 50 * 1024 * 1024;
 
-// Minimal precache - only essential offline assets
-// Most assets will be cached on-demand for better initial load performance
+// Assets to precache on install
 const PRECACHE_ASSETS = [
+  '/',
   '/manifest.json',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
   '/offline.html',
 ];
 

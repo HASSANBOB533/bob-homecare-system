@@ -27,57 +27,30 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Aggressive code splitting for better caching and parallel loading
+          // Split vendor code into separate chunks
           if (id.includes('node_modules')) {
-            // Core React dependencies
-            if (id.includes('react/') || id.includes('react-dom/')) {
-              return 'react-core';
+            if (id.includes('react') || id.includes('wouter')) {
+              return 'react-vendor';
             }
-            // Router
-            if (id.includes('wouter')) {
-              return 'router';
-            }
-            // tRPC and React Query
-            if (id.includes('@trpc') || id.includes('@tanstack/react-query')) {
+            if (id.includes('@trpc')) {
               return 'trpc-vendor';
             }
-            // UI components (Radix)
             if (id.includes('@radix-ui')) {
               return 'ui-vendor';
             }
-            // Charts - lazy load these
-            if (id.includes('chart.js') || id.includes('recharts') || id.includes('react-chartjs')) {
+            if (id.includes('chart.js') || id.includes('recharts')) {
               return 'chart-vendor';
             }
-            // Calendar libraries - lazy load
-            if (id.includes('react-big-calendar') || id.includes('date-fns')) {
-              return 'calendar-vendor';
-            }
-            // i18n
-            if (id.includes('i18next') || id.includes('react-i18next')) {
-              return 'i18n-vendor';
-            }
-            // Utilities
-            if (id.includes('zod') || id.includes('clsx') || id.includes('class-variance-authority')) {
+            if (id.includes('i18next') || id.includes('date-fns') || id.includes('zod')) {
               return 'utils-vendor';
             }
-            // Icons
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            // Everything else
             return 'vendor';
           }
         },
       },
     },
-    chunkSizeWarningLimit: 300,
+    chunkSizeWarningLimit: 500,
     minify: 'esbuild',
-    // Enable source map for production debugging (optional, can disable for smaller size)
-    sourcemap: false,
-    // Optimize dependencies
-    target: 'es2020',
-    cssCodeSplit: true,
   },
   server: {
     host: true,
