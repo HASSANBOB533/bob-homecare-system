@@ -9,11 +9,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar, Star, Award } from "lucide-react";
+import { CheckCircle, Clock, Shield, Sparkles, User, LogOut, LayoutDashboard, UserCog, Calendar, Star, Award, Menu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import { EditProfileDialog } from "@/components/EditProfileDialog";
@@ -54,6 +61,7 @@ export default function Home() {
   });
   const [editProfileOpen, setEditProfileOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const logoutMutation = trpc.auth.logout.useMutation({
     onSuccess: () => {
@@ -97,7 +105,9 @@ export default function Home() {
             <Sparkles className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">BOB Home Care</span>
           </div>
-          <nav className="flex items-center gap-4">
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-4">
             <a href="#services" className="text-sm font-medium hover:text-primary transition-colors">
               {t('services')}
             </a>
@@ -199,6 +209,126 @@ export default function Home() {
               </div>
             )}
           </nav>
+
+          {/* Mobile Menu */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageSwitcher />
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    BOB Home Care
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-4 mt-6">
+                  <a 
+                    href="#services" 
+                    className="text-base font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('services')}
+                  </a>
+                  <a 
+                    href="#why-us" 
+                    className="text-base font-medium hover:text-primary transition-colors py-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {t('whyUs')}
+                  </a>
+                  
+                  <div className="border-t pt-4 mt-2">
+                    {isAuthenticated ? (
+                      <>
+                        <div className="mb-4">
+                          <p className="text-sm font-medium mb-1">{user?.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {user?.role === 'admin' ? t('adminDashboard') : t('userDashboard')}
+                          </p>
+                        </div>
+                        
+                        <div className="flex flex-col gap-2">
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start" 
+                            onClick={() => {
+                              setLocation(user?.role === "admin" ? "/admin" : "/dashboard");
+                              setMobileMenuOpen(false);
+                            }}
+                          >
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
+                            {t('myDashboard')}
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start" 
+                            onClick={() => {
+                              setEditProfileOpen(true);
+                              setMobileMenuOpen(false);
+                            }}
+                          >
+                            <UserCog className="mr-2 h-4 w-4" />
+                            {t('editProfile')}
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start" 
+                            onClick={() => {
+                              setLocation("/loyalty");
+                              setMobileMenuOpen(false);
+                            }}
+                          >
+                            <Award className="mr-2 h-4 w-4" />
+                            {t('loyalty.title')}
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-destructive hover:text-destructive" 
+                            onClick={() => {
+                              handleSignOut();
+                              setMobileMenuOpen(false);
+                            }}
+                            disabled={logoutMutation.isPending}
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            {logoutMutation.isPending ? t('Checking...') : t('signOut')}
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        <Button 
+                          variant="ghost" 
+                          className="w-full" 
+                          onClick={() => {
+                            window.location.href = getLoginUrl();
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          {t('signIn')}
+                        </Button>
+                        <Button 
+                          className="w-full" 
+                          onClick={() => {
+                            window.location.href = getLoginUrl();
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          {t('signUp')}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
 

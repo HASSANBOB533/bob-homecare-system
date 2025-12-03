@@ -27,30 +27,43 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Split vendor code into separate chunks
+          // Split vendor code into separate chunks for better caching
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('wouter')) {
+            // React core and routing
+            if (id.includes('react') || id.includes('react-dom') || id.includes('wouter')) {
               return 'react-vendor';
             }
-            if (id.includes('@trpc')) {
+            // tRPC and React Query
+            if (id.includes('@trpc') || id.includes('@tanstack/react-query')) {
               return 'trpc-vendor';
             }
+            // Radix UI components - split into smaller chunks
             if (id.includes('@radix-ui')) {
               return 'ui-vendor';
             }
+            // Chart libraries
             if (id.includes('chart.js') || id.includes('recharts')) {
               return 'chart-vendor';
             }
+            // Utility libraries
             if (id.includes('i18next') || id.includes('date-fns') || id.includes('zod')) {
               return 'utils-vendor';
             }
+            // FullCalendar components
+            if (id.includes('@fullcalendar')) {
+              return 'calendar-vendor';
+            }
+            // Everything else
             return 'vendor';
           }
         },
       },
     },
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 600, // Increased slightly to account for vendor chunks
     minify: 'esbuild',
+    target: 'es2020', // Modern target for smaller bundles
+    cssCodeSplit: true, // Split CSS for better caching
+    sourcemap: false, // Disable sourcemaps in production for smaller builds
   },
   server: {
     host: true,
