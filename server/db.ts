@@ -2292,7 +2292,7 @@ export async function getAvailableTimeSlots(date: string, serviceId?: number) {
   const slots = await db
     .select()
     .from(timeSlots)
-    .where(eq(timeSlots.date, date));
+    .where(sql`DATE(${timeSlots.date}) = ${date}`);
 
   // For each slot, check how many bookings exist
   const availableSlots = [];
@@ -2334,23 +2334,20 @@ export async function getAvailabilityCalendar(startDate: string, endDate: string
   const { timeSlots } = await import("../drizzle/schema");
   const { and, gte, lte, sql } = await import("drizzle-orm");
 
-  // Get all slots in the date range
-  const slots = await db
-    .select({
-      date: timeSlots.date,
-      totalSlots: sql<number>`count(*)`,
-      availableSlots: sql<number>`sum(case when ${timeSlots.isAvailable} = 1 and ${timeSlots.bookedCount} < ${timeSlots.capacity} then 1 else 0 end)`,
-    })
-    .from(timeSlots)
-    .where(
-      and(
-        gte(timeSlots.date, startDate),
-        lte(timeSlots.date, endDate)
-      )
-    )
-    .groupBy(timeSlots.date);
+  // Get all slots in the date range using raw SQL to avoid GROUP BY issues
+  const result: any = await db.execute(sql`
+    SELECT 
+      DATE(date) as date,
+      COUNT(*) as totalSlots,
+      SUM(CASE WHEN isAvailable = 1 AND bookedCount < capacity THEN 1 ELSE 0 END) as availableSlots
+    FROM timeSlots
+    WHERE DATE(date) >= ${startDate} AND DATE(date) <= ${endDate}
+    GROUP BY DATE(date)
+  `);
+  
+  const slots = result as any[];
 
-  return slots.map(slot => ({
+  return slots.map((slot: any) => ({
     date: slot.date,
     totalSlots: Number(slot.totalSlots),
     availableSlots: Number(slot.availableSlots || 0),
@@ -2374,7 +2371,7 @@ export async function checkTimeSlotAvailability(date: string, time: string) {
     .from(timeSlots)
     .where(
       and(
-        eq(timeSlots.date, date),
+        sql`DATE(${timeSlots.date}) = ${date}`,
         sql`${time} >= ${timeSlots.startTime}`,
         sql`${time} < ${timeSlots.endTime}`
       )
@@ -2441,4 +2438,64 @@ export async function generateDefaultTimeSlots(date: string) {
 
   await db.insert(timeSlots).values(insertData);
   return insertData;
+}
+
+/**
+ * Admin: Update time slot capacity
+ */
+export async function updateTimeSlotCapacity(slotId: number, capacity: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots } = await import("../drizzle/schema");
+  const { eq } = await import("drizzle-orm");
+
+  await db
+    .update(timeSlots)
+    .set({ capacity, updatedAt: new Date() })
+    .where(eq(timeSlots.id, slotId));
+
+  return { success: true };
+}
+
+/**
+ * Admin: Toggle time slot availability
+ */
+export async function toggleTimeSlotAvailability(slotId: number, isAvailable: boolean) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots } = await import("../drizzle/schema");
+  const { eq } = await import("drizzle-orm");
+
+  await db
+    .update(timeSlots)
+    .set({ isAvailable, updatedAt: new Date() })
+    .where(eq(timeSlots.id, slotId));
+
+  return { success: true };
+}
+
+/**
+ * Admin: Block date range
+ * Sets all time slots in the date range to unavailable
+ */
+export async function blockDateRange(startDate: string, endDate: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const { timeSlots } = await import("../drizzle/schema");
+  const { and, sql } = await import("drizzle-orm");
+
+  await db
+    .update(timeSlots)
+    .set({ isAvailable: false, updatedAt: new Date() })
+    .where(
+      and(
+        sql`DATE(${timeSlots.date}) >= ${startDate}`,
+        sql`DATE(${timeSlots.date}) <= ${endDate}`
+      )
+    );
+
+  return { success: true };
 }

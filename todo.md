@@ -1614,14 +1614,23 @@
 - [x] Test fix on all pages - all routes return HTTP 200
 
 ## Live Availability Calendar Implementation
-- [ ] Design database schema for staff availability and time slots
-- [ ] Create availability table in database
-- [ ] Add tRPC procedures for checking availability
-- [ ] Add tRPC procedures for getting available time slots
-- [ ] Build interactive calendar component
-- [ ] Show booked vs available slots visually
-- [ ] Integrate calendar with booking form
-- [ ] Add real-time availability checking
-- [ ] Prevent double-booking with optimistic locking
-- [ ] Test calendar functionality
-- [ ] Write tests for availability logic
+- [x] Design database schema for staff availability and time slots
+- [x] Create availability table in database
+- [x] Add tRPC procedures for checking availability
+- [x] Add tRPC procedures for getting available time slots
+- [x] Build interactive calendar component
+- [x] Show booked vs available slots visually
+- [x] Add real-time availability checking
+- [x] Run database migration (pnpm db:push)
+- [x] Seed time slots for next 60 days (204 slots created, skipping Fridays)
+- [x] Create admin slot management page at /admin/slots
+- [x] Add slot capacity adjustment functionality (1-10 capacity)
+- [x] Add date blocking feature for holidays
+- [x] Add tRPC procedures for admin slot management
+- [x] Add database functions for capacity updates and date blocking
+- [x] Add route for admin slot management (/admin/slots)
+- [x] Add English and Arabic translations for slot management
+- [x] Write comprehensive tests for availability logic (11/11 passing)
+- [x] Fix SQL GROUP BY issues with MySQL strict mode
+- [ ] Integrate calendar with booking form (BookService.tsx)
+- [ ] Add double-booking prevention with capacity tracking

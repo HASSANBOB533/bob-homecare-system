@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { trpc } from "../lib/trpc";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import { useTranslation } from "react-i18n";
+import { useTranslation } from "react-i18next";
 
 interface AvailabilityCalendarProps {
   selectedDate?: string;

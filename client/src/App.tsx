@@ -31,6 +31,7 @@ const AdminBookings = lazy(() => import("./pages/AdminBookings"));
 const AdminCalendar = lazy(() => import("./pages/AdminCalendar"));
 const AdminServiceGallery = lazy(() => import("./pages/AdminServiceGallery"));
 const AdminDebug = lazy(() => import("./pages/AdminDebug"));
+const AdminSlotManagement = lazy(() => import("./pages/AdminSlotManagement"));
 const Referrals = lazy(() => import("./pages/Referrals"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -121,6 +122,9 @@ function App() {
               </Route>
               <Route path="/admin/services/:id/gallery">
                 {() => <ProtectedRoute component={AdminServiceGallery} requireAdmin />}
+              </Route>
+              <Route path="/admin/slots">
+                {() => <ProtectedRoute component={AdminSlotManagement} requireAdmin />}
               </Route>
 
               {/* 404 fallback */}

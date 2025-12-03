@@ -1327,6 +1327,45 @@ export const appRouter = router({
         const { checkTimeSlotAvailability } = await import("./db");
         return checkTimeSlotAvailability(input.date, input.time);
       }),
+    // Admin: Update slot capacity
+    updateSlotCapacity: protectedProcedure
+      .input(z.object({
+        slotId: z.number(),
+        capacity: z.number().min(1).max(10),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can update slot capacity");
+        }
+        const { updateTimeSlotCapacity } = await import("./db");
+        return updateTimeSlotCapacity(input.slotId, input.capacity);
+      }),
+    // Admin: Toggle slot availability
+    toggleSlotAvailability: protectedProcedure
+      .input(z.object({
+        slotId: z.number(),
+        isAvailable: z.boolean(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can toggle slot availability");
+        }
+        const { toggleTimeSlotAvailability } = await import("./db");
+        return toggleTimeSlotAvailability(input.slotId, input.isAvailable);
+      }),
+    // Admin: Block date range
+    blockDateRange: protectedProcedure
+      .input(z.object({
+        startDate: z.string(),
+        endDate: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new Error("Only admins can block dates");
+        }
+        const { blockDateRange } = await import("./db");
+        return blockDateRange(input.startDate, input.endDate);
+      }),
   }),
 });
 export type AppRouter = typeof appRouter;
