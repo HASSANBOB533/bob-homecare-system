@@ -1,0 +1,70 @@
+{
+  "query": "SELECT id, name, email, role FROM users LIMIT 10;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, email, role FROM users LIMIT 10;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Hassan",
+      "email": "Drhsn@icloud.com",
+      "role": "admin"
+    },
+    {
+      "id": "3",
+      "name": "Regular User",
+      "email": "user@test.com",
+      "role": "user"
+    },
+    {
+      "id": "270010",
+      "name": "Hassan Abdel Rahman",
+      "email": "hassanahmed533@gmail.com",
+      "role": "user"
+    },
+    {
+      "id": "5970043",
+      "name": "Test Pricing User",
+      "email": "pricing@test.com",
+      "role": "user"
+    },
+    {
+      "id": "5970049",
+      "name": "Test Pricing User",
+      "email": "pricing-1764689831853@test.com",
+      "role": "user"
+    },
+    {
+      "id": "5970052",
+      "name": "Test Pricing User",
+      "email": "pricing-1764689860982@test.com",
+      "role": "user"
+    },
+    {
+      "id": "5970071",
+      "name": "Test Customer",
+      "email": "test-admin-1764690473006@example.com",
+      "role": "user"
+    },
+    {
+      "id": "5970072",
+      "name": "Test Customer",
+      "email": "test-admin-1764690473111@example.com",
+      "role": "user"
+    },
+    {
+      "id": "5970073",
+      "name": "Test Customer",
+      "email": "test-admin-1764690473185@example.com",
+      "role": "user"
+    },
+    {
+      "id": "5970074",
+      "name": "Test Customer",
+      "email": "test-admin-1764690473268@example.com",
+      "role": "user"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\trole\n1\tHassan\tDrhsn@icloud.com\tadmin\n3\tRegular User\tuser@test.com\tuser\n270010\tHassan Abdel Rahman\thassanahmed533@gmail.com\tuser\n5970043\tTest Pricing User\tpricing@test.com\tuser\n5970049\tTest Pricing User\tpricing-1764689831853@test.com\tuser\n5970052\tTest Pricing User\tpricing-1764689860982@test.com\tuser\n5970071\tTest Customer\ttest-admin-1764690473006@example.com\tuser\n5970072\tTest Customer\ttest-admin-1764690473111@example.com\tuser\n5970073\tTest Customer\ttest-admin-1764690473185@example.com\tuser\n5970074\tTest Customer\ttest-admin-1764690473268@example.com\tuser\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

@@ -1,0 +1,8 @@
+{
+  "query": "UPDATE users SET role = 'admin' WHERE openId = (SELECT COALESCE((SELECT value FROM information_schema.SESSION_VARIABLES WHERE variable_name = 'OWNER_OPEN_ID'), 'unknown'));",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute UPDATE users SET role = 'admin' WHERE openId = (SELECT COALESCE((SELECT value FROM information_schema.SESSION_VARIABLES WHERE variable_name = 'OWNER_OPEN_ID'), 'unknown'));",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1054 (42S22) at line 1: Unknown column 'value' in 'field list'"
+  ]
+}

@@ -1654,3 +1654,32 @@
 - [x] Test booking page - loads successfully without errors
 - [x] Test dashboard - loads successfully without errors
 - [ ] Commit fix with clear description
+
+## Fix Loading Issue and Admin Dashboard Access
+- [ ] Investigate infinite loading on pages
+- [ ] Check if data fetching is causing loading state
+- [ ] Verify admin dashboard route exists
+- [ ] Check admin authentication and role-based access
+- [ ] Test admin dashboard navigation
+- [ ] Add loading skeletons for better UX
+- [ ] Ensure proper error handling for failed queries
+
+## Performance Optimization - Reduce Load Time
+- [x] Measure current bundle sizes and identify largest chunks (vendor: 1.2MB, react: 639KB)
+- [x] Implement aggressive code splitting for better caching
+- [x] Remove unused dependencies (framer-motion removed, axios kept for OAuth)
+- [x] Optimize vendor bundle chunking (split into 10+ chunks)
+- [x] Add preconnect hints to index.html for faster API calls
+- [x] Optimize PWA service worker - minimal precache for faster initial load
+- [x] Disable sourcemaps in production build
+- [x] Set target to es2020 for better optimization
+- [x] Enable CSS code splitting
+- [x] Separate react-core (383KB → 114KB gzipped)
+- [x] Separate calendar-vendor (107KB → 30KB gzipped)
+- [x] Separate i18n-vendor (53KB → 17KB gzipped)
+- [x] Separate trpc-vendor (47KB → 13KB gzipped)
+- [x] Separate router vendor (3.7KB → 1.9KB gzipped)
+- [x] Test website loads successfully
+- [ ] Run Lighthouse performance audit
+- [ ] Test on mobile with slow network (3G)
+- [ ] Commit performance optimizations

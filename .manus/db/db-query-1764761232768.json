@@ -1,0 +1,24 @@
+{
+  "query": "SELECT id, name, email, role, openId FROM users WHERE name LIKE '%Hassan%' OR email LIKE '%hassan%' LIMIT 5;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2j9NYXgTnYir7Mh.root --database Htf64TWdaDvosPeCL5WWib --execute SELECT id, name, email, role, openId FROM users WHERE name LIKE '%Hassan%' OR email LIKE '%hassan%' LIMIT 5;",
+  "rows": [
+    {
+      "id": "1",
+      "name": "Hassan",
+      "email": "Drhsn@icloud.com",
+      "role": "admin",
+      "openId": "6kyUWJRmt8q46K8dD8JuAC"
+    },
+    {
+      "id": "270010",
+      "name": "Hassan Abdel Rahman",
+      "email": "hassanahmed533@gmail.com",
+      "role": "user",
+      "openId": "23j9J5wEJbVAnm5TmfVeUg"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tname\temail\trole\topenId\n1\tHassan\tDrhsn@icloud.com\tadmin\t6kyUWJRmt8q46K8dD8JuAC\n270010\tHassan Abdel Rahman\thassanahmed533@gmail.com\tuser\t23j9J5wEJbVAnm5TmfVeUg\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}
